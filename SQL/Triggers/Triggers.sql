@@ -227,7 +227,7 @@ INSERT INTO Grades (StudentId, CourseId, Grade, Date) VALUES (12, 1, 4, GETDATE(
 -- Создайте триггер, который запрещает удаление преподавателя, если за ним закреплены активные курсы.
 
 CREATE TRIGGER TeachersDeleteBlock ON Teachers
-FOR DELETE
+INSTEAD OF DELETE -- До этого здесь стояло FOR, я его поменял так как здесь требуют 'запретить'(также и в 8)
 AS
 BEGIN
     DECLARE @TeacherId int;
@@ -388,7 +388,7 @@ CREATE TABLE Payments
 ------------------------------------------------------------------------------------------------------------------------
 
 CREATE TRIGGER StudentDeleteBlock ON Students
-FOR DELETE
+INSTEAD OF DELETE
 AS
 BEGIN
     DECLARE @StudentId int;
@@ -415,7 +415,6 @@ VALUES (1, 5000, '2025-02-15', 0),
 DELETE FROM Students
 WHERE Id = 1;
 
--- По факту он не даст, но в моем случае есть FOREIGN KEY который и так не даст его удалить из-за связи
 
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
