@@ -13,6 +13,8 @@ public class Game
     
     public decimal Price { get; set; }
     
+    public int Stock { get; set; } // сколько в наличии
+    
     // Одна игра может быть куплена в нескольких заказах.
     public ICollection<OrderContent> OrderContents { get; set; }
 }

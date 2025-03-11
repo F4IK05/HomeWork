@@ -11,11 +11,11 @@ public class OrderContentConfig : IEntityTypeConfiguration<OrderContent>
         builder.HasKey(oc => oc.Id);
 
         builder.HasOne(oc => oc.Order)
-            .WithMany(oc => oc.OrderContents)
+            .WithMany(o => o.OrderContents)
             .HasForeignKey(oc => oc.OrderId);
         
         builder.HasOne(oc => oc.Game)
-            .WithMany(oc => oc.OrderContents)
+            .WithMany(g => g.OrderContents)
             .HasForeignKey(oc => oc.GameId);
         
         builder.Property(oc => oc.Quantity)

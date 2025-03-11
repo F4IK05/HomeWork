@@ -22,9 +22,12 @@ public class GameConfig : IEntityTypeConfiguration<Game>
             .WithMany(p => p.Games) // один Platform может быть у многих Games
             .HasForeignKey(g => g.PlatformId);
         
-        builder.Property(p => p.Price)
+        builder.Property(g => g.Price)
             .IsRequired();
-
+        
+        builder.Property(g => g.Stock)
+            .IsRequired()
+            .HasDefaultValue(0);
         
         builder.HasMany(g => g.OrderContents)
             .WithOne(oc => oc.Game)  // Одна игра может быть куплена в нескольких заказах.
