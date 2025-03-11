@@ -13,10 +13,9 @@ public class OrderConfig : IEntityTypeConfiguration<Order>
         builder.HasOne(o => o.User)
             .WithMany(u => u.Orders) // один user может иметь много orders
             .HasForeignKey(o => o.UserId);
-        
+
         builder.Property(o => o.OrderDate)
-            .IsRequired()
-            .HasDefaultValue(DateTime.Now);
+            .IsRequired();
 
         builder.Property(o => o.TotalAmount)
             .IsRequired();
