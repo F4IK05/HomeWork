@@ -74,6 +74,28 @@ namespace Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "RPG"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Strategy"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Sports"
+                        });
                 });
 
             modelBuilder.Entity("Project.Data.Models.Order", b =>
@@ -145,6 +167,28 @@ namespace Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Platforms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "PC"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "PlayStation"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Xbox"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Nintendo Switch"
+                        });
                 });
 
             modelBuilder.Entity("Project.Data.Models.Role", b =>

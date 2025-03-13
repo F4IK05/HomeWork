@@ -27,10 +27,25 @@ public class GameStoreContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         
+        // для того чтобы они появлялись автоматически при создании
         modelBuilder.Entity<Role>().HasData(
             new Role { Id = 1, Name = "User" },
             new Role { Id = 2, Name = "Admin" }
-            ); // для того чтобы они появлялись автоматически
+            );
+        
+        modelBuilder.Entity<Genre>().HasData(
+            new Genre { Id = 1, Name = "Action" },
+            new Genre { Id = 2, Name = "RPG" },
+            new Genre { Id = 3, Name = "Strategy" },
+            new Genre { Id = 4, Name = "Sports" }
+        );
+        
+        modelBuilder.Entity<Platform>().HasData(
+            new Platform { Id = 1, Name = "PC" },
+            new Platform { Id = 2, Name = "PlayStation" },
+            new Platform { Id = 3, Name = "Xbox" },
+            new Platform { Id = 4, Name = "Nintendo Switch" }
+        );
 
         // при миграции жалуется что используя динамику
         string passwordHashForAdmin = "$2a$11$gGL946W9xsWI.tZtu4FKPOoPBZR.Hkb7H3/qAIfMgWxLdCVlzo/9K";
@@ -46,5 +61,6 @@ public class GameStoreContext : DbContext
                 Balance = 0
             }
         ); // по умолчанию добавляю admin-а
+        
     }
 }
