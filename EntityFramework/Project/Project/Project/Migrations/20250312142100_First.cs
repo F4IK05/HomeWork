@@ -154,6 +154,28 @@ namespace Project.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Action" },
+                    { 2, "RPG" },
+                    { 3, "Strategy" },
+                    { 4, "Sports" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Platforms",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "PC" },
+                    { 2, "PlayStation" },
+                    { 3, "Xbox" },
+                    { 4, "Nintendo Switch" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]

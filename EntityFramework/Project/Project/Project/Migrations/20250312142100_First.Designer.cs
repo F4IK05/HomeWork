@@ -12,7 +12,7 @@ using Project.Data.Contexts;
 namespace Project.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    [Migration("20250310182249_First")]
+    [Migration("20250312142100_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -77,6 +77,28 @@ namespace Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Action"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "RPG"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Strategy"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Sports"
+                        });
                 });
 
             modelBuilder.Entity("Project.Data.Models.Order", b =>
@@ -148,6 +170,28 @@ namespace Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Platforms");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "PC"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "PlayStation"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Xbox"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Nintendo Switch"
+                        });
                 });
 
             modelBuilder.Entity("Project.Data.Models.Role", b =>
