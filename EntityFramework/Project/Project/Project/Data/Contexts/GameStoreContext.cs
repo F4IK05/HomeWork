@@ -14,7 +14,12 @@ public class GameStoreContext : DbContext
     public DbSet<OrderContent> OrderContents { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Platform> Platforms { get; set; }
-    
+
+    public GameStoreContext()
+    {
+        Database.Migrate();
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var connectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build()

@@ -12,6 +12,7 @@ public class AdminManager
 
         if (context.Games.Any(g => g.GameName == name))
         {
+            Console.WriteLine("Game already exists");
             return false;
         }
 
@@ -45,7 +46,22 @@ public class AdminManager
         context.SaveChanges();
         return true;
     }
-    
+
+    public void DeleteGameIfQuantityIsZero()
+    {
+        using var context = new GameStoreContext();
+
+        var games = context.Games
+            .Where(g => g.Stock == 0);
+
+        foreach (var game in games)
+        {
+            context.Games.Remove(game);
+        }
+        
+        context.SaveChanges();
+    }
+
     public bool EditGame(int gameId, string newName, decimal newPrice, int newQuantity) 
     {
         using var context = new GameStoreContext();

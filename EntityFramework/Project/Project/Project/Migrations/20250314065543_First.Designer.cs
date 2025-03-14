@@ -12,7 +12,7 @@ using Project.Data.Contexts;
 namespace Project.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    [Migration("20250312142100_First")]
+    [Migration("20250314065543_First")]
     partial class First
     {
         /// <inheritdoc />
