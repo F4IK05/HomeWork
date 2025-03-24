@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemIntroProcesses", "SystemIntroProcesses.csproj", "{ACF23AC9-4623-423C-A2CA-FE4E595A580B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChildProcess", "..\ChildProcess\ChildProcess.csproj", "{814B8666-E1CE-4A95-BB6E-08BE78A6DBF8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACF23AC9-4623-423C-A2CA-FE4E595A580B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACF23AC9-4623-423C-A2CA-FE4E595A580B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACF23AC9-4623-423C-A2CA-FE4E595A580B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACF23AC9-4623-423C-A2CA-FE4E595A580B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{814B8666-E1CE-4A95-BB6E-08BE78A6DBF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{814B8666-E1CE-4A95-BB6E-08BE78A6DBF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{814B8666-E1CE-4A95-BB6E-08BE78A6DBF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{814B8666-E1CE-4A95-BB6E-08BE78A6DBF8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
