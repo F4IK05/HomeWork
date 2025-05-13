@@ -1,0 +1,9 @@
+.btn:first-child {
+    position: relative;
+    top: 20px; /* Для проверки */
+}
+
+.tooltip {
+    background-color: rgb(206, 63, 206);
+    padding: 1px;
+}

@@ -1,0 +1,18 @@
+.block {
+    background-color: rgb(155, 199, 222);
+    display: none;
+    padding: 6px;
+    width: 200px;
+    margin-top: 20px;
+}
+
+.block p {
+    text-align: center;
+}
+
+.block .close {
+    width: 100%;
+}
+
+
+
