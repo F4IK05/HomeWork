@@ -78,6 +78,8 @@ public class Methods
                     case "2":
                         emailService.Export(authService.GetUserByName(username));
                         break;
+                    case "3":
+                        return;
                 }
             }
         }

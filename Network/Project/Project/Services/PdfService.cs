@@ -8,7 +8,7 @@ namespace Project.Services;
 public class PdfService
 {
     
-    public List<string> GenerateFavoriteMoviesPdf(List<Movie> movies, string userEmail)
+    public List<string> GenerateFavoriteMoviesPdf(List<Movie> movies, string userName)
     {
         var resultFiles = new List<string>();
         
@@ -21,7 +21,7 @@ public class PdfService
         int pageCount = 1;
         foreach (var group in groups) // для кажлой группы из 5 создается файл.
         {
-            var filePath = Path.Combine("TempFiles", $"{userEmail}_Favorites_{pageCount}.pdf");
+            var filePath = Path.Combine("TempFiles", $"{userName}_page{pageCount}.pdf");
             Directory.CreateDirectory("TempFiles");
 
             Document.Create(container =>

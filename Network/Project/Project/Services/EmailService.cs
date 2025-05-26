@@ -60,14 +60,16 @@ public class EmailService
         
         var user = context.Users.FirstOrDefault(u => u.Id == userId);
         
-        if (user == null) return;
-        
         var favorites = favoriteService.GetFavoritesByUserId(userId);
-        
-        if (favorites.Count == 0) return;
+
+        if (favorites.Count == 0)
+        {
+            Console.WriteLine("No favorites found");
+            return;
+        };
         
         var pdfService = new PdfService();
-        var pdfFiles = pdfService.GenerateFavoriteMoviesPdf(favorites, user.Email);
+        var pdfFiles = pdfService.GenerateFavoriteMoviesPdf(favorites, user.UserName);
 
         var emailBody = $@"
             <h2>Hi, {user.UserName}.</h2>
