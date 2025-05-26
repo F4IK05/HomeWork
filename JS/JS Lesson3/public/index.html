@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Register</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="errorBox"></div>
+    <div class="container">
+        <div class="switcher">
+            <button id="loginTab" class="active">Sign in</button>
+            <button id="registerTab">Sign up</button>
+        </div>
+
+        <form id="loginForm" class="active">
+            <h1>Welcome back!</h1>
+            <p>Please log in to your account.</p>
+            <input type="text" placeholder="Username" name="loginUsername" required>
+            <input type="password" class="pass" placeholder="Password" name="loginPassword" required>
+            <span class="openPass">Show</span>
+            <button class="submit-btn" type="submit">Sign in</button>
+        </form>
+
+        <form id="registerForm">
+            <h1>Welcome</h1>
+            <p>Create a new account to get started.</p>
+            <input type="text" placeholder="Username" name="registerUsername" required>
+            <input type="email" placeholder="Email" name="registerEmail" required>
+            <input type="password" class="pass" placeholder="Password" name="registerPassword" required>
+            <span class="openPass">Show</span>
+            <button class="submit-btn" type="submit">Sign up</button>
+        </form>
+    </div>
+</body>
+</html>
