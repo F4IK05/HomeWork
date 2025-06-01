@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="location.css">
+    <script src="location.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4DeBVEzK0zSByTl49l-uMRjxqw_DYzNU&callback=initMap" defer></script>
 </head>
 <body>
     <div class="block">
         <div class="header">
             <h1>Please, enter your location</h1>
             <p>We need your location to provide better service.</p>
-            <button class="submit-btn" type="submit">Submit</button>
+            <button class="submit-btn" type="submit" id="submitBtn" disabled>Submit</button>
         </div>
-        <div class="main">Main Content</div>
+        <div class="main">
+            <div id="map"></div>
+        </div>
     </div>
 </body>
 </html>

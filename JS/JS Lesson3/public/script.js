@@ -2,6 +2,8 @@ const loginTab = document.getElementById('loginTab');
 const registerTab = document.getElementById('registerTab');
 const switcher = document.getElementById('switcher');
 
+const errorBox = document.getElementById("errorBox");
+
 loginTab.addEventListener('click', () => {
     loginTab.classList.add('active');
     registerTab.classList.remove('active');
@@ -43,6 +45,7 @@ registerForm.addEventListener('submit', (e) => {
         password: formData.get("registerPassword")
     };
 
+    // Запрос отправки данных на сервер
     const request = fetch('/register', {
         method: 'POST',
         headers: {
@@ -60,6 +63,20 @@ registerForm.addEventListener('submit', (e) => {
         })
         .then(data => {
             console.log("Registration successful:", data);
+            errorBox.textContent = "Registration successful! Now you can login.";
+            errorBox.style.display = "block";
+            errorBox.style.backgroundColor = "#4CAF50";
+
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+
+            setTimeout(() => {
+                errorBox.style.display = "none";
+            }, 1000);
+
+            
         })
         .catch(error => {
             console.error("Registration failed:", error);
@@ -75,6 +92,7 @@ loginForm.addEventListener('submit', (e) => {
         password: formData.get("loginPassword")
     };
 
+    // Запрос отправки данных на сервер
     const request = fetch('/login', {
         method: 'POST',
         headers: {
@@ -91,7 +109,9 @@ loginForm.addEventListener('submit', (e) => {
             return response.json();
         })
         .then(data => {
-            const errorBox = document.getElementById("errorBox");
+            localStorage.setItem('username', userData.username); // Сохраняем имя пользователя в localStorage (типо CurrentUser)
+
+            console.log("Login successful:", data);
             errorBox.textContent = "Login successful!";
             errorBox.style.display = "block";
             errorBox.style.backgroundColor = "#4CAF50";
@@ -101,13 +121,11 @@ loginForm.addEventListener('submit', (e) => {
                 errorBox.style.display = "none";
             }, 1000);
 
-            console.log("Login successful:", data);
             setTimeout(() => {
-                window.location.href = "location.html";
+                window.location.href = "location/location.html"; // Перенаправляем на страницу location.html
             }, 600);
         })
         .catch(error => {
-            const errorBox = document.getElementById("errorBox");
             errorBox.textContent = "Login failed.";
             errorBox.style.display = "block";
             errorBox.style.backgroundColor = "#fa4646";

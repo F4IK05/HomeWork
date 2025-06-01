@@ -5,20 +5,25 @@ const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
+// Хостинг статических файлов и парсинг JSON
 app.use(express.static('public'));
 app.use(express.json());
 
+// Инициализация массива данных пользователей
 let data = [];
 
 try {
+    // Чтение данных из файла users.json
     const fileContent = fs.readFileSync('users.json', 'utf8');
     if (fileContent) {
+        // Парсинг JSON данных
         data = JSON.parse(fileContent);
     }
 } catch (error) {
     console.error(error);
 }
 
+// Функция для сохранения данных в файл users.json
 const saveData = () => {
     const jsonData = JSON.stringify(data, null, 2);
     fs.writeFile('users.json', jsonData, (error) => {
@@ -29,6 +34,7 @@ const saveData = () => {
     });
 }
 
+// Обработка запросов на регистрацию и вход
 app.post('/register', (request, response) => {
     const { username, email, password } = request.body;
 
@@ -43,7 +49,8 @@ app.post('/register', (request, response) => {
         const newUser = {
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            location: null
         }
 
         data.push(newUser);
@@ -78,6 +85,20 @@ app.post('/login', (request, response) => {
             message: 'Invalid password'
         });
     }
+});
+
+app.post('/location', (request, response) => {
+    const { username, lat, lng } = request.body;
+
+    const user = data.find(u => u.username === username);
+
+    user.location = { lat, lng };
+    saveData();
+    console.log(`Location for user ${username} updated successfully.`);
+
+    return response.status(200).json({
+        message: 'Location updated successfully'
+    });
 });
 
 app.listen(port, () => {

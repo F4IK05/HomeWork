@@ -1,105 +1,95 @@
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background: #333446;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-
-    #errorBox {
-        background-color: #fa4646;
-        display: none;
-        color: #fff;
-        width: fit-content;
-        height: fit-content;
-        position: absolute;
-        bottom: 20px;
-        padding: 10px;
-        border-radius: 5px;
-        
-    }
-
-    .container {
-        background: #fff;
-        padding: 30px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        width: 300px;
-    }
-    .switcher {
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 20px;
-    }
-    .switcher button {
-        background: none;
-        border: none;
-        border-bottom: 2px solid transparent;
-        font-size: 16px;
-        cursor: pointer;
-        padding: 10px;
-    }
-
-    .switcher button:hover {
-        border-bottom: 2px solid #000;
-    }
-
-    .switcher button.active {
-        border-bottom: 2px solid #000;
-        font-weight: bold;
-    }
-    form {
-        position: relative;
-        display: none;
-        flex-direction: column;
-    }
-    form.active {
-        display: flex;
-    }
-
-    h1 {
-        text-align: center;
-        margin: 15px 0 -10px 0;
-    }
-
-    p {
-        text-align: center;
-        font-size: 13px;
-        margin-bottom: 20px;
-    }
-
-    input {
-        border-radius: 50px;
-        border: 1px solid #000;
-        margin-bottom: 10px;
-        padding: 10px 15px;
-        font-size: 14px;
-        margin-bottom: 10px;
-        outline: none;
-    }
-
-    .openPass {
-        position: absolute;
-        right: 16px;
-        bottom: 56px;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    button.submit-btn {
-        background: black;
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 50px;
-        border: 1px solid #000;
-        transition: all .2s ease;
-    }
-
-    button.submit-btn:hover {
-        background: white;
-        color: #000;
-    }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #333446;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+#errorBox {
+    background-color: #fa4646;
+    display: none;
+    color: #fff;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    
+}
+.container {
+    background: #fff;
+    padding: 30px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    width: 300px;
+}
+.switcher {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.switcher button {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+}
+.switcher button:hover {
+    border-bottom: 2px solid #000;
+}
+.switcher button.active {
+    border-bottom: 2px solid #000;
+    font-weight: bold;
+}
+form {
+    position: relative;
+    display: none;
+    flex-direction: column;
+}
+form.active {
+    display: flex;
+}
+h1 {
+    text-align: center;
+    margin: 15px 0 -10px 0;
+}
+p {
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+input {
+    border-radius: 50px;
+    border: 1px solid #000;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    outline: none;
+}
+.openPass {
+    position: absolute;
+    right: 16px;
+    bottom: 56px;
+    cursor: pointer;
+    user-select: none;
+}
+button.submit-btn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50px;
+    border: 1px solid #000;
+    transition: all .2s ease;
+}
+button.submit-btn:hover {
+    background: white;
+    color: #000;
+}
