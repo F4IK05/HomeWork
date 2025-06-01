@@ -2,26 +2,28 @@
   {
     "username": "Faik",
     "email": "faik.hasanov05@gmail.com",
-    "password": "$2b$10$YpvR4MpVEkuvmqv0bLre4.s2DV/GFKROWsXJXYexblu7HTs9VQ1Au"
+    "password": "$2b$10$NcB6xXndBwHfPkt8gDk6euT0bpVXmZfuS4v6R4ICq/MAOA41QTMKS",
+    "location": {
+      "lat": 40.379141985223654,
+      "lng": 49.83523154785467
+    }
   },
   {
-    "username": "riad",
+    "username": "Riad",
     "email": "faik.hasanov05@gmail.com",
-    "password": "$2b$10$T8VNrukj056POOqikxQdWOCalK5wa6ZJj7bfPQnwzjIY0IvvzoBVy"
+    "password": "$2b$10$jbe62HJdQsQ.IeKM3cyuMuNrtav9Pd/tbLzf/jl0PXAKqzaWCR3uS",
+    "location": {
+      "lat": 40.408427471732715,
+      "lng": 49.88357149218751
+    }
   },
   {
-    "username": "Ramazan",
+    "username": "Samir",
     "email": "faik.hasanov05@gmail.com",
-    "password": "$2b$10$e8VpdHyGBDvhE0R/wjiEA.UgklhL.x92R7Dtsd7w7RJbNvK5sByhi"
-  },
-  {
-    "username": "Ayaz",
-    "email": "faik.hasanov05@gmail.com",
-    "password": "$2b$10$FcUQIlzrJpxmuYVHtJX.1.Y9GxItGYGlnniCy0NZqr1b3OAha8XMe"
-  },
-  {
-    "username": "RIAD",
-    "email": "faik.hasanov05@gmail.com",
-    "password": "$2b$10$cPb3jGeKxF5x4ishwGrwzuXm7CTlKv52VpQj1LF8j/.wLI0E3oKxO"
+    "password": "$2b$10$BhzkEBq8o.toHwggB/29murTfAHCGOtLMaoHzDvTedqTmmpEI1vnq",
+    "location": {
+      "lat": 49.54658663551381,
+      "lng": -97.34017360718566
+    }
   }
 ]

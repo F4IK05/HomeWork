@@ -1,0 +1,241 @@
+@keyframes slide {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(226, 226, 226);
+}
+
+.nav-list {
+    z-index: 2;
+    margin: 0;
+    padding: 15px 10px;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.nav-list li a {
+    text-decoration: none;
+    color: gray;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.nav-list li a:hover {
+    color: black;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-left li a {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.nav-right li {
+    margin: 0 2px;
+}
+
+.nav-right li a {
+    border: 1px solid white;
+    font-size: 14px;
+}
+
+.nav-right li:last-child a {
+    background-color: rgb(255, 230, 0);
+}
+
+.nav-left, .nav-center, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-left {
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.nav-center {
+    flex: 2;
+    justify-content: center;
+}
+
+.nav-right {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.main-content {
+    margin-top: 60px;
+    z-index: 1;
+}
+
+.main-content .carousel-photos .carousel-item {
+    display: none;
+    animation: 0.3s slide ease-in-out;
+}
+
+.main-content .carousel-photos .carousel-item.active {
+    display: block;
+    
+}
+
+.carousel-photos {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.carousel-photos .carousel-item img {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-photos .carousel-buttons {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    padding: 0 20px;
+}
+
+.carousel-buttons button {
+    background: none;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    color: white;
+}
+
+.search-bar {
+    margin: 20px 0;
+    padding: 30px 0;
+    background-color: rgb(37, 37, 37);
+}
+
+.search-bar form {
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar input {
+    width: 50%;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #ccc;
+    border-radius: 20px 0 0 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-bar button {
+    background-color: rgb(255, 230, 0);
+    border: none;
+    border-radius: 0 20px 20px 0;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.search-bar button img {
+    width: 15px;
+    height: 15px;    
+}
+
+.main-content .carousel-text .carousel-caption {
+    display: none;
+    animation: 0.3s slide ease-in-out;
+}
+
+.main-content .carousel-text .carousel-caption.active {
+    display: block;
+}
+
+.carousel-text {
+    margin: 50px 0;
+    text-align: center;
+    color: black;
+}
+
+.carousel-text button {
+    background-color: transparent;
+    border: 1px solid black;
+    padding: 10px 30px;
+    border-radius: 20px;
+    color: rgb(208, 142, 20);
+    cursor: pointer;
+}
+
+.carousel-text button:hover {
+    background-color: rgb(255, 197, 90);
+    border: 1px solid transparent;
+    color: black;
+    transition: all 0.2s ease-in-out;
+}
+
+.carousel-dots .dot {
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 20px 3px 0;
+    cursor: pointer;
+}
+
+.carousel-dots .dot.active {
+    background-color: rgb(67, 67, 67);
+}
+
+.footer {
+    background-color: rgb(37, 37, 37);
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.footer li, .footer li a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+.footer ul li {
+    margin: 3px 0;
+}
+
+.footer ul li:first-child {
+    margin-bottom: 20px;
+}
+
+.footer ul li:not(:first-child) {
+    font-size: 12px;
+}
+
+.footer ul li a:hover {
+    color: gray;
+}
+
