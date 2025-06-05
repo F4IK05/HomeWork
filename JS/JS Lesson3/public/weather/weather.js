@@ -91,24 +91,27 @@ function renderPage(page) {
     `;
 }
 
-// Функция для создания кнопок навигации по страницам
+// Функция для создания кнопок навигации по страницам(пагинация)
 function renderButtons() {
     const container = document.getElementById('pageBtns');
 
     const totalPages = Math.ceil(allCities.length / citiesPerPage);
 
-    container.innerHTML = '';
+    container.innerHTML = ''; // Очистка контейнера(потому что при каждом вызове функции мы будем перерисовывать кнопки, а они добавляются в конец к существующим кнопкам)
 
+    // Создание кнопок для каждой страницы
     for(let i = 1; i <= totalPages; i++) {
-        const button = document.createElement('button');
+        const button = document.createElement('button'); 
         button.className = 'pageBtn';
        
         button.textContent = i;
 
+        // Если это текущая страница, то кнопка будет неактивной
         if (i == currentPage) {
             button.disabled = true;
         }
         
+        // Добавление обработчика события для кнопки
         button.addEventListener('click', function() {
             currentPage = i;
             renderPage(currentPage);

@@ -93,6 +93,7 @@ app.post('/login', (request, response) => {
     }
 });
 
+// Обработка запросов на обновление местоположения пользователя(из location.js)
 app.post('/location', (request, response) => {
     const { username, lat, lng } = request.body;
 
