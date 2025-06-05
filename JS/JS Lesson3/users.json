@@ -4,8 +4,8 @@
     "email": "faik.hasanov05@gmail.com",
     "password": "$2b$10$NcB6xXndBwHfPkt8gDk6euT0bpVXmZfuS4v6R4ICq/MAOA41QTMKS",
     "location": {
-      "lat": 40.379141985223654,
-      "lng": 49.83523154785467
+      "lat": 40.406970065346876,
+      "lng": 50.12694456466209
     }
   },
   {
@@ -13,8 +13,8 @@
     "email": "faik.hasanov05@gmail.com",
     "password": "$2b$10$jbe62HJdQsQ.IeKM3cyuMuNrtav9Pd/tbLzf/jl0PXAKqzaWCR3uS",
     "location": {
-      "lat": 40.408427471732715,
-      "lng": 49.88357149218751
+      "lat": 47.247932801485454,
+      "lng": 37.43290056823896
     }
   },
   {
@@ -24,6 +24,15 @@
     "location": {
       "lat": 49.54658663551381,
       "lng": -97.34017360718566
+    }
+  },
+  {
+    "username": "Ramazan",
+    "email": "faik.hasanov05@gmail.com",
+    "password": "$2b$10$GOJwNBGElNrypuQMGWQCMesNweLkgkZoIpJm23hx0OYoxCjVQwRDG",
+    "location": {
+      "lat": 42.04692585251459,
+      "lng": 48.26065269591773
     }
   }
 ]
