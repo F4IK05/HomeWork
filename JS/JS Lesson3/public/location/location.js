@@ -1,3 +1,4 @@
+// Инициализация карты 
 function initMap(){
     var options = {
         zoom: 8,
@@ -38,6 +39,7 @@ function initMap(){
         var lat = marker.getPosition().lat();
         var lng = marker.getPosition().lng();
 
+        // Создаем объект с данными пользователя
         const userData = {
             username: localStorage.getItem('username'), // Берем имя пользователя из localStorage
             lat: lat,
