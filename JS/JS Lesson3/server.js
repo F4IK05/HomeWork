@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const bcrypt = require('bcrypt');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -8,6 +9,11 @@ const port = 3000;
 // Хостинг статических файлов и парсинг JSON
 app.use(express.static('public'));
 app.use(express.json());
+
+// Установка пути к файлу users.json
+app.get('/users.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'users.json'));
+});
 
 // Инициализация массива данных пользователей
 let data = [];
