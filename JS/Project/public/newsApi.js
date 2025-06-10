@@ -17,8 +17,6 @@ async function fetchNews() {
     .catch(error => {
         console.error(error)
     });
-    
-
 }
 
 function renderNews(articles) {
@@ -29,10 +27,9 @@ function renderNews(articles) {
         card.className = 'news-card';
 
         card.innerHTML = `
-            <h2>${article.title}</h2>
-            ${article.urlToImage ? `<img src="${article.urlToImage}" alt="news image"/>` : ''}
+            <a href="${article.url}" target="_blank"><h2>${article.title}</h2></a>
+            <a href="${article.url}" target="_blank">${article.urlToImage ? `<img src="${article.urlToImage}" alt="news image"/>` : ''}</a>
             <p>${article.description || ''}</p>
-            <a href="${article.url}" target="_blank">More</a>
             <span>${article.publishedAt}</span>
         `;
 

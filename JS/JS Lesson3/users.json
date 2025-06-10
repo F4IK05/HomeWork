@@ -1,0 +1,20 @@
+[
+  {
+    "username": "Faik",
+    "email": "faik.hasanov05@gmail.com",
+    "password": "$2b$10$jBHL7uVqpB0sEu7aN4PJJ.rWbHooOlu/8g4A4EndjCwc2nFZKyl72",
+    "location": {
+      "lat": 40.384163246105885,
+      "lng": 49.85610567187501
+    }
+  },
+  {
+    "username": "hsakjsac",
+    "email": "faik.hasanov05@gmail.com",
+    "password": "$2b$10$R46mDKXlGlf05eWtSz/6R.5.NOF78gsCvAj6WSWefY9h.9d/R.rzy",
+    "location": {
+      "lat": 40.39253120379469,
+      "lng": 49.88906465625001
+    }
+  }
+]
