@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="mainstyle.css">
+    <script src="mainscript.js" defer></script>
+    <script src="newsApi.js" defer></script>
+</head>
+<body>
+    <div class="nav-bar">
+        <div class="nav-content">
+            <div class="search-field" id="searchField">
+                <form action="">
+                    <input type="text" id="searchInput">
+                </form>
+            </div>
+
+            <div class="nav-left-side">
+                <div class="logo">
+                    <img src="images/logo.png" alt="Logo" />
+                </div>
+                <div class="v-line"></div>
+                <div class="categories">
+                    <div class="active-cat">
+                        <a href="#" class="active">News</a>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <ul>
+                        <li><a href="#" class="active">News</a></li>
+                        <li><a href="#">Sport</a></li>
+                        <li><a href="#">Travel</a></li>
+                        <li><a href="#">Fashion</a></li>
+                        <li><a href="#">Food</a></li>
+                        <li><a href="#">Entertainment</a></li>
+                        <li><a href="#">More</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="nav-right-side">
+                <div class="search" id="searchBtn">
+                    <img src="images/search-icon.png" alt="search icon"/>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="h-line"></div>
+    <div class="h-line"></div>
+
+    <div class="main">
+        <div class="news-container"></div>
+    </div>
+</body>
+</html>
