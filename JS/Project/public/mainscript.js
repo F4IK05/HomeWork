@@ -5,9 +5,24 @@ const searchField = document.querySelector('#searchField');
 const searchBtn = document.querySelector('#searchBtn');
 const searchInput = document.querySelector('#searchInput');
 
+const activeCategory = document.querySelectorAll('.cat li a');
+
+activeCategory.forEach(category => {
+    category.addEventListener('click', () => {
+        // убираем у всех
+        activeCategory.forEach(cat => cat.classList.remove('active'));
+
+        category.classList.add('active');
+    });
+})
+
+
 // Переключение выпадающего списка(аддаптивность)
 toggle.addEventListener('click', () => {
     dropdown.classList.toggle('open');
+    
+    const currentTopic = document.querySelector('.active-cat a');
+
     dropdownArrow.style.transform = 'rotate(180deg)';
     if (!dropdown.classList.contains('open')) {
         dropdownArrow.style.transform = 'rotate(0deg)';

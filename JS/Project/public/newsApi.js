@@ -1,8 +1,18 @@
-function fetchMainNews() {
+document.querySelectorAll('[data-category]')
+    .forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const category = link.getAttribute('data-category');
+
+            fetchCategoryNews(category);
+        })
+    })
+
+function fetchCategoryNews(category) {
     const API_key = 'apiKey=adb1151f8f244e8db0d8577b7d0302fd';
-    const fromDate = '2025-05-11';
-    const query = 'news';
-    const url = `https://newsapi.org/v2/everything?q=${query}&from=${fromDate}&sortBy=popularity&${API_key}`;
+
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&${API_key}`;
 
     fetch(url)
     .then(response => {
@@ -13,9 +23,30 @@ function fetchMainNews() {
         return response.json();
     })
     .then(data => {
-        const articles = data.articles;
+        renderMainNews(data.articles);
+    })
+    .catch(error => {
+        console.error(error)
+    });
+}
 
-       renderMainNews(articles)
+function fetchMainNews() {
+    const API_key = 'apiKey=adb1151f8f244e8db0d8577b7d0302fd';
+
+    const query = 'news';
+    const url = `https://newsapi.org/v2/everything?q=${query}&sortBy=popularity&${API_key}`;
+
+    fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+
+        return response.json();
+    })
+    .then(data => {
+
+       renderMainNews(data.articles)
 
     })
     .catch(error => {
@@ -51,6 +82,8 @@ function fetchLatestNews() {
 function renderMainNews(articles) {
     const container = document.querySelector('.main-news-container');
 
+    container.innerHTML = '';
+
     articles.forEach(article => {
         const card = document.createElement('div');
         card.className = 'news-card';
@@ -77,7 +110,7 @@ function renderOtherNews(articles) {
         li.innerHTML = `
             <a href="${article.url}" target="_blank">
                 <h3>${article.title}</h3>
-                <p>${article.description}</p>
+                <p>${article.description || ''}</p>
             </a>
         `;
 

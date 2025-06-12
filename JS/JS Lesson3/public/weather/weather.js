@@ -3,7 +3,7 @@ const displayUsername = document.getElementById('usernameDisplay');
 
 const signOutButton = document.getElementById('signOutButton');
 
-const API_KEY = '262f19eb69508d97d546c11d80405e47'
+const API_KEY = ''; // API-key
 
 let allCities = []; // Массив для хранения всех городов
 let currentPage = 1; // Текущая страница

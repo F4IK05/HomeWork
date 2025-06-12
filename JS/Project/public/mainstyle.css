@@ -46,7 +46,7 @@ body {
 .nav-bar .nav-content .nav-left-side .categories ul li a, .active-cat a {
     text-decoration: none;
     text-transform: uppercase;
-    color: #000;
+    color: grey;
     font-size: 12px;
 }
 
@@ -120,8 +120,8 @@ body {
     
 }
 
-.nav-bar .nav-content .nav-left-side .categories ul li :not(.active) {
-    color: grey;
+.nav-bar .nav-content .nav-left-side .categories ul li .active {
+    color: #000;
 }
 
 .search-field {
