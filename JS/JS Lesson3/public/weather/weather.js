@@ -113,6 +113,7 @@ function renderButtons() {
         
         // Добавление обработчика события для кнопки
         button.addEventListener('click', function() {
+            button.classList.add('active')
             currentPage = i;
             renderPage(currentPage);
             renderButtons();

@@ -43,14 +43,14 @@ body {
     gap: 20px;
 }
 
-.nav-bar .nav-content .nav-left-side .categories ul li a, .active-cat a {
+.nav-bar .nav-content .nav-left-side .categories ul li a, .mobile-categories a {
     text-decoration: none;
     text-transform: uppercase;
     color: grey;
     font-size: 12px;
 }
 
-.active-cat {
+.mobile-categories {
     display: none;
     margin-left: 20px;
     cursor: pointer;
@@ -74,11 +74,11 @@ body {
         transform: translateX(-50%);
     }
 
-    .nav-bar .nav-content .nav-left-side .categories .active-cat {
+    .nav-bar .nav-content .nav-left-side .categories .mobile-categories {
         margin-left: 0;
     }
 
-    .nav-bar .nav-content .nav-left-side .categories .active-cat a {
+    .nav-bar .nav-content .nav-left-side .categories .mobile-categories a {
         font-size: 14px;
     }
 
@@ -96,7 +96,7 @@ body {
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .active-cat {
+    .mobile-categories {
         display: flex;
         align-items: center;
     }
@@ -117,6 +117,14 @@ body {
         font-size: 17px;
     }
 
+    .footer .foot-content {
+        flex-direction:column;
+        flex-wrap: wrap;
+    }
+
+    .footer .foot-content .logo img {
+        width: 150px;
+    }
     
 }
 
@@ -168,8 +176,33 @@ body {
     flex: 3;
 }
 
+
 .sidebar {
     flex: 1;
+}
+
+.pag-btns {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.pag-btn {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid gray;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pag-btn:disabled {
+    background-color: #000;
+    color: white;
 }
 
 .news-card {
@@ -225,20 +258,22 @@ body {
     align-items: center;
 }
 
-.foot-content .logo {
-    flex: 1;
-}
 
 .foot-content .topics {
-    flex: 2;
     justify-items: center;
 }
 
-.foot-content .contacts {
-    flex: 1;
-    justify-items: flex-end;
-}
 
 .foot-content .logo img {
     width: 200px;
 }
+
+.foot-content .topics ul {
+    list-style: none;
+}
+
+.topics ul li a, .contacts ul li a {
+    text-decoration: none;
+    color: black;
+}
+
