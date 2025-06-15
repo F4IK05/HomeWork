@@ -1,30 +1,41 @@
-const dropdown = document.querySelector('.categories');
-const toggle = document.querySelector('.active-cat');
+const categories = document.querySelector('.categories');
+const mobileCategories = document.querySelector('.mobile-categories');
 const dropdownArrow = document.querySelector('.dropdown-arrow');
+
 const searchField = document.querySelector('#searchField');
 const searchBtn = document.querySelector('#searchBtn');
 const searchInput = document.querySelector('#searchInput');
 
 const activeCategory = document.querySelectorAll('.cat li a');
+const currentTopic = document.querySelector('.mobile-categories a');
+
 
 activeCategory.forEach(category => {
-    category.addEventListener('click', () => {
+    category.addEventListener('click', (event) => {
+        event.preventDefault();
+
         // убираем у всех
         activeCategory.forEach(cat => cat.classList.remove('active'));
 
+        // добавляем к выбранному
         category.classList.add('active');
+
+        // меняем текст на выбранную категорию
+        currentTopic.textContent = category.textContent;
+
+        // закрываем dropdown после выбора 
+        categories.classList.remove('open');
+        dropdownArrow.style.transform = 'rotate(0deg)';
     });
 })
 
 
 // Переключение выпадающего списка(аддаптивность)
-toggle.addEventListener('click', () => {
-    dropdown.classList.toggle('open');
+mobileCategories.addEventListener('click', () => {
+    categories.classList.toggle('open');
     
-    const currentTopic = document.querySelector('.active-cat a');
-
     dropdownArrow.style.transform = 'rotate(180deg)';
-    if (!dropdown.classList.contains('open')) {
+    if (!categories.classList.contains('open')) {
         dropdownArrow.style.transform = 'rotate(0deg)';
     }
 });
@@ -32,8 +43,8 @@ toggle.addEventListener('click', () => {
 // Закрытие выпадающего списка и поля поиска при клике вне их
 window.addEventListener('click', (event) => {
     const target = event.target;
-    if (!dropdown.contains(target)) {
-        dropdown.classList.remove('open');
+    if (!categories.contains(target)) {
+        categories.classList.remove('open');
         dropdownArrow.style.transform = 'rotate(0deg)';
     }
     if (!searchField.contains(target) && !searchBtn.contains(target)) {
