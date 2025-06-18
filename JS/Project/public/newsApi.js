@@ -17,8 +17,41 @@ document.querySelectorAll('[data-category]').forEach(link => {
     })
 });
 
+// Функция для отображения лоадера
+function showLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.classList.remove('hidden');
+    }
+
+    const main = document.querySelector('.main');
+    if (main) {
+        main.classList.add('loading-background');
+    }
+
+    document.querySelector('.main-news-container').style.display = 'none';
+    document.querySelector('.sidebar').style.display = 'none';
+}
+
+function hideLoader() {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.classList.add('hidden');
+    }
+
+    const main = document.querySelector('.main');
+    if (main) {
+        main.classList.remove('loading-background');
+    }
+
+    document.querySelector('.main-news-container').style.display = 'block';
+    document.querySelector('.sidebar').style.display = 'block';
+}
+
 // Функция для получения новостей по категориям
 function fetchCategoryNews(category) {
+    showLoader(); // Показываю лоадер при загрузке данных
+
     const API_key = 'apiKey=adb1151f8f244e8db0d8577b7d0302fd';
 
     // По этой ссылке я получаю свежие(top-headlines) новости по определенной категории
@@ -38,11 +71,16 @@ function fetchCategoryNews(category) {
     })
     .catch(error => {
         console.error(error)
+    })
+    .finally(() => {
+        hideLoader(); // Скрываю лоадер после загрузки данных
     });
 }
 
 // Функция для получения информации которую мы видим при заходе
 function fetchMainNews() {
+    showLoader();
+
     const API_key = 'apiKey=adb1151f8f244e8db0d8577b7d0302fd';
 
     const query = 'news';
@@ -65,6 +103,9 @@ function fetchMainNews() {
     })
     .catch(error => {
         console.error(error)
+    })
+    .finally(() => {
+        hideLoader();
     });
 }
 

@@ -11,12 +11,6 @@
 <body>
     <div class="nav-bar">
         <div class="nav-content">
-            <div class="search-field" id="searchField">
-                <form action="">
-                    <input type="text" id="searchInput">
-                </form>
-            </div>
-
             <div class="nav-left-side">
                 <div class="logo">
                     <a href=""><img src="images/logo.png" alt="Logo"/></a>
@@ -39,18 +33,14 @@
                 </div>
             </div>
 
-            <div class="nav-right-side">
-                <div class="search" id="searchBtn">
-                    <img src="images/search-icon.png" alt="search icon"/>
-                </div>
-            </div>
-
         </div>
     </div>
     <div class="h-line"></div>
     <div class="h-line"></div>
-
     <div class="main">
+        <div id="loader" class="loader hidden">
+            <div class="spinner"></div>
+        </div>
         <div class="main-news-container"></div>
         <div class="sidebar">
             <h2>Latest News</h2>
