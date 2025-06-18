@@ -132,29 +132,6 @@ body {
     color: #000;
 }
 
-.search-field {
-    position: absolute;
-    left: 0;
-    top: -7px;
-    width: 90%;
-    display: none;
-    z-index: 10;
-}
-
-.search-field form {
-    width: 98%;
-}
-
-.search-field input {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-}
-
-.search-field.active {
-    display: block;
-}
-
 .nav-bar .nav-content .nav-right-side img {
     width: 20px;
     cursor: pointer;
@@ -168,8 +145,10 @@ body {
 }
 
 .main {
+    width: 100%;
     display: flex;
     gap: 20px;
+    min-height: 100vh; /* для loader-а */
 }
 
 .main-news-container {
@@ -277,3 +256,37 @@ body {
     color: black;
 }
 
+/* ========================================= */
+
+.loader {
+    position: fixed; /* зафиксирован по центру */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* центрирование */
+}
+.spinner {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 6px solid black;
+    
+    border-top: 6px solid rgb(188, 188, 188);
+    animation: spin 1s linear infinite;
+}
+
+.loading-background {
+    background-color: white; /* Цвет фона при загрузке */
+}
+
+@keyframes spin {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
+}
+
+.hidden {
+    display: none;
+}
