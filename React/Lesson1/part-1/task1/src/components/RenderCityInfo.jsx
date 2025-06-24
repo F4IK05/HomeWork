@@ -7,6 +7,12 @@ function RenderCityInfo(props) {
             <p>Страна: {props.country}</p>
             <p>Город: {props.city}</p>
             <p>Год основания: {props.foundYear}</p>
+
+            <div className='Images'>
+                {props.images.map((src, index) => 
+                    <img key={index} src={src} alt=''/>
+                )}
+            </div>
         </div>
     );
 }
