@@ -1,0 +1,19 @@
+.Block {
+  text-align: center;
+}
+
+.Block img {
+  width: 300px;
+}
+
+.Reviews {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 90px;
+}
+
+.Reviews p {
+  width: 300px;
+  font-style: italic;
+}
