@@ -1,0 +1,31 @@
+body {
+  display: flex;
+  justify-content: center;
+}
+
+.PersonalCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #f4f4f8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: #333;
+    text-align: center;
+}
+
+.PersonalCard img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 15px 0;
+}
+
+.AdditionalInfo {
+    margin-top: 20px;
+    background-color: #e9ecf1;
+    padding: 15px;
+    border-radius: 10px;
+}

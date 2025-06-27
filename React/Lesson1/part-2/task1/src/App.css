@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.Block {
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+}
+
+.AboutMovie {
+  padding: 30px;
+  width: 70%;
+}
+
+#MovieName {
+  padding-bottom: 20px;
+}
+
+.Description {
+  padding-top: 20px;
+  width: 30%;
+}
