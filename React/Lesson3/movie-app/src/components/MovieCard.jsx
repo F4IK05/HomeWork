@@ -35,7 +35,14 @@ function MovieCard({ movies }) {
                         </div>
                     </div>
                 </div>
-            ) : <></>}
+            ) : <>
+
+                <div className='flex flex-col items-center justify-center text-center h-[90vh] text-2xl'>
+                    <img className='w-70' src="https://static.thenounproject.com/png/1400397-200.png" alt="" />
+                    No info
+                </div>
+
+            </>}
         </div>
     );
 }

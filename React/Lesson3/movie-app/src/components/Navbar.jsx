@@ -3,7 +3,7 @@ import SearchForm from './SearchForm';
 
 const Navbar = ({setValue}) => {
     return (
-        <div className="w-full bg-white text-black ">
+        <div className="w-full bg-white text-black">
             <div className="px-10">
                 <div className="flex justify-between h-16 items-center">
                     <div className="text-xl font-bold">
