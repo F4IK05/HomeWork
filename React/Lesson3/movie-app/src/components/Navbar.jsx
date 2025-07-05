@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchForm from './SearchForm';
+import SignButton from './SignButton';
 
 const Navbar = ({setValue}) => {
     return (
@@ -10,9 +11,9 @@ const Navbar = ({setValue}) => {
                         <a href="/">SearchMovie</a>
                     </div>
 
-                    <div>
+                    <div className='flex'>
                         <SearchForm setValue={setValue}/>
-                        
+                        <SignButton />
                     </div>
                 </div>
             </div>
