@@ -2,7 +2,7 @@ import React from 'react';
 
 function MovieCard({ movies }) {
     return (
-        <div className='px-10 flex flex-row flex-wrap gap-5 justify-center'>
+        <div className='pt-15 px-10 flex flex-row flex-wrap gap-5 justify-center'>
             {movies.results ? movies.results.map(m =>
                 <div key={m.id} className="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-72">
                     <div className="flex justify-center relative m-2.5 overflow-hidden text-white rounded-md h-[400px]">
