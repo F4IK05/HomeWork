@@ -14,10 +14,10 @@ function SignButton() {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
-            return (() => setSignPage('signin'));
+            setSignPage('signin');
         }
 
-    })
+    }, [isOpen])
 
 
     return (
