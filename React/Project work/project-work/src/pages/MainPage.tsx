@@ -6,7 +6,7 @@ import { Disc3 ,ListMusic, MicVocal, Music, Radio } from "lucide-react";
 
 const MainPage: React.FC = () => {
     return (
-        <div className="flex bg-[#171719]">
+        <div className="flex bg-[#171719] ">
             <LeftSideBar>
                 <LeftSideBarItem sectionName="My collection" icon={<Radio/>} text="Mixes and Ratio" active/>
                 <LeftSideBarItem icon={<ListMusic/>} text="Playlists"/>

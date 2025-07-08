@@ -5,7 +5,7 @@ const LeftSideBarItem: React.FC = ({ sectionName, icon, text, active }) => {
     const {isOpen} = useContext(SideBarContext)
     return (
         <>
-            {sectionName && (<h4 className={`text-[#63676e] uppercase overflow-hidden transition-all ${isOpen ? 'w-32' : 'hidden'}`}>{sectionName}</h4>)}
+            {sectionName && (<h4 className={`text-[#63676e] uppercase overflow-hidden transition-all ${isOpen ? 'w-32' : 'w-0 h-0'}`}>{sectionName}</h4>)}
             <li className={`
             flex 
             items-center 
@@ -18,7 +18,7 @@ const LeftSideBarItem: React.FC = ({ sectionName, icon, text, active }) => {
                 }`
             }>
                 {icon}
-                <span className={`overflow-hidden transition-all ${isOpen ? 'w-32 ml-3' : 'hidden'}`}>{text}</span>
+                <span className={`overflow-hidden transition-all ${isOpen ? 'w-32 ml-3' : 'w-0 h-0'}`}>{text}</span>
             </li>
 
         </>
