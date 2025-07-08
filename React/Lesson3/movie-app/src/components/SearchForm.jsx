@@ -11,7 +11,7 @@ function SearchForm({setValue}) {
         const res = await fetchMovies(searchInput.current.value);
 
         setValue(res);
-    }
+        }
 
     const handleChange = (e) => {
         setInputValue(e.target.value)
