@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { SideBarContext } from "@/contexts/SideBarContext";
 // import { UserIcon } from '@heroicons/react/24/solid';
 
-const LeftSideBar: React.FC<{ children: React.ReactNode; isOpen: boolean; setIsOpen }> = ({ children, isOpen, setIsOpen }) => {
+const LeftSideBar: React.FC<{ children: React.ReactNode; isOpen: boolean; setIsOpen: (val: boolean) => void }> = ({ children, isOpen, setIsOpen }) => {
     const sideBarRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -59,7 +59,7 @@ const LeftSideBar: React.FC<{ children: React.ReactNode; isOpen: boolean; setIsO
                 <div className="h-full flex flex-col bg-[#212124]">
                     <div className={`border-b border-[#63676e] p-4 flex ${isOpen ? 'justify-between' : 'justify-center'} items-center`}>
                         <h1 className={`text-xl font-semibold transition-all overflow-hidden whitespace-nowrap ${isOpen ? '' : 'opacity-0'}`}>Music App</h1>
-                        <button onClick={() => setIsOpen((val: boolean) => !val)} className="cursor-pointer">
+                        <button onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                             <ChevronFirst className={`transition-all duration-300 rounded-lg text-white w-10 h-10 bg-[#63676e] p-1.5 ${isOpen ? '' : 'rotate-180'}`} />
                         </button>
                     </div>

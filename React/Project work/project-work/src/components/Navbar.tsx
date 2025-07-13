@@ -1,7 +1,7 @@
 import { Bell, ChevronLast, ChevronRight, Menu, Search, Settings, User } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
-const NavBar: React.FC<{ isOpen: boolean; setIsOpen }> = ({ isOpen, setIsOpen }) => {
+const NavBar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => void }> = ({ isOpen, setIsOpen }) => {
     const [isMobile, setIsMobile] = useState(false);
     const [isInputOpen, setIsInputOpen] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,7 +78,7 @@ const NavBar: React.FC<{ isOpen: boolean; setIsOpen }> = ({ isOpen, setIsOpen })
 
                 <div ref={searchRef} className="relative w-full flex items-center max-w-lg ">
                     <input type="text" placeholder="Search..." ref={inputRef} className={`bg-[#171719] p-2 px-5 pl-10 rounded-full transition-all ${isInputOpen ? 'w-full opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`} />
-                    <button onClick={() => { if (isMobile) setIsInputOpen(val => !val) }} className={`absolute left-1 rounded-full ${isMobile && 'cursor-pointer' } ${isMobile && !isInputOpen ? 'p-4' : ''} ${isInputOpen ? 'bg-[#1e1e22] p-2' : 'bg-[#171719]'}`}>
+                    <button onClick={() => isMobile && setIsInputOpen(val => !val) } className={`absolute left-1 rounded-full ${isMobile && 'cursor-pointer' } ${isMobile && !isInputOpen ? 'p-4' : ''} ${isInputOpen ? 'bg-[#1e1e22] p-2' : 'bg-[#171719]'}`}>
                         <Search className=" w-4 h-4" />
                     </button>
                 </div>
