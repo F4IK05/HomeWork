@@ -33,6 +33,8 @@ const MainPage: React.FC = () => {
                     <LeftSideBarItem icon={<Disc3 />} text="Albums" />
                     <LeftSideBarItem icon={<Music />} text="Tracks" />
                     <LeftSideBarItem icon={<MicVocal />} text="Artists" />
+
+                    
                 </LeftSideBar>
 
                 <div className="flex flex-col flex-1">

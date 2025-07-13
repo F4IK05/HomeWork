@@ -65,7 +65,7 @@ const LeftSideBar: React.FC<{ children: React.ReactNode; isOpen: boolean; setIsO
                     </div>
 
                     <SideBarContext.Provider value={{ isOpen }}>
-                        <ul className="flex-1 m-2 overflow-y-auto sidebar-scrollbar">
+                        <ul className={`flex-1 m-2 overflow-x-hidden ${isOpen ? 'overflow-y-auto' : 'overflow-y-hidden'} sidebar-scrollbar`}>
                             {children}
                         </ul>
                     </SideBarContext.Provider>
