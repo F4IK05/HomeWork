@@ -1,7 +1,13 @@
 import { Bell, ChevronLast, ChevronRight, Menu, Search, Settings, User } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-const NavBar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => void }> = ({ isOpen, setIsOpen }) => {
+interface NavBarProps {
+    isOpen: boolean;
+    setIsOpen: (val: boolean) => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
     const [isMobile, setIsMobile] = useState(false);
     const [isInputOpen, setIsInputOpen] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,7 +84,7 @@ const NavBar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => void }> =
 
                 <div ref={searchRef} className="relative w-full flex items-center max-w-lg ">
                     <input type="text" placeholder="Search..." ref={inputRef} className={`bg-[#171719] p-2 px-5 pl-10 rounded-full transition-all ${isInputOpen ? 'w-full opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`} />
-                    <button onClick={() => isMobile && setIsInputOpen(val => !val) } className={`absolute left-1 rounded-full ${isMobile && 'cursor-pointer' } ${isMobile && !isInputOpen ? 'p-4' : ''} ${isInputOpen ? 'bg-[#1e1e22] p-2' : 'bg-[#171719]'}`}>
+                    <button onClick={() => isMobile && setIsInputOpen(val => !val)} className={`absolute left-1 rounded-full ${isMobile && 'cursor-pointer'} ${isMobile && !isInputOpen ? 'p-4' : ''} ${isInputOpen ? 'bg-[#1e1e22] p-2' : 'bg-[#171719]'}`}>
                         <Search className=" w-4 h-4" />
                     </button>
                 </div>
@@ -86,16 +92,39 @@ const NavBar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => void }> =
                 {!isMobile ? (
 
                     <div className="flex items-center gap-1">
-                        <button className="group p-2 rounded hover:bg-[#2c2c2e] transition-all">
-                            <Settings className="cursor-pointer duration-300 ease-in group-hover:rotate-180 w-6 h-6 " />
-                        </button>
-                        <button className="relative group p-2 rounded hover:bg-[#2c2c2e] transition-all">
-                            <Bell className="w-6 h-6" />
-                            <span className="absolute top-2 right-2 flex items-center justify-center bg-red-600 w-2 h-2 rounded-full group-hover:animate-ping"></span>
-                        </button>
-                        <button className="bg-[#63676e] rounded-full p-2 cursor-pointer">
-                            <User className="w-6 h-6" />
-                        </button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button className="group p-2 rounded hover:bg-[#2c2c2e] transition-all">
+                                    <Settings className="cursor-pointer duration-300 ease-in group-hover:rotate-180 w-6 h-6 " />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="bg-[#212124]">
+                                <p>Settings</p>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button className="relative group p-2 rounded hover:bg-[#2c2c2e] transition-all">
+                                    <Bell className="w-6 h-6" />
+                                    <span className="absolute top-2 right-2 flex items-center justify-center bg-red-600 w-2 h-2 rounded-full group-hover:animate-ping"></span>
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="bg-[#212124]">
+                                <p>Notifications</p>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <button className="bg-[#63676e] rounded-full p-2 cursor-pointer">
+                                    <User className="w-6 h-6" />
+                                </button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="bg-[#212124]">
+                                <p>Profile</p>
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
 
                 ) : (
@@ -110,23 +139,21 @@ const NavBar: React.FC<{ isOpen: boolean; setIsOpen: (val: boolean) => void }> =
                         <button className="w-full group p-2 rounded hover:bg-[#2c2c2e] transition-all flex justify-between items-center gap-2">
                             <Settings className="w-6 h-6 transition-all duration-300 ease-in group-hover:rotate-180" />
                             <span>Settings</span>
-                            <ChevronRight className="w-6 h-6"/>
+                            <ChevronRight className="w-6 h-6" />
                         </button>
                         <button className="w-full relative group p-2 rounded hover:bg-[#2c2c2e] transition-all flex justify-between items-center gap-2">
                             <Bell className="w-6 h-6" />
                             <span className="absolute top-2 left-5.5 bg-red-600 w-2 h-2 rounded-full group-hover:animate-ping"></span>
                             <span>Notifications</span>
-                            <ChevronRight className="w-6 h-6"/>
+                            <ChevronRight className="w-6 h-6" />
                         </button>
                         <button className="w-full p-2 rounded hover:bg-[#2c2c2e] flex justify-between items-center gap-2">
                             <User className="w-6 h-6" />
                             <span>Profile</span>
-                            <ChevronRight className="w-6 h-6 ml-"/>
+                            <ChevronRight className="w-6 h-6 ml-" />
                         </button>
                     </div>
                 )}
-
-
 
             </div>
         </>

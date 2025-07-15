@@ -1,25 +1,23 @@
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
 import type React from "react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface ItemsProps {
-    chldren: React.ReactNode;
+    children: React.ReactNode;
     hint: string;
+    side?: "top" | "right" | "bottom" | "left";
 }
 
-
-const MyTooltip:React.FC<ItemsProps> = ({children, hint}) => {
+const MyToolTip: React.FC<ItemsProps> = ({ children, hint, side }) => {
     return (
         <Tooltip>
             <TooltipTrigger asChild>
                 {children}
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent side={side} className="bg-[#212124]">
                 <p>{hint}</p>
             </TooltipContent>
         </Tooltip>
     )
-}
+};
+
+export default MyToolTip;
