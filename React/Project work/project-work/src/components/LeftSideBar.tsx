@@ -3,7 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { SideBarContext } from "@/contexts/SideBarContext";
 // import { UserIcon } from '@heroicons/react/24/solid';
 
-const LeftSideBar: React.FC<{ children: React.ReactNode; isOpen: boolean; setIsOpen: (val: boolean) => void }> = ({ children, isOpen, setIsOpen }) => {
+interface SideBarProps {
+    children: React.ReactNode;
+    isOpen: boolean;
+    setIsOpen: (val: boolean) => void;
+}
+
+const LeftSideBar: React.FC<SideBarProps> = ({ children, isOpen, setIsOpen }) => {
     const sideBarRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
 
