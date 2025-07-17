@@ -10,7 +10,8 @@ interface TooltipProps {
 }
 
 const LeftSideBarItem: React.FC<TooltipProps> = ({ sectionName, icon, text, active }) => {
-    const { isOpen } = useContext(SideBarContext)
+
+    const { isOpen } = useContext(SideBarContext);
 
     const content = (
         <li className={`

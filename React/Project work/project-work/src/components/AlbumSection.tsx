@@ -1,52 +1,30 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import MusicCard from "./MusicCard"; // Для desktop
-import MusicListItem from "./MusicListItem"; // Для mobile
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useRef, useState } from "react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import AlbumItem from "./AlbumItem";
 
-interface MusicCardData {
-    title: string;
-    subtitle: string;
-    imageUrl: string;
+interface AlbumItemData {
+    albumImgUrl: string;
+    albumName: string;
+    albumDesc?: string;
+    albumId?: number;
 }
 
-interface MusicSectionProps {
+interface AlbumSectionProps {
     sectionTitle?: string;
-    cards: MusicCardData[];
+    albums: AlbumItemData[];
 }
 
-// Функция для группировки карточек в массивы по n элементов
-function groupCardList(allMusic: [], musicCountPerPage: number) {
-    const grouped = [];
-    for (let i = 0; i < allMusic.length; i += musicCountPerPage) {
-        grouped.push(allMusic.slice(i, i + musicCountPerPage))
-    }
-
-    return grouped;
-}
-
-const MusicSection: React.FC<MusicSectionProps> = ({ sectionTitle, cards }) => {
-    const [isMobile, setIsMobile] = useState(false);
+const AlbumSection: React.FC<AlbumSectionProps> = ({ albums, sectionTitle }) => {
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setIsEnd] = useState(false);
 
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 481);
-        };
-
-        handleResize();
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
 
     return (
         <>
@@ -96,10 +74,10 @@ const MusicSection: React.FC<MusicSectionProps> = ({ sectionTitle, cards }) => {
                     }}
                     breakpoints={{
                         0: {
-                            slidesPerView: 1,
+                            slidesPerView: 2,
                         },
                         481: {
-                            slidesPerView: 4,
+                            slidesPerView: 3,
                             spaceBetween: 16,
                         },
                         768: {
@@ -116,30 +94,15 @@ const MusicSection: React.FC<MusicSectionProps> = ({ sectionTitle, cards }) => {
                         },
                     }}
                 >
-                    {isMobile ? (
-                        groupCardList(cards, 4).map((group, gIndex) => (
-                            <SwiperSlide key={gIndex}>
-                                <div className="bg-[#1e1e22] rounded-lg overflow-hidden px-2 py-2">
-                                    {group.map((card, index) => (
-                                        <MusicListItem key={index} {...card}/>
-                                    ))}
-                                </div>
-                            </SwiperSlide>
-                        ))
-                    ) : (
-                        cards.map((card, index) => (
-                            <SwiperSlide key={index}>
-                                <MusicCard {...card} />
-                            </SwiperSlide>
-                        ))
-                    )}
-
-
+                    {albums.map((album, index) => (
+                        <SwiperSlide key={index}>
+                            <AlbumItem {...album}/>
+                        </SwiperSlide>
+                    ))}
                 </Swiper>
-
             </div>
         </>
-    );
-};
+    )
+}
 
-export default MusicSection;
+export default AlbumSection

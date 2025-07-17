@@ -1,3 +1,7 @@
 import { createContext } from "react";
 
-export const SideBarContext = createContext(null);
+interface SideBarContextType {
+    isOpen: boolean;
+}
+
+export const SideBarContext = createContext<SideBarContextType | undefined>(undefined);

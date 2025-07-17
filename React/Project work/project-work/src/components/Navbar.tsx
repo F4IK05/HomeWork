@@ -1,5 +1,5 @@
 import { Bell, ChevronLast, ChevronRight, Menu, Search, Settings, User } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface NavBarProps {
@@ -11,43 +11,39 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
     const [isMobile, setIsMobile] = useState(false);
     const [isInputOpen, setIsInputOpen] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     const searchRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-
     const modalRef = useRef<HTMLButtonElement>(null);
 
+    const handleResize = useCallback(() => {
+        const mobileMode = window.innerWidth < 768;
+
+        if (isMobile !== mobileMode) {
+            setIsMobile(mobileMode);
+            setIsInputOpen(!mobileMode);
+            setIsModalOpen(false);
+        }
+    }, [isMobile]);
+
     useEffect(() => {
-        const handleResize = () => {
-            const mobileMode = window.innerWidth < 768;
-
-            if (isMobile !== mobileMode) {
-                setIsMobile(mobileMode);
-                setIsInputOpen(!mobileMode);
-                setIsModalOpen(false);
-            }
-        };
-
+        
         handleResize();
 
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize)
-    }, [isMobile]);
+    }, [handleResize]);
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
+
+            // Закрытие поля поиска при клике вне его
             if (isInputOpen && searchRef.current && !searchRef.current.contains(e.target as Node) && isMobile) {
                 setIsInputOpen(false);
             }
-        }
 
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isInputOpen, isMobile]);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
+            // Закрытие модального меню при клике вне него
             if (isModalOpen && modalRef.current && !modalRef.current.contains(e.target as Node) && isMobile) {
                 setIsModalOpen(false);
             }
@@ -56,7 +52,7 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
         document.addEventListener("mousedown", handleClickOutside);
 
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    })
+    }, [isInputOpen, isMobile, isModalOpen]);
 
     useEffect(() => {
         if (isInputOpen) {
@@ -133,8 +129,12 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
                     </button>
                 )
                 }
+                
+                {isModalOpen && (
+                    <div className="fixed inset-0 bg-black/50"></div>
+                )}
 
-                {isModalOpen && isMobile && (
+                {isModalOpen && (
                     <div className="fixed top-16 right-4 z-50 bg-[#212124] rounded-md flex flex-col items-start gap-2 p-2 shadow-md">
                         <button className="w-full group p-2 rounded hover:bg-[#2c2c2e] transition-all flex justify-between items-center gap-2">
                             <Settings className="w-6 h-6 transition-all duration-300 ease-in group-hover:rotate-180" />
