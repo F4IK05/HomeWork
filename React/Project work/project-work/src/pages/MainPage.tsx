@@ -46,6 +46,8 @@ const MainPage: React.FC = () => {
 
                 ]}
             />
+
+            
             <AlbumSection
                 sectionTitle="Albums"
                 albums={[
