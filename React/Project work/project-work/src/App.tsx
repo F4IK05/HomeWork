@@ -1,11 +1,21 @@
 import './App.css'
-import MainPage from '@/pages/MainPage'
+import Layout from './components/Layout'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import MainPage from './pages/MainPage'
+import AlbumPage from './pages/AlbumPage'
 
 function App() {
 
   return (
     <>
-      <MainPage/>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Layout/>}>
+              <Route index path='/' element={<MainPage/>}/>
+              <Route path="album/:id" element={<AlbumPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

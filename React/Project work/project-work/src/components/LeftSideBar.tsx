@@ -1,7 +1,6 @@
 import { ChevronFirst } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { SideBarContext } from "@/contexts/SideBarContext";
-// import { UserIcon } from '@heroicons/react/24/solid';
 
 interface SideBarProps {
     children: React.ReactNode;
@@ -13,18 +12,18 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children, isOpen, setIsOpen }) =>
     const sideBarRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
 
+    const handleResize = useCallback(() => {
+        setIsOpen(window.innerWidth >= 768);
+        setIsMobile(window.innerWidth < 768);
+    }, [setIsOpen]);
+
     useEffect(() => {
-        const hadleResize = () => {
-            setIsOpen(window.innerWidth >= 768);
-            setIsMobile(window.innerWidth < 768);
-        };
+        handleResize()
 
-        hadleResize()
+        window.addEventListener("resize", handleResize);
 
-        window.addEventListener("resize", hadleResize);
-
-        return () => window.removeEventListener("resize", hadleResize);
-    }, [setIsOpen]); // если заходят с телефонных размеров закрывать 
+        return () => window.removeEventListener("resize", handleResize);
+    }, [handleResize]); // если заходят с телефонных размеров закрывать 
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -75,25 +74,6 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children, isOpen, setIsOpen }) =>
                             {children}
                         </ul>
                     </SideBarContext.Provider>
-
-
-                    {/* <div className="border-t border-[#63676e] flex justify-center items-center p-2">
-                        
-                        
-                        {!isOpen && (
-                            <Settings className="cursor-pointer hover:rotate-180 transition-all" />
-                        )}
-
-                        
-                        {isOpen && (
-                            <>
-                                <div className="transition-all w-32 ml-2">
-                                    <p>Settings</p>
-                                </div>
-                                <Settings className="cursor-pointer hover:rotate-180 w-6 h-6 transition-all" />
-                            </>
-                        )}
-                    </div> */}
 
                 </div>
             </div>
