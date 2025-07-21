@@ -13,7 +13,7 @@ const MyToolTip: React.FC<ItemsProps> = ({ children, hint, side }) => {
             <TooltipTrigger asChild>
                 {children}
             </TooltipTrigger>
-            <TooltipContent side={side} className="bg-[#212124]">
+            <TooltipContent side={side} className="bg-[#212124] z-110">
                 <p>{hint}</p>
             </TooltipContent>
         </Tooltip>

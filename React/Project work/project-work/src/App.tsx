@@ -1,8 +1,8 @@
 import './App.css'
-import Layout from './components/Layout'
+import Layout from './components/Layout/Layout'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainPage from './pages/MainPage'
-import AlbumPage from './pages/AlbumPage'
+import DisplayAlbum from './pages/DisplayAlbum'
 
 function App() {
 
@@ -12,7 +12,13 @@ function App() {
         <Routes>
           <Route path='/' element={<Layout/>}>
               <Route index path='/' element={<MainPage/>}/>
-              <Route path="album/:id" element={<AlbumPage />} />
+              <Route path='album/:id' element={<DisplayAlbum />}/>
+              <Route path='/explore'/>
+              <Route path='/videos'/>
+              <Route path='/mixes_ratio'/>
+              <Route path='/playlists'/>
+              <Route path='/tracks'/>
+              <Route path='/artists'/>
           </Route>
         </Routes>
       </BrowserRouter>

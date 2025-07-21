@@ -1,13 +1,11 @@
 import { Bell, ChevronLast, ChevronRight, Menu, Search, Settings, User } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { useSideBar } from "@/contexts/SideBarContext";
+import MyToolTip from "./Tooltip";
 
-interface NavBarProps {
-    isOpen: boolean;
-    setIsOpen: (val: boolean) => void;
-}
+const NavBar: React.FC = () => {
+    const { isOpen, setIsOpen } = useSideBar();
 
-const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
     const [isMobile, setIsMobile] = useState(false);
     const [isInputOpen, setIsInputOpen] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +25,7 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
     }, [isMobile]);
 
     useEffect(() => {
-        
+
         handleResize();
 
         window.addEventListener('resize', handleResize);
@@ -73,7 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
                 {isMobile &&
                     <div className="flex items-center">
                         <button className="cursor-pointer" onClick={() => setIsOpen(true)}>
-                            <ChevronLast className="w-6 h-6 transition-all duration-300 rounded-lg text-white w-10 h-10 bg-[#63676e] p-1.5" />
+                            <ChevronLast className="w-10 h-10 transition-all duration-300 rounded-lg text-white bg-[#63676e] p-1.5" />
                         </button>
                     </div>
                 }
@@ -88,39 +86,25 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
                 {!isMobile ? (
 
                     <div className="flex items-center gap-1">
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button className="group p-2 rounded hover:bg-[#2c2c2e] transition-all">
-                                    <Settings className="cursor-pointer duration-300 ease-in group-hover:rotate-180 w-6 h-6 " />
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="bg-[#212124]">
-                                <p>Settings</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        <MyToolTip children={
+                            <button className="cursor-pointer group p-2 rounded hover:bg-[#2c2c2e] transition-all">
+                                <Settings className=" duration-300 ease-in group-hover:rotate-180 w-6 h-6 " />
+                            </button>
+                        } side="bottom" hint="Settings" />
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button className="relative group p-2 rounded hover:bg-[#2c2c2e] transition-all">
-                                    <Bell className="w-6 h-6" />
-                                    <span className="absolute top-2 right-2 flex items-center justify-center bg-red-600 w-2 h-2 rounded-full group-hover:animate-ping"></span>
-                                </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="bg-[#212124]">
-                                <p>Notifications</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        <MyToolTip children={
+                            <button className="cursor-pointer relative group p-2 rounded hover:bg-[#2c2c2e] transition-all">
+                                <Bell className="w-6 h-6" />
+                                <span className="absolute top-2 right-2 flex items-center justify-center bg-red-600 w-2 h-2 rounded-full group-hover:animate-ping"></span>
+                            </button>
+                        } side="bottom" hint="Notifications"/>
 
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <button className="bg-[#63676e] rounded-full p-2 cursor-pointer">
+                        <MyToolTip children={
+                            <button className="bg-[#63676e] rounded-full p-2 cursor-pointer">
                                     <User className="w-6 h-6" />
                                 </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="bg-[#212124]">
-                                <p>Profile</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        } side="bottom" hint="Profile"/>
+
                     </div>
 
                 ) : (
@@ -129,13 +113,13 @@ const NavBar: React.FC<NavBarProps> = ({ isOpen, setIsOpen }) => {
                     </button>
                 )
                 }
-                
+
                 {isModalOpen && (
-                    <div className="fixed inset-0 bg-black/50"></div>
+                    <div className="fixed inset-0 bg-black/50 z-100"></div>
                 )}
 
                 {isModalOpen && (
-                    <div className="fixed top-16 right-4 z-50 bg-[#212124] rounded-md flex flex-col items-start gap-2 p-2 shadow-md">
+                    <div className="fixed top-16 right-4 z-110 bg-[#212124] rounded-md flex flex-col items-start gap-2 p-2 shadow-md">
                         <button className="w-full group p-2 rounded hover:bg-[#2c2c2e] transition-all flex justify-between items-center gap-2">
                             <Settings className="w-6 h-6 transition-all duration-300 ease-in group-hover:rotate-180" />
                             <span>Settings</span>
