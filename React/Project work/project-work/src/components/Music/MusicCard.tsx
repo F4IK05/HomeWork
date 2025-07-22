@@ -8,15 +8,9 @@ interface MusicCardProps {
 }
 
 const MusicCard: React.FC<MusicCardProps> = ({ song }) => {
-    const { isPlaying, setIsPlaying, currentSong ,setCurrentSong, handlePlay, handlePause, handlePlayPause } = usePlayer();
+    const { isPlaying, currentSong ,setCurrentSong, handlePlayPause } = usePlayer();
 
     const isCurrentSong = currentSong?.id == song.id;
-
-    const togglePlayPause = (e: React.MouseEvent) => {
-        if (isCurrentSong) {
-            handlePlayPause();
-        }
-    }
 
     const handleClick = () => {
         setCurrentSong({ 

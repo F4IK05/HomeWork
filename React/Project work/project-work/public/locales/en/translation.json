@@ -26,5 +26,12 @@
     "albums": "Albums",
     "new_arrivals": "New arrivals",
     "title": "Title",
-    "plays": "Plays"
+    "plays": "Plays",
+    "sign_in": "Sign in",
+    "pass": "Password",
+    "remember_me": "Remember me",
+    "forgot_pass": "Forgot password",
+    "sign_in_btn": "Sign in",
+    "don't_have_account": "Don't have an account",
+    "sign_up": "Sign up"
 }

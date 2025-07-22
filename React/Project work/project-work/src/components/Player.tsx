@@ -12,7 +12,7 @@ interface PlayerProps {
 
 const Player: React.FC<PlayerProps> = ({ isMobile }) => {
     const { t } = useTranslation();
-    const { currentSong, setCurrentSong, isPlaying, setIsPlaying, handlePlay, handlePause, handlePlayPause } = usePlayer();
+    const { currentSong, setCurrentSong, isPlaying, setIsPlaying, handlePlayPause } = usePlayer();
 
     // Уставновка времени и продолжительности музыки
     const [currentTime, setCurrentTime] = useState(0);
