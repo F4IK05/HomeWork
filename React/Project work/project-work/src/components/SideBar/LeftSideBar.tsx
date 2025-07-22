@@ -7,6 +7,8 @@ interface SideBarProps {
 }
 
 const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
+
+
     const sideBarRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
     const { isOpen, setIsOpen } = useSideBar();
@@ -50,13 +52,13 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
         <>
             {/* Затемнение фона */}
             {isOpen && isMobile && (
-                <div className="fixed inset-0 bg-black opacity-50 z-100"></div>
+                <div className="fixed inset-0 bg-black/50 z-100"></div>
             )}
 
             <div
                 ref={sideBarRef}
                 className={`
-                    h-screen transition-all fixed z-110 text-gray-400 select-none
+                    h-screen transition-all fixed z-1 text-gray-400 select-none
                     ${isOpen ? 'w-64' : 'w-16'}
                     ${!isOpen && isMobile ? 'opacity-0 -translate-x-full' : 'translate-x-0'}
                 `}>

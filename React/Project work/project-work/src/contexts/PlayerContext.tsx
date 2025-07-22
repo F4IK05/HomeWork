@@ -7,6 +7,9 @@ interface PlayerContextType {
   setIsPlaying: (isPlaying: boolean) => void;
   currentSong: SongData | null;
   setCurrentSong: (song: SongData) => void;
+  handlePlay: () => void;
+  handlePause: () => void;
+  handlePlayPause: () => void;
 }
 
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
@@ -15,8 +18,12 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [currentSong, setCurrentSong] = useState<SongData | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const handlePlay = () => setIsPlaying(true);
+  const handlePause = () => setIsPlaying(false);
+  const handlePlayPause = () => setIsPlaying(val => !val);
+
   return (
-    <PlayerContext.Provider value={{ isPlaying, setIsPlaying, currentSong, setCurrentSong }}>
+    <PlayerContext.Provider value={{ isPlaying, setIsPlaying, currentSong, setCurrentSong, handlePlay, handlePause, handlePlayPause }}>
       {children}
     </PlayerContext.Provider>
   );

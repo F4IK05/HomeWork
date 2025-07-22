@@ -1,9 +1,9 @@
 import songs from "@/assets/data/SongData";
-import albums from "@/assets/data/AlbumData";
 import { usePlayer } from "@/contexts/PlayerContext";
 import { Pause, Repeat, Shuffle, SkipBack, SkipForward, Volume2, Play, VolumeX, Volume1, ChevronDown } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import MyToolTip from "./Tooltip";
+import { useTranslation } from "react-i18next";
 
 
 interface PlayerProps {
@@ -11,11 +11,14 @@ interface PlayerProps {
 }
 
 const Player: React.FC<PlayerProps> = ({ isMobile }) => {
-    const { currentSong, setCurrentSong, isPlaying, setIsPlaying } = usePlayer();
+    const { t } = useTranslation();
+    const { currentSong, setCurrentSong, isPlaying, setIsPlaying, handlePlay, handlePause, handlePlayPause } = usePlayer();
 
     // Уставновка времени и продолжительности музыки
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+
+    const [isRepeat, setIsRepeat] = useState(false);
 
     // Работа со звуком
     const [volume, setVolume] = useState(1);
@@ -49,24 +52,6 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
         }
     }
 
-    const handlePlay = () => {
-        audioRef.current?.play(); // Запускаем аудио
-        setIsPlaying(true);
-    }
-
-    const handlePause = () => {
-        audioRef.current?.pause(); // Ставим аудио на паузу
-        setIsPlaying(false)
-    }
-
-    const handlePlayPause = () => {
-        if (isPlaying) {
-            handlePause();
-        } else {
-            handlePlay();
-        }
-    }
-
     const handleLoadedAudio = () => {
         if (audioRef.current) {
             setDuration(audioRef.current?.duration || 0)
@@ -96,6 +81,17 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
 
 
         setCurrentSong(nextSong);
+    }
+
+    const handleEnded = () => {
+        if (isRepeat) {
+            if (audioRef.current) {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play();
+            }
+        } else {
+            handleNextSong();
+        }
     }
 
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,31 +130,44 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
     }
 
     useEffect(() => {
+        if (!audioRef.current) return;
+        if (isPlaying) {
+            audioRef.current.play();
+        } else {
+            audioRef.current.pause();
+        }
+    }, [isPlaying]);
+
+
+    useEffect(() => {
         audioRef.current?.addEventListener('timeupdate', handleTimeUpdate);
         audioRef.current?.addEventListener('loadedmetadata', handleLoadedAudio);
-        audioRef.current?.addEventListener('ended', () => setIsPlaying(false));
+        audioRef.current?.addEventListener('ended', handleEnded)
 
         return () => {
             audioRef.current?.removeEventListener('timeupdate', handleTimeUpdate);
             audioRef.current?.removeEventListener('loadedmetadata', handleLoadedAudio);
-            audioRef.current?.removeEventListener('ended', () => setIsPlaying(false));
+            audioRef.current?.removeEventListener('ended', handleEnded);
         }
-    }, [currentSong])
+    }, [currentSong, handleEnded, isRepeat])
 
-    // 
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = volume; // чтобы между песнями громкрость не менялась 
         }
         setCurrentTime(0);
         setDuration(0);
-        handlePlay();
+        if (audioRef.current) {
+            audioRef.current.play()
+            setIsPlaying(true);
+        }
+
 
     }, [currentSong?.audioUrl]);
 
     if (!currentSong) return null; // Player не отображается пока не выдрана песня
 
-    console.log(isExpanded)
+    console.log(isRepeat)
     return (
         <>
             <audio ref={audioRef} src={currentSong.audioUrl}></audio>
@@ -167,7 +176,7 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                     <div onClick={toggleExpand} className="fixed bottom-0 z-10 h-max bg-[#1e1e22] w-full flex justify-between items-center p-4 transition-all">
                         <div className="flex items-center gap-4">
                             <img className="w-20 rounded-xl" src={currentSong.coverUrl} alt={currentSong.title} />
-                            <div className="text-white min-w-0">
+                            <div className="text-white">
                                 <p className="font-bold text-base truncate">{currentSong.title}</p>
                                 <p className="text-xs truncate">{currentSong.artist}</p>
                             </div>
@@ -182,7 +191,7 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                                     className={`cursor-pointer rounded-full p-4 transition-all hover:scale-105 ${isPlaying ? 'bg-[#4B5563] text-white' : 'bg-white text-[#4B5563]'}`}>
                                     {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
                                 </button>
-                            } side="top" hint={isPlaying ? "Pause" : "Play"} />
+                            } side="top" hint={isPlaying ? t("pause") : t("play")} />
                         </div>
                     </div>
 
@@ -195,14 +204,14 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                                 <ChevronDown className="w-8 h-8 sm:w-10 sm:h-10" />
                             </button>
                             <div className="uppercase tracking-wide text-gray-400 text-sm sm:text-base">
-                                Track
+                                {t('track')}
                             </div>
                         </div>
 
                         <div className="flex-1 flex flex-col justify-center px-4 sm:px-6">
                             <div className={`flex justify-center w-full mb-6 sm:mb-10 transform transition-all ${isExpanded ? 'opacity-100 rotate-0' : 'opacity-0'
                                 }`}>
-                                <img className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-xl object-cover shadow-2xl transition-all duration-300 hover:scale-105"
+                                <img className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-xl shadow-2xl transition-all hover:scale-105"
                                     src={currentSong.coverUrl}
                                     alt={currentSong.title} />
                             </div>
@@ -218,16 +227,13 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                             </div>
                         </div>
 
-                        {/* Элементы управления */}
                         <div className={`p-4 sm:p-6  transform transition-all ${isExpanded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
                             }`}>
-                            {/* Время воспроизведения */}
                             <div className="w-full flex justify-between text-xs sm:text-sm text-gray-400 select-none">
                                 <span className="transition-all duration-200">{formatTime(currentTime)}</span>
                                 <span className="transition-all duration-200">{formatTime(duration)}</span>
                             </div>
 
-                            {/* Слайдер прогресса */}
                             <div className="w-full">
                                 <input className="w-full h-1 cursor-pointer transition-all hover:h-2"
                                     type="range"
@@ -237,38 +243,37 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                                     onChange={handleSeek} />
                             </div>
 
-                            {/* Кнопки управления */}
                             <div className="flex items-center justify-center gap-2 sm:gap-4 py-4">
                                 <MyToolTip children={
                                     <button className="cursor-pointer p-2 sm:p-3 md:p-4 rounded-full text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 hover:bg-gray-800">
                                         <Shuffle className="w-5 h-5 sm:w-6 sm:h-6" />
                                     </button>
-                                } side="top" hint="Shuffle" />
+                                } side="top" hint={t("shuffle")} />
 
                                 <MyToolTip children={
                                     <button onClick={handlePrevSong} className="cursor-pointer p-2 sm:p-3 md:p-4 rounded-full text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 hover:bg-gray-800">
                                         <SkipBack className="w-5 h-5 sm:w-6 sm:h-6" />
                                     </button>
-                                } side="top" hint="Previous" />
+                                } side="top" hint={t("previous")} />
 
                                 <MyToolTip children={
                                     <button onClick={handlePlayPause} className={`cursor-pointer p-3 sm:p-4 rounded-full hover:scale-110 active:scale-95 transition-all duration-200 shadow-lg ${isPlaying ? 'bg-[#4B5563] hover:bg-[#374151]' : 'bg-white text-[#4B5563] hover:bg-gray-100'
                                         }`}>
                                         {isPlaying ? <Pause className="w-6 h-6 sm:w-7 sm:h-7" /> : <Play className="w-6 h-6 sm:w-7 sm:h-7" />}
                                     </button>
-                                } side="top" hint={`${isPlaying ? "Pause" : "Play"}`} />
+                                } side="top" hint={`${isPlaying ? t("pause") : t("play")}`} />
 
                                 <MyToolTip children={
                                     <button onClick={handleNextSong} className="cursor-pointer p-2 sm:p-3 md:p-4 rounded-full text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 hover:bg-gray-800">
                                         <SkipForward className="w-5 h-5 sm:w-6 sm:h-6" />
                                     </button>
-                                } side="top" hint={"Next"} />
+                                } side="top" hint={t("next")} />
 
                                 <MyToolTip children={
-                                    <button className="cursor-pointer p-2 sm:p-3 md:p-4 rounded-full text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 hover:bg-gray-800">
+                                    <button onClick={() => setIsRepeat(!isRepeat)} className={`cursor-pointer p-2 sm:p-3 md:p-4 rounded-full hover:scale-[1.1] transition-all duration-200 ${isRepeat ? "text-white" : "text-gray-400 hover:bg-gray-800"}`}>
                                         <Repeat className="w-5 h-5 sm:w-6 sm:h-6" />
                                     </button>
-                                } side="top" hint="Enable repeat" />
+                                } side="top" hint={t("enable_repeat")} />
                             </div>
                         </div>
                     </div>
@@ -276,7 +281,7 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                 </>
             ) : (
                 <div
-                    className="w-full z-110 px-4 py-3 text-white fixed bottom-0 h-fit bg-[#1e1e22] flex items-center justify-between transition-all">
+                    className="w-full z-10 px-4 py-3 text-white fixed bottom-0 h-fit bg-[#1e1e22] flex items-center justify-between transition-all">
                     <div className="flex items-center gap-4 w-[25%]">
                         <img className="w-14 rounded select-none" src={currentSong.coverUrl} alt={currentSong.title} />
                         <div className="min-w-0 select-none pointer-events-none">
@@ -297,31 +302,32 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                                 <button className="cursor-pointer p-2 rounded-full text-gray-400 hover:text-white hover:scale-[1.1] transition-all">
                                     <Shuffle className="w-4 h-4" />
                                 </button>
-                            } side="top" hint="Shuffle" />
+                            } side="top" hint={t("shuffle")} />
 
                             <MyToolTip children={
                                 <button onClick={handlePrevSong} className="cursor-pointer p-2 rounded-full text-gray-400 hover:text-white hover:scale-[1.1] transition-all">
                                     <SkipBack className="w-4 h-4" />
                                 </button>
-                            } side="top" hint="Previous" />
+                            } side="top" hint={t("previous")} />
 
                             <MyToolTip children={
                                 <button onClick={handlePlayPause} className={`cursor-pointer p-2 rounded-full hover:scale-[1.1] active:scale-[1] transition-all ${isPlaying ? 'bg-[#4B5563]' : 'bg-white text-[#4B5563]'}`}>
                                     {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                                 </button>
-                            } side="top" hint={`${isPlaying ? "Pause" : "Play"}`} />
+                            } side="top" hint={`${isPlaying ? t("pause") : t("play")}`} />
 
                             <MyToolTip children={
                                 <button onClick={handleNextSong} className="cursor-pointer p-2 rounded-full text-gray-400 hover:text-white hover:scale-[1.1] transition-all">
                                     <SkipForward className="w-4 h-4" />
                                 </button>
-                            } side="top" hint={"Next"} />
+                            } side="top" hint={t("next")} />
 
                             <MyToolTip children={
-                                <button className="cursor-pointer p-2 rounded-full text-gray-400 hover:text-white hover:scale-[1.1] transition-all">
+
+                                <button onClick={() => setIsRepeat(!isRepeat)} className={`cursor-pointer p-2 rounded-full hover:scale-[1.1] transition-all ${isRepeat ? "text-white" : "text-gray-400 hover:text-white"}`}>
                                     <Repeat className="w-4 h-4" />
                                 </button>
-                            } side="top" hint="Enable repeat" />
+                            } side="top" hint={isRepeat ? t("disable_repeat") : t("enable_repeat")} />
                         </div>
 
                     </div>
@@ -334,7 +340,7 @@ const Player: React.FC<PlayerProps> = ({ isMobile }) => {
                                 {volume < 0.5 && volume != 0 && <Volume1 className="w-4" />}
                                 {volume > 0.5 && <Volume2 className="w-4" />}
                             </button>
-                        } side="top" hint={`${volume <= 0.01 ? "Unmute" : "Mute"}`} />
+                        } side="top" hint={`${volume <= 0.01 ? t("unmute") : t("mute")}`} />
 
                         <input type="range" className="w-full h-1" step={0.01} min={0} max={1} value={volume} onChange={handleVolumeChange} />
                     </div>

@@ -8,13 +8,13 @@ interface MusicCardProps {
 }
 
 const MusicCard: React.FC<MusicCardProps> = ({ song }) => {
-    const { isPlaying, setIsPlaying, currentSong ,setCurrentSong } = usePlayer();
+    const { isPlaying, setIsPlaying, currentSong ,setCurrentSong, handlePlay, handlePause, handlePlayPause } = usePlayer();
 
     const isCurrentSong = currentSong?.id == song.id;
 
-    const handlePlayPause = () => {
+    const togglePlayPause = (e: React.MouseEvent) => {
         if (isCurrentSong) {
-            setIsPlaying(!isPlaying);
+            handlePlayPause();
         }
     }
 
@@ -31,7 +31,7 @@ const MusicCard: React.FC<MusicCardProps> = ({ song }) => {
     };
 
     return (
-        <div onClick={handleClick} className="transition-all group relative w-full aspect-[3.5/5] rounded-md overflow-hidden hover:scale-[1.02] bg-zinc-900 shadow-md">
+        <div onClick={handleClick} className="transition-all group relative w-full aspect-[3.5/5] rounded-md overflow-hidden hover:scale-[1.02] shadow-md">
             <img src={song.coverUrl} alt={song.title} className="w-full" />
 
             <div className="absolute bottom-0 left-0 w-full h-[30%] overflow-hidden">

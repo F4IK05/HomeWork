@@ -40,7 +40,7 @@ const LeftSideBarItem: React.FC<TooltipProps> = ({ sectionName, icon, text, acti
     return (
         <>
             {sectionName && (
-                <h4 className={`mt-5 text-[#63676e] cursor-default uppercase overflow-hidden transition-all w-32 h-[20px] ${isOpen ? '' : 'opacity-0'}`}>
+                <h4 className={`mt-5 text-[#63676e] text-nowrap cursor-default uppercase overflow-hidden transition-all h-[20px] ${isOpen ? '' : 'opacity-0'}`}>
                     {sectionName}
                 </h4>
             )}

@@ -3,8 +3,11 @@ import { ChevronLeft, Clock } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import songs from "@/assets/data/SongData";
 import albums from "@/assets/data/AlbumData";
+import { useTranslation } from "react-i18next";
 
 const DisplayAlbum: React.FC = () => {
+    const { t } = useTranslation();
+
     const navigate = useNavigate();
     const { id } = useParams(); // для получения параметра из url
     const albumData = albums[id];
@@ -22,21 +25,21 @@ const DisplayAlbum: React.FC = () => {
 
                     </div>
                     <div className="flex flex-col gap-2">
-                        <p className="hidden md:block uppercase tracking-wide">Album</p>
+                        <p className="hidden md:block uppercase tracking-wide">{t("album")}</p>
                         <p className="text-3xl sm:text-3xl md:text-5xl font-bold text-wrap">{albumData.title}</p>
                         <p className="font-semibold text-sm md:text-base text-gray-300 md:hidden cursor-pointer hover:underline">{albumData.artist}</p>
                         <p className="font-semibold text-sm md:text-base text-gray-300 flex items-center gap-2">
 
                             <img className="w-10 rounded-full hidden md:inline" src={albumData.artistImgUrl} alt="" />
-                            <span className="hidden md:inline cursor-pointer hover:underline">{albumData.artist}</span> <span className="md:hidden">Album</span> • {albumData.releaseYear}
+                            <span className="hidden md:inline cursor-pointer hover:underline">{albumData.artist}</span> <span className="md:hidden">{t("album")}</span> • {albumData.releaseYear}
                         </p>
                     </div>
                 </div>
             </div>
 
             <div className="grid grid-cols-3 text-gray-400 mt-5 mb-2 pl-2">
-                <p><b className="mr-5">#</b>Title</p>
-                <p className="flex justify-end">Plays</p>
+                <p><b className="mr-5">#</b>{t("title")}</p>
+                <p className="flex justify-end">{t("plays")}</p>
                 <p className="m-auto"><Clock className="w-4" /></p>
             </div>
             <Separator className="bg-gray-400" />
