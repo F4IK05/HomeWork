@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PlayerProvider } from "@/contexts/PlayerContext";
 import { SideBarProvider } from "@/contexts/SideBarContext";
 import LayoutContent from "./LayoutContent";
@@ -10,16 +10,16 @@ const Layout: React.FC = () => {
 
     const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-        const handleResize = () => {
+    const handleResize = useCallback(() => {
             setIsMobile(window.innerWidth < 768);
-        };
+    }, []);
 
+    useEffect(() => {
         handleResize();
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize)
-    }, [])
+    }, [handleResize])
 
     return (
         <>

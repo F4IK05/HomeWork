@@ -46,7 +46,7 @@ const MusicSection: React.FC<MusicSectionProps> = ({ sectionTitle, cards }) => {
 
     return (
         <>
-            <div className="w-full mt-5">
+            <div className="w-full mt-5 select-none">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold text-white">{sectionTitle}</h2>
                     <div className="flex gap-1">
@@ -113,7 +113,7 @@ const MusicSection: React.FC<MusicSectionProps> = ({ sectionTitle, cards }) => {
                     }}
                 >
                     {isMobile ? (
-                        groupCardList(cards, 4).map((group, gIndex) => (
+                        groupCardList(cards, 5).map((group, gIndex) => (
                             <SwiperSlide key={gIndex}>
                                 <div className="bg-[#1e1e22] rounded-lg overflow-hidden px-2 py-2">
                                     {group.map((song, index) => (

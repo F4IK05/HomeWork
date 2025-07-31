@@ -27,11 +27,19 @@
     "new_arrivals": "New arrivals",
     "title": "Title",
     "plays": "Plays",
-    "sign_in": "Sign in",
     "pass": "Password",
     "remember_me": "Remember me",
     "forgot_pass": "Forgot password",
-    "sign_in_btn": "Sign in",
     "don't_have_account": "Don't have an account",
-    "sign_up": "Sign up"
+    "sign_up": "Sign up",
+    "sign_in": "Sign in",
+    "sign_up_with": "Sign up with",
+    "login_with": "Login with",
+    "or": "or",
+    "email_or_username": "Email or username",
+    "continue": "Continue",
+    "no_account": "Don't have an account",
+    "already_have_an_account": "Already have an account",
+    "open_sidebar": "Open sidebar",
+    "close_sidebar": "Close sidebar"
 }

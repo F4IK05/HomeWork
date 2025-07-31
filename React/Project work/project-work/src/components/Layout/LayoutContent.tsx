@@ -3,7 +3,7 @@ import LeftSideBarItem from "@/components/SideBar/LeftSideBarItem";
 import { House, ListMusic, MicVocal, Music, Music3, Radio, TvMinimal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Player from "@/components/Player";
-import { useSideBar } from "@/contexts/SideBarContext";
+import { useSideBar } from "@/hooks/useSideBar";
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -28,7 +28,7 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ isMobile, currentLocation
                 <LeftSideBarItem icon={<MicVocal />} text={t("artists")} to="/artists" active={currentLocation === '/artists'} />
             </LeftSideBar>
 
-            <div className="flex flex-col flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-hidden">
                 <Navbar />
 
                 <div

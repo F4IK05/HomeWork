@@ -22,7 +22,7 @@ const AlbumSection: React.FC<AlbumSectionProps> = ({ albums, sectionTitle }) => 
 
     return (
         <>
-            <div className="w-full mt-5">
+            <div className="w-full mt-5 select-none">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl font-semibold text-white">{sectionTitle}</h2>
                     <div className="flex gap-1">

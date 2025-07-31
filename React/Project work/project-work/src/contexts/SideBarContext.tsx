@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 
 interface SideBarContextType {
     isOpen: boolean;
@@ -16,13 +16,5 @@ export const SideBarProvider: React.FC<({ children: React.ReactNode })> = ({ chi
         </SideBarContext.Provider>
     );
 }
-
-export const useSideBar = () => {
-    const context = useContext(SideBarContext);
-    if (!context) {
-        throw new Error();
-    }
-    return context;
-};
 
 export default SideBarContext;

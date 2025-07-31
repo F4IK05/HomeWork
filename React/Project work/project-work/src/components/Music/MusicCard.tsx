@@ -1,6 +1,6 @@
 import React from "react";
 import { Pause, Play } from "lucide-react";
-import { usePlayer } from "@/contexts/PlayerContext";
+import { usePlayer } from "@/hooks/usePlayer";
 import type { SongData } from "@/assets/data/SongData";
 
 interface MusicCardProps {
@@ -39,8 +39,8 @@ const MusicCard: React.FC<MusicCardProps> = ({ song }) => {
                 ></div>
 
                 <div className="absolute w-full h-full bg-black/40 p-2 flex flex-col justify-around font-semibold text-white">
-                    <h3 className=" md:text-sm lg:text-[14px] w-full">{song.title}</h3>
-                    <p className="text-[13px] md:text-xs lg:text-[12px] text-[#9898A6] w-full line-clamp-2">{song.artist}</p>
+                    <h3 className="font-bold text-white sm:text-base md:text-sm truncate">{song.title}</h3>
+                    <p className="hidden sm:inline sm:text-sm text-[#9898A6] truncate">{song.artist}</p>
                 </div>
             </div>
 
