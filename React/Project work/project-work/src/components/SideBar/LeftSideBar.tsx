@@ -4,6 +4,7 @@ import { useSideBar } from "@/hooks/useSideBar";
 import MyToolTip from "../Tooltip";
 import { useTranslation } from "react-i18next";
 import { usePlayer } from "@/hooks/usePlayer";
+import Kbd from "../Kbd";
 
 interface SideBarProps {
     children: React.ReactNode;
@@ -47,15 +48,7 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
             if (isSettingsModalOpen && settingsModalRef.current && !settingsModalRef.current.contains(e.target as Node)) {
                 setIsSettingsModalOpen(false);
             }
-        }
 
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isSettingsModalOpen]);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
             if (isOpen && sideBarRef.current && !sideBarRef.current.contains(e.target as Node) && isMobile) {
                 setIsOpen(false);
             }
@@ -63,10 +56,20 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
 
         document.addEventListener("mousedown", handleClickOutside);
 
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [isMobile, isOpen, setIsOpen])
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isMobile, isOpen, isSettingsModalOpen, setIsOpen]);
+
+    useEffect(() => {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key == '/' && !e.repeat) {
+                setIsOpen(!isOpen);
+            }
+        }
+
+        document.addEventListener("keydown", handleKey);
+
+        return () => document.removeEventListener("keydown", handleKey);
+    }, [isOpen, setIsOpen])
 
     useEffect(() => {
         if (isOpen && isMobile) {
@@ -90,45 +93,65 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
             <div
                 ref={sideBarRef}
                 className={`
-                    h-full transition-all fixed z-9998 text-gray-400 select-none
+                    h-full fixed z-[9999] text-gray-400 select-none
+                    transition-all ease-in-out
                     ${isOpen ? 'w-64' : 'w-16'}
-                    ${!isOpen && isMobile ? 'opacity-0 -translate-x-full ' : 'translate-x-0 z-9999'}
+                    ${!isOpen && isMobile
+                        ? '-translate-x-full opacity-0 pointer-events-none'
+                        : 'translate-x-0 opacity-100 pointer-events-auto'
+                    }
                 `}>
+
                 <div className="h-full flex flex-col bg-[#212124] group">
+                    {/* Header */}
                     <div className={`border-b border-[#63676e] p-4 flex items-center ${isOpen ? 'justify-between' : 'justify-center'}`}>
-                        <h1 className={`flex items-center gap-1 text-xl font-semibold transition-all overflow-hidden pointer-events-none whitespace-nowrap ${isOpen ? '' : 'opacity-0'}`}>
+                        <h1 className={`
+                            flex items-center gap-1 text-xl font-semibold 
+                            transition-all ease-in-out overflow-hidden whitespace-nowrap
+                            ${isOpen ? 'opacity-100 max-w-full' : 'opacity-0 max-w-0'}
+                        `}>
                             <AudioLines />
-                            <p>Music App</p>
+                            <span>Music App</span>
                         </h1>
+
                         <button onClick={() => setIsOpen(!isOpen)} className="cursor-pointer relative">
                             {isOpen ? (
-                                <MyToolTip side="right" hint={t("close_sidebar")}>
+                                <MyToolTip side="right" hint={
+                                    <>
+                                        {t("close_sidebar")} <Kbd shortCut='/' />
+                                    </>
+                                }>
                                     <div>
-                                        <PanelLeft strokeWidth={1} className="hover:opacity-0 transition-all duration-300 rounded-lg text-white hover:text-white w-10 h-10 p-1.5" />
-                                        <ArrowRightToLine strokeWidth={1} className={`absolute inset-0 transition-all duration-300 rounded-lg text-white opacity-0 hover:opacity-100 hover:bg-[#171719] w-10 h-10 p-1.5 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
+                                        <PanelLeft strokeWidth={1} className="hover:opacity-0 transition-all rounded-lg text-white hover:text-white w-10 h-10 p-1.5" />
+                                        <ArrowRightToLine strokeWidth={1} className="absolute inset-0 transition-all rounded-lg text-white opacity-0 hover:opacity-100 hover:bg-[#171719] w-10 h-10 p-1.5 rotate-180" />
                                     </div>
                                 </MyToolTip>
                             ) : (
-                                <MyToolTip side="right" hint={t("open_sidebar")}>
+                                <MyToolTip side="right" hint={
+                                    <>
+                                        {t("open_sidebar")} <Kbd shortCut='/' />
+                                    </>
+                                }>
                                     <div>
-                                        <AudioLines className="group-hover:opacity-0 transition-all duration-300 rounded-lg text-gray-400 hover:text-white w-10 h-10 p-1.5" />
-                                        <ArrowRightToLine strokeWidth={1} className={`absolute inset-0 transition-all duration-300 rounded-lg text-white opacity-0 group-hover:opacity-100 group-hover:bg-[#171719] w-10 h-10 p-1.5 ${isOpen ? 'rotate-180' : 'rotate-0'}`} />
+                                        <AudioLines className="group-hover:opacity-0 transition-all rounded-lg text-gray-400 hover:text-white w-10 h-10 p-1.5" />
+                                        <ArrowRightToLine strokeWidth={1} className="absolute inset-0 transition-all rounded-lg text-white opacity-0 group-hover:opacity-100 group-hover:bg-[#171719] w-10 h-10 p-1.5 rotate-0" />
                                     </div>
                                 </MyToolTip>
                             )}
-
                         </button>
                     </div>
 
+                    {/* Content */}
                     <ul className={`flex-1 m-2 overflow-x-hidden ${isOpen ? 'overflow-y-auto' : 'overflow-y-hidden'}`}>
                         {children}
                     </ul>
 
+                    {/* Settings */}
                     <div className={`p-2 border-t border-[#63676e] ${currentSong && !isMobile && 'mb-20'}`}>
                         {isOpen ? (
                             <button onClick={openSettingsModal} className={`cursor-pointer group p-2 rounded hover:bg-[#2c2c2e] transition-all w-full flex items-center gap-3 ${isSettingsModalOpen && 'text-white'}`}>
                                 <Settings className="ease-in group-hover:rotate-180 w-6 h-6" />
-                                <span className={`text-base font-semibold transition-all ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{t('settings')}</span>
+                                <span className={`text-base font-semibold transition-all ml-0 ${isOpen ? 'opacity-100 max-w-full' : 'opacity-0 max-w-0'}`}>{t('settings')}</span>
                             </button>
                         ) : (
                             <MyToolTip side="right" hint={t('settings')}>
@@ -139,10 +162,10 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
                         )}
                     </div>
 
-
                 </div>
             </div>
 
+            {/* SettingsModal */}
             {isSettingsModalOpen && (
                 <>
                     <div className="fixed inset-0 bg-black/50 z-9999"></div>
@@ -169,8 +192,6 @@ const LeftSideBar: React.FC<SideBarProps> = ({ children }) => {
                                     <ChevronDown />
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </>

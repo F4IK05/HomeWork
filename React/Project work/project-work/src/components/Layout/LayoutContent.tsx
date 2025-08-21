@@ -4,8 +4,9 @@ import { House, ListMusic, MicVocal, Music, Music3, Radio, TvMinimal } from "luc
 import Navbar from "@/components/Navbar";
 import Player from "@/components/Player";
 import { useSideBar } from "@/hooks/useSideBar";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LayoutContentProps {
     isMobile: boolean;
@@ -15,7 +16,13 @@ interface LayoutContentProps {
 const LayoutContent: React.FC<LayoutContentProps> = ({ isMobile, currentLocation }) => {
     const { t } = useTranslation();
     const { isOpen } = useSideBar();
-    
+
+    const { userName, isEmailVerified } = useAuth();
+
+    const userEmail = localStorage.getItem("userEmail")
+
+    console.log(userEmail);
+
     return (
         <div className="relative flex bg-[#171719] h-screen overflow-hidden">
             <LeftSideBar>
@@ -33,12 +40,24 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ isMobile, currentLocation
 
                 <div
                     className={`
-                                pt-16 p-4 transition-all flex-1 overflow-y-auto
+                                pt-16 transition-all flex-1 overflow-y-auto
                                 ${!isMobile ? 'pb-[10%]' : 'pb-[20%]'}
                                 ${isMobile ? 'ml-0' : (isOpen ? 'ml-64' : 'ml-16')}
                                 `}
                 >
-                    <Outlet /> {/* Сюда будет вставлятся, напрмер, MainPage*/}
+
+                    {!isEmailVerified && userName && (
+                        <div className=" p-4 bg-red-500/20 text-red-400 flex items-center gap-2">
+                            <span>{t("please_verify_your_email")}</span>
+                            <Link to="/verify-email" state={{ email: userEmail }} className="underline text-blue-400">
+                                {t("verify_now")}
+                            </Link>
+                        </div>
+                    )}
+                    <div className="p-4">
+                        <Outlet /> {/* Сюда будет вставлятся, напрмер, MainPage*/}
+
+                    </div>
                 </div>
                 <Player isMobile={isMobile} />
             </div>

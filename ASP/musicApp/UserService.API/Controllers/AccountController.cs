@@ -1,0 +1,148 @@
+﻿using System.Security.Claims;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using UserService.API.DTOs.GoogleAuthDTOs;
+using UserService.API.DTOs.Requests;
+using UserService.API.Services.Interfaces;
+
+namespace UserService.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AccountController : ControllerBase
+{
+    private readonly IAccountService _accountService;
+    private readonly ITokenService _tokenService;
+    private readonly IUserService _userService;
+    private readonly IAuthService _authService;
+
+    public AccountController(IAccountService accountService, ITokenService tokenService, IUserService userService, IAuthService authService)
+    {
+        _accountService = accountService;
+        _tokenService = tokenService;
+        _userService = userService;
+        _authService = authService;
+    }
+
+    [HttpPost("Register")]
+    public async Task<IActionResult> RegisterAsync([FromBody]RegisterRequestDTO request)
+    {
+        var res = await _accountService.RegisterAsync(request);
+        
+        return Ok(res);
+    }
+    
+    [HttpPost("google/register")]
+    public async Task<IActionResult> RegisterGoogleUser([FromBody] GoogleRegisterDTO request)
+    {
+        try
+        {
+            var accessToken = await _accountService.RegisterGoogleAsync(request.UserInfo, request.ChosenUserName);
+
+            return Ok(new
+            {
+                success = true,
+                data = new
+                {
+                    AccessToken = accessToken,
+                    UserName = request.ChosenUserName,
+                    Email = request.UserInfo.Email,
+                    Picture = request.UserInfo.Picture
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { success = false, error = ex.Message });
+        }
+    }
+
+    [HttpGet("CheckUser")]
+    public async Task<IActionResult> CheckUser(string username)
+    {
+        bool isExsists = await _userService.CheckIfUserExists(username);
+
+        if (isExsists)
+        {
+            return Ok(false);
+        }
+        
+        return Ok(true);
+    }
+
+    [HttpGet("CheckEmail")]
+    public async Task<IActionResult> CheckEmail(string email)
+    {
+        var emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+        if (!Regex.IsMatch(email, emailPattern))
+        {
+            return BadRequest("Invalid email"); 
+        }
+        
+        bool isExists = await _userService.CheckEmailExistsAsync(email);
+
+        if (isExists)
+        {
+            return Ok(false); // Email существует - нельзя использовать
+        }
+        return Ok(true);
+    }
+
+    [Authorize]
+    [HttpPost("Confirm")]
+    public async Task<IActionResult> ConfirmEmailAsync()
+    {
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        
+        var token = await _tokenService.CreateEmailTokenAsync(User);
+        
+        var user = await _userService.GetUserByEmailAsync(email);
+        if (user.isConfirmed)
+        {
+            return BadRequest("Email already confirmed");
+        }
+
+        await _accountService.ConfirmEmailAsync(User, token, HttpContext);
+        
+        return Ok("Email confirmation sent");
+    }
+
+    [HttpGet("Verify/{id}/{token}")]
+    public async Task<IActionResult> VerifyEmailAsync(string id, string token)
+    {
+        var res = await _tokenService.ValidateEmailTokenAsync(token);
+
+        if (!res)
+        {
+            throw new Exception("Error");
+        }
+
+        var emailFromToken = await _tokenService.GetEmailFromTokenAsync(token);
+        
+        var idFromEmail = await _userService.GetIdByEmailAsync(emailFromToken);
+
+        if (id == idFromEmail)
+        {
+            return Ok(await _accountService.VerifyEmailAsync(id));
+        }
+
+        throw new Exception("Error");
+    }
+
+    [Authorize]
+    [HttpGet("VerificationStatus")]
+    public async Task<IActionResult> GetVerificationStatusAsync()
+    {
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        var user = await _userService.GetUserByEmailAsync(email);
+        
+        if (user == null)
+        {
+            return Unauthorized("User not found");
+        }
+
+        return Ok(new { isEmailVerified = user.isConfirmed });
+    }
+}

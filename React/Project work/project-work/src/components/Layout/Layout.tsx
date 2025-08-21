@@ -11,7 +11,7 @@ const Layout: React.FC = () => {
     const [isMobile, setIsMobile] = useState(false);
 
     const handleResize = useCallback(() => {
-            setIsMobile(window.innerWidth < 768);
+        setIsMobile(window.innerWidth < 768);
     }, []);
 
     useEffect(() => {

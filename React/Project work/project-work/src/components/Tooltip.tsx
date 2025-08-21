@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface ItemsProps {
     children: React.ReactNode;
-    hint: string;
+    hint: React.ReactNode;
     side?: "top" | "right" | "bottom" | "left";
 }
 
@@ -13,7 +13,7 @@ const MyToolTip: React.FC<ItemsProps> = ({ children, hint, side }) => {
             <TooltipTrigger asChild>
                 {children}
             </TooltipTrigger>
-            <TooltipContent side={side} className="bg-[#212124] z-9999">
+            <TooltipContent side={side} className="bg-[#212124] z-9999 select-none">
                 <p>{hint}</p>
             </TooltipContent>
         </Tooltip>
