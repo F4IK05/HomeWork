@@ -26,7 +26,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> RegisterAsync([FromBody]RegisterRequestDTO request)
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequestDTO request)
     {
         var res = await _accountService.RegisterAsync(request);
         
@@ -56,6 +56,25 @@ public class AccountController : ControllerBase
         {
             return BadRequest(new { success = false, error = ex.Message });
         }
+    }
+
+    [HttpPost("ChangePassword")]
+    public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO request)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId == null)
+        {
+            return BadRequest();
+        }
+
+        var result = await _accountService.ChangePasswordAsync(userId, request.CurrentPassword, request.NewPassword);
+
+        if (result.IsSuccess)
+        {
+            return Ok("Password changed successfully");
+        }
+        return BadRequest();
     }
 
     [HttpGet("CheckUser")]

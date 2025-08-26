@@ -39,34 +39,6 @@
            return Redirect(url);
        }
        
-       [HttpPost("google/login")]
-       public async Task<IActionResult> LoginGoogleUser([FromBody] GoogleLoginDTO request)
-       {
-           try
-           {
-               var accessToken = await _authService.LoginGoogleAsync(request.UserInfo);
-
-               var user = await _context.Users.FirstOrDefaultAsync(u => u.GoogleId == request.UserInfo.Id);
-
-               return Ok(new
-               {
-                   success = true,
-                   data = new
-                   {
-                       AccessToken = accessToken,
-                       UserName = user.UserName,
-                       Email = request.UserInfo.Email,
-                       Picture = request.UserInfo.Picture
-                   }
-               });
-           }
-           catch (Exception ex)
-           {
-               return BadRequest(new { success = false, error = ex.Message });
-           }
-       }
-
-       
        [HttpPost("google/callback")]
        public async Task<IActionResult> GoogleCallback([FromQuery] string code)
        {
@@ -81,17 +53,30 @@
                var userInfo = await _googleAuthService.GetUserInfoAsync(tokens.AccessToken);
         
                // Проверка, есть ли пользователь в базе
-               var isUserExist = await _context.Users.FirstOrDefaultAsync(u => u.GoogleId == userInfo.Id);
+               var user = await _context.Users.FirstOrDefaultAsync(u => u.GoogleId == userInfo.Id);
 
-               if (isUserExist != null)
+               if (user == null)
+               {
+                   user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userInfo.Email);
+
+                   if (user != null)
+                   {
+                       user.GoogleId = userInfo.Id;
+                       _context.Users.Update(user);
+                       await _context.SaveChangesAsync();
+                   }
+               }
+
+               if (user != null)
                {
                    var userRoles = await _context.UserRoles
-                       .Where(ur => ur.UserId == isUserExist.Id)
+                       .Where(ur => ur.UserId == user.Id)
                        .Include(ur => ur.Role)
-                       .Select(ur => ur.Role.Name).ToListAsync();
-                   
-                   var accessToken = await _tokenService.CreateTokenAsync(isUserExist, userRoles);
-                   
+                       .Select(ur => ur.Role.Name)
+                       .ToListAsync();
+            
+                   var accessToken = await _tokenService.CreateTokenAsync(user, userRoles);
+            
                    return Ok(new
                    {
                        success = true,
@@ -99,8 +84,9 @@
                        data = new
                        {
                            AccessToken = accessToken,
-                           Email = isUserExist.Email,
-                           UserName = isUserExist.UserName,
+                           Email = user.Email,
+                           UserName = user.UserName,
+                           Picture = user.AvatarUrl,
                        }
                    });
                }
@@ -120,7 +106,6 @@
                        }
                    });
                }
-               
            }
            catch (Exception ex)
            {

@@ -21,8 +21,6 @@ const MainPage: React.FC = () => {
                 albums={albums}
             />
 
-
-
         </>
     )
 }

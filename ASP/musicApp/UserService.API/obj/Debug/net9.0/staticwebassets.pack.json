@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\HomeWork\\ASP\\MusicApp\\UserService.API\\wwwroot\\ConfirmMessage.html",
+      "PackagePath": "staticwebassets\\ConfirmMessage.html"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.UserService.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.UserService.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.UserService.API.props",
+      "PackagePath": "build\\UserService.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.UserService.API.props",
+      "PackagePath": "buildMultiTargeting\\UserService.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.UserService.API.props",
+      "PackagePath": "buildTransitive\\UserService.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

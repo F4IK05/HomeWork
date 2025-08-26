@@ -68,5 +68,6 @@
     "later": "Later",
     "please_verify_your_email": "Please verify your email",
     "verify_now": "Verify now",
-    "account_already_registered": "This account is already registered"
+    "account_already_registered": "This account is already registered",
+    "security": "Security"
 }

@@ -1,0 +1,15 @@
+C:\HomeWork\ASP\MusicApp\UserService.Data\bin\Debug\net9.0\UserService.Data.deps.json
+C:\HomeWork\ASP\MusicApp\UserService.Data\bin\Debug\net9.0\UserService.Data.dll
+C:\HomeWork\ASP\MusicApp\UserService.Data\bin\Debug\net9.0\UserService.Data.pdb
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.AssemblyInfoInputs.cache
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.AssemblyInfo.cs
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.csproj.CoreCompileInputs.cache
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.sourcelink.json
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.dll
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\refint\UserService.Data.dll
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.pdb
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\ref\UserService.Data.dll
+C:\HomeWork\ASP\MusicApp\UserService.Data\bin\Debug\net9.0\UserService.Data.runtimeconfig.json
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.csproj.AssemblyReference.cache
+C:\HomeWork\ASP\MusicApp\UserService.Data\obj\Debug\net9.0\UserService.Data.genruntimeconfig.cache

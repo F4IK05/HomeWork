@@ -78,40 +78,4 @@ public class AuthService : IAuthService
 
         return accessToken;
     }
-
-    // public async Task<GoogleAuthResult> LoginOrRegisterGoogleAsync(GoogleUserInfo userInfo)
-    // {
-    //     // Ищем пользователя по GoogleId
-    //     var user = await _context.Users.FirstOrDefaultAsync(u => u.GoogleId == userInfo.Id);
-    //
-    //     // Если не нашли, создаем нового
-    //     if (user == null)
-    //     {
-    //         user = _mapper.Map<User>(userInfo);
-    //         user.Password = HashPassword(Guid.NewGuid().ToString());
-    //         
-    //         await _context.Users.AddAsync(user);
-    //         await _context.SaveChangesAsync();
-    //         
-    //         await _accountService.AssignRoleToUserAsync(user.Id, "Guest");
-    //     }
-    //     
-    //     // Получаем роли пользователя
-    //     var userRoles = await _context.UserRoles
-    //         .Where(ur => ur.UserId == user.Id)
-    //         .Include(ur => ur.Role)
-    //         .Select(ur => ur.Role.Name)
-    //         .ToListAsync();
-    //     
-    //     // Генерируем токен доступа
-    //     var token = await _tokenService.CreateTokenAsync(user, userRoles);
-    //
-    //     return new GoogleAuthResult
-    //     {
-    //         AccessToken = token,
-    //         Email = user.Email,
-    //         UserName = user.UserName,
-    //         
-    //     };
-    // }
 }

@@ -8,6 +8,8 @@ import SignUpPage from './pages/SignUpPage'
 import VerifyEmailPage from './pages/VerifyEmailPage'
 import { AuthProvider } from './contexts/AuthContext'
 import GoogleCallbackPage from './pages/GoogleCallbackPage'
+import AccountPage from './pages/AccountPage'
+import { AccountProvider } from './contexts/AccountContext'
 
 
 function App() {
@@ -31,6 +33,15 @@ function App() {
             <Route path='/sign_up' element={<SignUpPage />} />
             <Route path='/verify-email' element={<VerifyEmailPage />} />
             <Route path='/auth/google' element={<GoogleCallbackPage />} />
+
+            <Route
+              path='/account'
+              element={
+                <AccountProvider>
+                  <AccountPage />
+                </AccountProvider>
+              } />
+
           </Routes>
         </AuthProvider>
       </BrowserRouter>

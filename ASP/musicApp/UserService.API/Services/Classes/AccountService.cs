@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserService.API.DTOs.GoogleAuthDTOs;
 using UserService.API.DTOs.Requests;
@@ -126,6 +127,32 @@ public class AccountService : IAccountService
         
         await _context.SaveChangesAsync();
         return Result.Success("Email verified");
+    }
+
+    public async Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user == null)
+        {
+            throw new Exception($"User with id {userId} not found");
+        }
+
+        if (!Verify(user.Password, currentPassword))
+        {
+            throw new Exception($"Current password is incorrect.");
+        }
+
+        user.Password = HashPassword(newPassword);
+        
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+        return Result.Success("Password changed");
+    }
+
+    public async Task<IActionResult> ChangeEmailAsync(string userId, string newEmail, string token)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task AssignRoleToUserAsync(string userId, string roleName = "Guest")

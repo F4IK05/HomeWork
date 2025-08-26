@@ -98,8 +98,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const updateUserPicture = (picture: string) => {
     setUserPicture(picture);
     localStorage.setItem("userPicture", picture);
-    window.dispatchEvent(new CustomEvent("userPictureUpdate", { 
-      detail: { userPicture: picture } 
+    window.dispatchEvent(new CustomEvent("userPictureUpdate", {
+      detail: { userPicture: picture }
     }));
   };
 

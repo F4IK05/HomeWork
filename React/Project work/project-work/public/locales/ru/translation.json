@@ -68,5 +68,6 @@
     "later": "Позже",
     "please_verify_your_email": "Пожалуйста, подтвердите свой адрес электронной почты",
     "verify_now": "Подтвердить сейчас",
-    "account_already_registered": "Этот аккаунт уже зарегистрирован"
+    "account_already_registered": "Этот аккаунт уже зарегистрирован",
+    "security": "Безопасность"
 }

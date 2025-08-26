@@ -19,12 +19,12 @@ const LeftSideBarItem: React.FC<TooltipProps> = ({ sectionName, icon, text, acti
         if (isOpen && window.innerWidth < 768) {
             setIsOpen(false) // закрытия sidebar-а при переходе по пути
         }
-    }, [location.pathname]) 
+    }, [location.pathname])
 
     const content = (
-        <Link to={to} className={`flex items-center cursor-pointer p-2 rounded-md
+        <Link to={to} className={`flex items-center cursor-pointer p-2 rounded-md transition-all 
             ${isOpen ? '' : 'justify-center'}
-            transition-all ${active ? 'bg-[#4B5563] text-white' : 'hover:bg-[#2c2c2e]'}`}>
+            ${active ? 'bg-[#4B5563] text-white' : 'hover:bg-[#2c2c2e]'}`}>
             {icon}
             <span className={`overflow-hidden whitespace-nowrap transition-all ${isOpen ? 'ml-3' : 'w-0 h-0 opacity-0'}`}>{text}</span>
         </Link>
@@ -38,7 +38,7 @@ const LeftSideBarItem: React.FC<TooltipProps> = ({ sectionName, icon, text, acti
             )}
 
             {isOpen ? content : (
-                <MyToolTip children={content} side="right" hint={text}/>
+                <MyToolTip children={content} side="right" hint={text} />
             )}
 
         </>
