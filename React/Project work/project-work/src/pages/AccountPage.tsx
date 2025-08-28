@@ -1,7 +1,8 @@
 import MainContent from "@/components/Account/MainContent";
 import SideBar from "@/components/Account/SideBar";
 import React, { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react"; // иконки
+import { Menu, X } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 const AccountPage: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +23,16 @@ const AccountPage: React.FC = () => {
   return (
     <div className="bg-[#171719] flex justify-center items-center">
       <div className="max-w-[1000px] w-full m-auto text-white flex h-screen relative">
+        <Toaster position="top-center" reverseOrder={false} toastOptions={{
+          style: {
+            background: '#1f1f23',
+            color: '#fff',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            backdropFilter: "blur(6px)"
+          }
+        }}/>
+
 
         {isOpen && (
           <div className="fixed inset-0 bg-black/50 z-40"></div>

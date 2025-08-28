@@ -20,7 +20,7 @@ const SideBar: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen sm:p-8">
+        <div className="min-h-screen md:p-8">
             <div className="w-fit">
                 <div className="bg-[#1e1e22] rounded-lg p-6">
                     {/* User Info */}

@@ -21,6 +21,7 @@ public class TokenService : ITokenService
         // инфа, которая будет включена в токен(то есть в токене будет UserName, Email)
         var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim("name", user.UserName),
             new Claim("email", user.Email),
         };

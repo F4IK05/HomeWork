@@ -1,10 +1,14 @@
 import React from "react";
-import { Camera, Mail, Phone, MapPin } from "lucide-react";
+import { Camera, Mail, Phone, MapPin, Forward, Shield, ChevronRight, Key } from "lucide-react";
 import { useAccount } from "@/hooks/useAccount";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import PasswordChangeModal from "./PasswordChangeModal";
 
 const MainContent: React.FC = () => {
-    const { activeSection } = useAccount();
+    const { t } = useTranslation();
+
+    const { activeSection, isPasswordModalOpen, setIsPasswordModalOpen } = useAccount();
     const { userName, userEmail, userPicture } = useAuth();
 
     const getUserInitial = () => {
@@ -20,7 +24,7 @@ const MainContent: React.FC = () => {
                         <div className="flex flex-col sm:flex-row items-center md:items-start gap-4 sm:gap-6">
                             <div className="w-24 h-24 relative">
                                 {userPicture ? (
-                                    <img className="w-24 h-24 rounded-full object-cover" src={userPicture} alt={userName ?? undefined}/>
+                                    <img className="w-24 h-24 rounded-full object-cover" src={userPicture} alt={userName ?? undefined} />
                                 ) : (
                                     <div className="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold text-white">
                                         {getUserInitial()}
@@ -79,47 +83,22 @@ const MainContent: React.FC = () => {
             case 'security':
                 return (
                     <div className="space-y-8">
-                        <h2 className="text-2xl font-bold text-white">Безопасность</h2>
+                        <h2 className="text-2xl font-bold text-white">{t("security")}</h2>
 
-                        <div className="space-y-6">
-                            {/* Password Change */}
-                            <div className="p-6 bg-[#212124] rounded-lg">
-                                <h3 className="text-lg font-semibold text-white mb-4">Смена пароля</h3>
-                                <div className="space-y-4">
-                                    <input
-                                        type="password"
-                                        placeholder="Текущий пароль"
-                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    />
-                                    <input
-                                        type="password"
-                                        placeholder="Новый пароль"
-                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    />
-                                    <input
-                                        type="password"
-                                        placeholder="Подтвердите новый пароль"
-                                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    />
-                                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                                        Обновить пароль
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Two-Factor Authentication */}
-                            <div className="p-6 bg-[#212124] rounded-lg">
-                                <h3 className="text-lg font-semibold text-white mb-4">Двухфакторная аутентификация</h3>
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-gray-300">Дополнительная защита вашего аккаунта</p>
-                                        <p className="text-sm text-gray-400">Статус: Отключена</p>
+                        <div className="">
+                            <button onClick={() => setIsPasswordModalOpen(true)} className="group w-full bg-[#212124] hover:bg-[#28282c] text-white font-semibold rounded-2xl p-4 transition-all flex items-center justify-between border border-gray-700 ">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 bg-orange-500/20 group-hover:bg-orange-500/30 rounded-lg transition-colors">
+                                        <Key className="w-5 h-5 text-orange-400" />
                                     </div>
-                                    <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                                        Включить
-                                    </button>
+                                    <span>{t("change_password")}</span>
                                 </div>
-                            </div>
+                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                            </button>
+                            
+                            {isPasswordModalOpen && (
+                                <PasswordChangeModal/>
+                            )}
 
 
                         </div>

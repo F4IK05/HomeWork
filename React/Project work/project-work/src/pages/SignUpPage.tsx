@@ -1,6 +1,6 @@
 import Kbd from "@/components/Kbd";
 import MyToolTip from "@/components/Tooltip";
-import { Check, ChevronLeft, Info } from "lucide-react";
+import { ChevronLeft, Info } from "lucide-react";
 import type React from "react";
 import { useEffect, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode"
 import { useAuth } from "@/hooks/useAuth";
+import PasswordRequirements from "@/components/PasswordRequirement";
+import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 
 interface Token {
     name?: string,
@@ -21,6 +23,7 @@ const SignUpPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
+    const { getPasswordError } = usePasswordValidation();
 
     const [step, setStep] = useState(1);
 
@@ -37,46 +40,6 @@ const SignUpPage: React.FC = () => {
 
     const [isUsernameLocked, setIsUsernameLocked] = useState(false);
     const [isCheckingGoogleAccount, setIsCheckingGoogleAccount] = useState(false);
-
-    const getPasswordError = (password: string, confirmPassword: string) => {
-        if (password.length == 0) return "";
-
-        if (password.length < 8 ||
-            !/(?=.*[A-Za-z])/.test(password) ||
-            !/(?=.*\d)/.test(password) ||
-            !/(?=.*[@$!%*?&])/.test(password)) {
-            return "pass_does_not_match_the_requirements";
-        }
-
-        if (password != confirmPassword) {
-            return "pass_do_not_match";
-        }
-
-        return "";
-    }
-
-    const requirements = [
-        {
-            id: 'length',
-            test: password.length >= 8,
-            text: t("pass_must_be_at_least_8_characters_long")
-        },
-        {
-            id: 'letter',
-            test: /(?=.*[A-Za-z])/.test(password),
-            text: t("pass_must_contain_at_least_one_letter")
-        },
-        {
-            id: 'number',
-            test: /(?=.*\d)/.test(password),
-            text: t("pass_must_contain_at_least_one_number")
-        },
-        {
-            id: 'special',
-            test: /(?=.*[@$!%*?&])/.test(password),
-            text: t("pass_must_contain_at_least_one_special_character")
-        }
-    ];
 
     const checkGoogleAccountExists = async (email: string) => {
         try {
@@ -371,23 +334,7 @@ const SignUpPage: React.FC = () => {
                                     <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type="password" required placeholder="********" className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white" />
                                 </div>
 
-                                <div className="font-medium text-white mt-5 mb-5 text-sm flex flex-col gap-1">
-                                    <p className="text-base">{t("pass_requirements")}:</p>
-                                    {requirements.map((requirement) => (
-                                        <div key={requirement.id} className={`p-1 flex gap-1`}>
-                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${requirement.test ? "bg-green-400" : "bg-slate-600 border border-gray-400"}`}>
-                                                {requirement.test ? (
-                                                    <Check strokeWidth={3} className="w-3 h-3 fon text-white" />
-                                                ) : (
-                                                    <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
-                                                )}
-                                            </div>
-                                            <p className={`flex-1 text-sm transition-colors duration-300 ${requirement.test ? 'text-green-300' : 'text-white/60'}`}>
-                                                {requirement.text}
-                                            </p>
-                                        </div>
-                                    ))}
-                                </div>
+                                <PasswordRequirements password={password} className="mt-5 mb-5" />
 
                                 <div className={`transition-all mb-4 text-red-400 text-sm flex items-center gap-2 ${passwordError ? "max-h-10 opacity-100" : "max-h-0 opacity-0"}`}>
                                     <Info />

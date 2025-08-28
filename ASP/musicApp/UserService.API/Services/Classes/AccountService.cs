@@ -131,23 +131,85 @@ public class AccountService : IAccountService
 
     public async Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-        if (user == null)
+        try
         {
-            throw new Exception($"User with id {userId} not found");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            
+            if (user == null)
+            {
+                return Result.Error($"User with id {userId} not found");
+            }
+            
+            try
+            {
+                
+                bool isCurrentPasswordValid = BCrypt.Net.BCrypt.Verify(currentPassword, user.Password);
+                
+                if (!isCurrentPasswordValid)
+                {
+                    return Result.Error("Current password is incorrect");
+                }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    bool altVerification = BCrypt.Net.BCrypt.Verify(currentPassword, user.Password);
+                }
+                catch (Exception altEx)
+                {
+                    Console.WriteLine($"Alternative verification also failed: {altEx.Message}");
+                }
+                
+                return Result.Error("Error verifying current password: " + ex.Message);
+            }
+            
+            // Проверяем, что новый пароль отличается от старого
+            try
+            {
+                bool isSameAsOld = BCrypt.Net.BCrypt.Verify(newPassword, user.Password);
+                
+                if (isSameAsOld)
+                {
+                    return Result.Error("New password cannot be the same as the old password");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error comparing new password with old: {ex.Message}");
+            }
+            
+            // Хешируем новый пароль
+            try
+            {
+                string newHashedPassword = BCrypt.Net.BCrypt.HashPassword(newPassword);
+                
+                // Проверяем, что новый хеш работает
+                bool testNewHash = BCrypt.Net.BCrypt.Verify(newPassword, newHashedPassword);
+                
+                if (!testNewHash)
+                {
+                    return Result.Error("Error creating new password hash");
+                }
+                
+                // Обновляем пароль
+                user.Password = newHashedPassword;
+                
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                
+                return Result.Success("Password changed successfully");
+                
+            }
+            catch (Exception ex)
+            {
+                return Result.Error("Error creating new password: " + ex.Message);
+            }
         }
-
-        if (!Verify(user.Password, currentPassword))
+        catch (Exception ex)
         {
-            throw new Exception($"Current password is incorrect.");
+            return Result.Error("An error occurred while changing password");
         }
-
-        user.Password = HashPassword(newPassword);
-        
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
-        return Result.Success("Password changed");
     }
 
     public async Task<IActionResult> ChangeEmailAsync(string userId, string newEmail, string token)

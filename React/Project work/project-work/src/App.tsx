@@ -38,6 +38,7 @@ function App() {
               path='/account'
               element={
                 <AccountProvider>
+                  
                   <AccountPage />
                 </AccountProvider>
               } />

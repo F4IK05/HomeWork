@@ -69,5 +69,11 @@
     "please_verify_your_email": "Пожалуйста, подтвердите свой адрес электронной почты",
     "verify_now": "Подтвердить сейчас",
     "account_already_registered": "Этот аккаунт уже зарегистрирован",
-    "security": "Безопасность"
+    "security": "Безопасность",
+    "change_password": "Сменить пароль",
+    "current_password": "Текущий пароль",
+    "new_password": "Новый пароль",
+    "current_pass_is_incorrect": "Текущий пароль неверен",
+    "password_changed_successfully": "Пароль успешно изменён",
+    "new_pass_cannot_be_same_as_old": "Новый пароль не может быть таким же, как старый"
 }
