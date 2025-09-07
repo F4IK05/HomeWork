@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("isEmailVerified");
     delete axios.defaults.headers.common["Authorization"];
     window.dispatchEvent(new CustomEvent("userLogout"));
-    navigate("/sign_in");
+    navigate("/");
   };
 
   const login = async (token: string, name: string, email: string, picture?: string) => {

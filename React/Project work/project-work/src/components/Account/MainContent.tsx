@@ -11,10 +11,6 @@ const MainContent: React.FC = () => {
     const { activeSection, isPasswordModalOpen, setIsPasswordModalOpen } = useAccount();
     const { userName, userEmail, userPicture } = useAuth();
 
-    const getUserInitial = () => {
-        return userName ? userName.charAt(0).toUpperCase() : "";
-    }
-
     const renderContent = () => {
         switch (activeSection) {
             case 'profile':
@@ -23,13 +19,7 @@ const MainContent: React.FC = () => {
                         {/* Header with Avatar */}
                         <div className="flex flex-col sm:flex-row items-center md:items-start gap-4 sm:gap-6">
                             <div className="w-24 h-24 relative">
-                                {userPicture ? (
-                                    <img className="w-24 h-24 rounded-full object-cover" src={userPicture} alt={userName ?? undefined} />
-                                ) : (
-                                    <div className="w-24 h-24 rounded-full bg-gray-700 flex items-center justify-center text-2xl font-bold text-white">
-                                        {getUserInitial()}
-                                    </div>
-                                )}
+                                <img className="w-24 h-24 rounded-full object-cover" src={userPicture} alt={userName} />
                                 <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow">
                                     <Camera className="w-4 h-4 text-gray-600" />
                                 </button>
@@ -62,17 +52,6 @@ const MainContent: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Bio Field
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">О себе</label>
-              <textarea
-                // value={profileData.bio}
-                // onChange={(e) => handleInputChange('bio', e.target.value)}
-                rows={4}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-              />
-            </div> */}
-
                         {/* Save Button */}
                         <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-medium">
                             Сохранить изменения
@@ -95,9 +74,9 @@ const MainContent: React.FC = () => {
                                 </div>
                                 <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
                             </button>
-                            
+
                             {isPasswordModalOpen && (
-                                <PasswordChangeModal/>
+                                <PasswordChangeModal />
                             )}
 
 

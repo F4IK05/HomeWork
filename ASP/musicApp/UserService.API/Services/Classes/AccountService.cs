@@ -32,18 +32,31 @@ public class AccountService : IAccountService
         _tokenService = tokenService;
     }
 
+    private static string GenerateAvatarUrl(string seed)
+    {
+        var encoded = Uri.EscapeDataString(seed);
+        
+        return $"https://api.dicebear.com/9.x/initials/svg?seed={encoded}";
+    }
+
     public async Task<Result> RegisterAsync(RegisterRequestDTO request)
     {
-        var newUser = _mapper.Map<User>(request);
+        var user = _mapper.Map<User>(request);
         
-        newUser.Password = HashPassword(request.Password);
+        if (string.IsNullOrEmpty(user.AvatarUrl))
+        {
+            user.AvatarUrl = GenerateAvatarUrl(user.UserName);
+        }
         
-        _context.Users.Add(newUser);
+        user.Password = HashPassword(request.Password);
         
-        await AssignRoleToUserAsync(newUser.Id);
+        _context.Users.Add(user);
+        
+        await AssignRoleToUserAsync(user.Id);
         
         await _context.SaveChangesAsync();
         
+
         return Result.Success();
     }
 
@@ -67,12 +80,18 @@ public class AccountService : IAccountService
         
         var user = _mapper.Map<User>(userInfo);
         
+        if (string.IsNullOrEmpty(user.AvatarUrl)) // если Google не дал picture
+        {
+            user.AvatarUrl = GenerateAvatarUrl(user.UserName);
+        }
+        
         user.UserName = chosenUserName;
 
-        user.Password = HashPassword(Guid.NewGuid().ToString());
+        user.Password = null;
         
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
+        
         
         var userRoles = await _context.UserRoles
             .Where(ur => ur.UserId == user.Id)

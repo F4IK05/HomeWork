@@ -48,13 +48,15 @@ public class AuthService : IAuthService
         
         // user.RefreshToken = Guid.NewGuid().ToString();
         // user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(7);
-        
-        await _context.SaveChangesAsync();
+        // await _context.SaveChangesAsync();
         
         // Возвращение токена
         return TypedResult<object>.Success(new
         {
             AccessToken = accessToken,
+            UserName = user.UserName,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
             // RefreshToken = user.RefreshToken
         }, "Successfully logged in");
     }

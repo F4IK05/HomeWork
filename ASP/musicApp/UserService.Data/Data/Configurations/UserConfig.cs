@@ -20,7 +20,7 @@ public class UserConfig : IEntityTypeConfiguration<User>
         email.IsRequired().HasMaxLength(255);
         
         var password = builder.Property(u => u.Password);
-        password.IsRequired();
+        password.IsRequired(false);
 
         var isConfirmed = builder.Property(u => u.isConfirmed);
         isConfirmed.HasDefaultValue(false);

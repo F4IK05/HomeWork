@@ -1,6 +1,6 @@
 import Kbd from "@/components/Kbd";
 import MyToolTip from "@/components/Tooltip";
-import { ChevronLeft, Info } from "lucide-react";
+import { ChevronLeft, Eye, EyeOff, Info } from "lucide-react";
 import type React from "react";
 import { useEffect, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,6 +40,9 @@ const SignUpPage: React.FC = () => {
 
     const [isUsernameLocked, setIsUsernameLocked] = useState(false);
     const [isCheckingGoogleAccount, setIsCheckingGoogleAccount] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const checkGoogleAccountExists = async (email: string) => {
         try {
@@ -104,6 +107,8 @@ const SignUpPage: React.FC = () => {
                 Password: password,
             });
 
+            const avatarUrlFromLogin = loginRes.data.data.avatarUrl;
+
             const token = loginRes.data.data.accessToken;
             if (token) {
                 const decodedToken = jwtDecode<Token>(token);
@@ -114,7 +119,7 @@ const SignUpPage: React.FC = () => {
                     return;
                 }
 
-                login(token, nameFromToken, emailFromToken);
+                login(token, nameFromToken, emailFromToken, avatarUrlFromLogin);
 
                 try {
                     await axios.post(
@@ -328,10 +333,20 @@ const SignUpPage: React.FC = () => {
                             <form className="w-full" onSubmit={handlePasswordSubmit}>
                                 <div className="mb-4">
                                     <label className="block text-white text-sm font-medium mb-2">{t("password")}</label>
-                                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" required placeholder="********" className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white" />
+                                    <div className="relative">
+                                        <input onChange={(e) => setPassword(e.target.value)} value={password} type={showPassword ? "text" : "password"} required placeholder="********" className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white" />
+                                        <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={() => setShowPassword(!showPassword)}>
+                                            {showPassword ? <EyeOff className="text-gray-400" /> : <Eye className="text-gray-400" />}
+                                        </button>
+                                    </div>
 
                                     <label className="block text-white text-sm font-medium mt-2 mb-2">{t("confirm_password")}</label>
-                                    <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type="password" required placeholder="********" className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white" />
+                                    <div className="relative">
+                                        <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type={showConfirmPassword ? "text" : "password"} required placeholder="********" className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white" />
+                                        <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                            { showConfirmPassword ? <EyeOff className="text-gray-400" /> : <Eye className="text-gray-400" /> }
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <PasswordRequirements password={password} className="mt-5 mb-5" />

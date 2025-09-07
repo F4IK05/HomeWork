@@ -75,5 +75,6 @@
     "new_password": "Новый пароль",
     "current_pass_is_incorrect": "Текущий пароль неверен",
     "password_changed_successfully": "Пароль успешно изменён",
-    "new_pass_cannot_be_same_as_old": "Новый пароль не может быть таким же, как старый"
+    "new_pass_cannot_be_same_as_old": "Новый пароль не может быть таким же, как старый",
+    "account": "Аккаунт"
 }

@@ -56,26 +56,26 @@ const NavBar: React.FC = () => {
     if (isInputOpen && isMobile) inputRef.current?.focus();
   }, [isInputOpen, isMobile]);
 
-  const getUserInitial = () => userName ? userName.charAt(0).toUpperCase() : "";
-
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
     setIsModalOpen(false);
   };
 
+  console.log(userPicture);
+
   return (
     <>
       <div className={`fixed top-0 right-0 z-30 h-16 bg-[#1e1e22] text-white flex justify-between items-center p-4 transition-all gap-5 select-none
         ${isMobile ? "left-0" : isOpen ? "left-64" : "left-16"}`}>
-        
+
         {isMobile && (
           <button onClick={() => setIsOpen(true)} className="transition-all cursor-pointer group hover:scale-[1.1]">
             <Menu className="text-white w-10 h-10 p-1.5" />
           </button>
         )}
 
-        <div ref={searchRef} className="relative w-full flex items-center max-w-lg">
+        <div ref={searchRef} className="relative flex flex-1 items-center min-w-0 max-w-lg">
           <input
             type="text"
             placeholder={t("search") + "..."}
@@ -92,26 +92,16 @@ const NavBar: React.FC = () => {
           <div className="flex items-center gap-2">
             {userName ? (
               <div className="relative" ref={dropdownRef}>
-                <button onClick={() => setDropdownOpen(!dropdownOpen)} 
+                <button onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden font-bold text-white hover:scale-[1.04] active:scale-[0.95] cursor-pointer">
-                  {userPicture ? (
-                    <img
-                      src={userPicture}
-                      alt={userName}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-blue-500 flex items-center justify-center">
-                      {getUserInitial()}
-                    </div>
-                  )}
+                  <img src={userPicture} alt={userName} className="w-full h-full object-cover" />
                 </button>
 
                 {dropdownOpen && (
                   <div className="absolute right-0 top-12 bg-[#2a2a2e] border border-gray-600 rounded-lg shadow-lg py-2 min-w-[150px] z-50">
                     <div className="px-4 py-2 text-sm text-gray-300 border-b border-gray-600">{userName}</div>
                     <Link to="/account" className="w-full px-4 py-2 text-left text-sm text-white hover:bg-[#3a3a3e] transition-all flex items-center gap-2">
-                      <User className="w-4 h-4"/>Account
+                      <User className="w-4 h-4" /> {t("account")}
                     </Link>
                     <button onClick={handleLogout} className="w-full px-4 py-2 text-left text-sm text-white hover:bg-[#3a3a3e] transition-all flex items-center gap-2">
                       <LogOut className="w-4 h-4" />{t("logout")}
@@ -131,19 +121,10 @@ const NavBar: React.FC = () => {
             )}
           </div>
         ) : (
-          <button onClick={() => setIsModalOpen(true)} className="cursor-pointer">
+          <button onClick={() => setIsModalOpen(true)} className="flex justify-center items-center cursor-pointer w-10 h-10 rounded-full overflow-hidden">
             {userName ? (
-              userPicture ? (
-                <img
-                  src={userPicture}
-                  alt={userName}
-                  className="w-15 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center font-bold text-white text-sm">
-                  {getUserInitial()}
-                </div>
-              )
+              <img src={userPicture} alt={userName} className="w-full h-full object-cover" />
+
             ) : (
               <User />
             )}
@@ -163,18 +144,18 @@ const NavBar: React.FC = () => {
           {userName ? (
             <>
               <div className="flex items-center gap-3 mb-4">
-                <img
-                  src={userPicture || "/default-avatar.png"}
-                  alt={userName}
-                  className="w-12 h-12 rounded-full object-cover"
-                  onError={(e) => { e.currentTarget.src = "/default-avatar.png"; }}
-                />
+                <img src={userPicture} alt={userName} className="w-12 h-12 rounded-full object-cover" />
                 <div>
                   <div className="text-gray-400 text-base font-normal">
                     {t("welcome") || "Welcome"}, {userName}
                   </div>
                 </div>
               </div>
+
+              <Link to="/account" className="w-full text-left text-white flex items-center gap-2">
+                <User className="w-6 h-6" />{t("account")}
+              </Link>
+
               <button onClick={handleLogout} className="cursor-pointer flex items-center gap-2">
                 <LogOut className="w-6 h-6" />{t("logout")}
               </button>

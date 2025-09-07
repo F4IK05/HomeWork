@@ -39,7 +39,7 @@ const AccountPage: React.FC = () => {
         )}
         {/* Боковое меню для desktop */}
         <div className="hidden md:block">
-          <SideBar/>
+          <SideBar />
         </div>
         
 
@@ -51,11 +51,11 @@ const AccountPage: React.FC = () => {
               <X size={24} />
             </button>
           </div>
-          <SideBar />
+          <SideBar onItemClick={() => setIsOpen(false)}/>
         </div>
 
         {/* Кнопка меню (только на телефоне) */}
-        <button className="absolute top-4 left-4 z-40 md:hidden" onClick={() => setIsOpen(true)}>
+        <button className="bg-[#252529] p-1 rounded-[5px] absolute top-4 left-4 z-40 md:hidden" onClick={() => setIsOpen(true)}>
           <Menu size={28} />
         </button>
 

@@ -3,7 +3,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { User, Settings, Shield, Bell, LogOut } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const SideBar: React.FC = () => {
+interface SideBarProps {
+  onItemClick?: () => void;
+}
+
+const SideBar: React.FC<SideBarProps> = ({ onItemClick }) => {
     const { t } = useTranslation();
     const { userName, userEmail, userPicture } = useAuth();
     const { activeSection, setActiveSection } = useAccount();
@@ -15,10 +19,6 @@ const SideBar: React.FC = () => {
         { id: 'settings', icon: Settings, label: t("settings") }
     ];
 
-    const getUserInitial = () => {
-        return userName ? userName.charAt(0).toUpperCase() : "";
-    }
-
     return (
         <div className="min-h-screen md:p-8">
             <div className="w-fit">
@@ -26,11 +26,8 @@ const SideBar: React.FC = () => {
                     {/* User Info */}
                     <div className="flex items-center gap-3 mb-8">
                         <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold">
-                            {userPicture ? (
-                                <img className="w-15 rounded-full object-cover" src={userPicture} alt={userName ?? undefined} />
-                            ) : (
-                                getUserInitial()
-                            )}
+                            <img className="w-15 rounded-full object-cover" src={userPicture} alt={userName} />
+                            
                             
                         </div>
                         <div>
@@ -46,7 +43,8 @@ const SideBar: React.FC = () => {
                             return (
                                 <button
                                     key={item.id}
-                                    onClick={() => setActiveSection(item.id)}
+                                    onClick={() => {setActiveSection(item.id); onItemClick?.();}}
+                                    
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${activeSection === item.id
                                         ? 'bg-gray-400 text-black shadow-lg'
                                         : 'text-gray-300 hover:bg-gray-700 hover:text-white'

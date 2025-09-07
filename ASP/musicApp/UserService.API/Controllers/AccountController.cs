@@ -59,65 +59,65 @@ public class AccountController : ControllerBase
     }
 
     [Authorize]
-[HttpPost("ChangePassword")]
-public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO request)
-{
-    try
+    [HttpPost("ChangePassword")]
+    public async Task<IActionResult> ChangePassword(ChangePasswordRequestDTO request)
     {
-        // Логирование входящих данных
-        Console.WriteLine($"=== ChangePassword Request ===");
-        Console.WriteLine($"Request is null: {request == null}");
-        
-        if (request != null)
+        try
         {
-            Console.WriteLine($"CurrentPassword is null/empty: {string.IsNullOrEmpty(request.CurrentPassword)}");
-            Console.WriteLine($"NewPassword is null/empty: {string.IsNullOrEmpty(request.NewPassword)}");
-            Console.WriteLine($"CurrentPassword length: {request.CurrentPassword?.Length ?? 0}");
-            Console.WriteLine($"NewPassword length: {request.NewPassword?.Length ?? 0}");
+            // Логирование входящих данных
+            Console.WriteLine($"=== ChangePassword Request ===");
+            Console.WriteLine($"Request is null: {request == null}");
+            
+            if (request != null)
+            {
+                Console.WriteLine($"CurrentPassword is null/empty: {string.IsNullOrEmpty(request.CurrentPassword)}");
+                Console.WriteLine($"NewPassword is null/empty: {string.IsNullOrEmpty(request.NewPassword)}");
+                Console.WriteLine($"CurrentPassword length: {request.CurrentPassword?.Length ?? 0}");
+                Console.WriteLine($"NewPassword length: {request.NewPassword?.Length ?? 0}");
+            }
+
+            // Проверка авторизации
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Console.WriteLine($"UserId from token: {userId}");
+            Console.WriteLine($"User.Identity.IsAuthenticated: {User.Identity?.IsAuthenticated}");
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                Console.WriteLine("UserId is null or empty");
+                return BadRequest("User not authenticated");
+            }
+
+            if (request == null)
+            {
+                Console.WriteLine("Request is null");
+                return BadRequest("Request data is required");
+            }
+
+            if (string.IsNullOrEmpty(request.CurrentPassword) || string.IsNullOrEmpty(request.NewPassword))
+            {
+                Console.WriteLine("Current or new password is empty");
+                return BadRequest("Current password and new password are required");
+            }
+
+            var result = await _accountService.ChangePasswordAsync(userId, request.CurrentPassword, request.NewPassword);
+            
+            Console.WriteLine($"Service result - IsSuccess: {result.IsSuccess}");
+            
+            if (result.IsSuccess)
+            {
+                return Ok(new { message = "Password changed successfully" });
+            }
+            
+            Console.WriteLine($"Service error: {result.Message}");
+            return BadRequest(new { message = result.Message });
         }
-
-        // Проверка авторизации
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        Console.WriteLine($"UserId from token: {userId}");
-        Console.WriteLine($"User.Identity.IsAuthenticated: {User.Identity?.IsAuthenticated}");
-
-        if (string.IsNullOrEmpty(userId))
+        catch (Exception ex)
         {
-            Console.WriteLine("UserId is null or empty");
-            return BadRequest("User not authenticated");
+            Console.WriteLine($"Exception in ChangePassword: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            return BadRequest(new { message = ex.Message });
         }
-
-        if (request == null)
-        {
-            Console.WriteLine("Request is null");
-            return BadRequest("Request data is required");
-        }
-
-        if (string.IsNullOrEmpty(request.CurrentPassword) || string.IsNullOrEmpty(request.NewPassword))
-        {
-            Console.WriteLine("Current or new password is empty");
-            return BadRequest("Current password and new password are required");
-        }
-
-        var result = await _accountService.ChangePasswordAsync(userId, request.CurrentPassword, request.NewPassword);
-        
-        Console.WriteLine($"Service result - IsSuccess: {result.IsSuccess}");
-        
-        if (result.IsSuccess)
-        {
-            return Ok(new { message = "Password changed successfully" });
-        }
-        
-        Console.WriteLine($"Service error: {result.Message}");
-        return BadRequest(new { message = result.Message });
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Exception in ChangePassword: {ex.Message}");
-        Console.WriteLine($"StackTrace: {ex.StackTrace}");
-        return BadRequest(new { message = ex.Message });
-    }
-}
 
     [HttpGet("CheckUser")]
     public async Task<IActionResult> CheckUser(string username)
