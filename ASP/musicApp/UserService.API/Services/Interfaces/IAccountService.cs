@@ -13,8 +13,9 @@ public interface IAccountService
     public Task<string> RegisterGoogleAsync(GoogleUserInfo userInfo, string chosenUserName);
     public Task ConfirmEmailAsync(ClaimsPrincipal user, string token, HttpContext context);
     public Task<Result> VerifyEmailAsync(string id);
-
+    public Task<Result> LinkPasswordToAccountAsync(string userId, string password);
     public Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword);
+    public Task<bool> HasPasswordAsync(string userId);
 
     public Task<IActionResult> ChangeEmailAsync(string userId, string newEmail, string token);
 

@@ -14,7 +14,6 @@ const PasswordChangeModal: React.FC = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [passwordError, setPasswordError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
 
     const modalRef = useRef<HTMLDivElement>(null);
 
@@ -23,7 +22,6 @@ const PasswordChangeModal: React.FC = () => {
     const handlePasswordSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setPasswordError("");
-        setSuccessMessage("");
 
         if (password !== confirmPassword) {
             setPasswordError(t("pass_do_not_match"));

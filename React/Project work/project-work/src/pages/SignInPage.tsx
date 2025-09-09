@@ -40,6 +40,10 @@ const SignInPage: React.FC = () => {
                 Password: password,
             });
 
+            const avatarUrlFromLogin = loginRes.data.data.avatarUrl;
+
+            console.log("Avatar: ",loginRes.data.data.avatarUrl)
+
             const token = loginRes.data.data.accessToken;
 
             if (token) {
@@ -49,13 +53,12 @@ const SignInPage: React.FC = () => {
                 const decodedToken = jwtDecode<Token>(token);
                 const nameFromToken = decodedToken.name;
                 const emailFromToken = decodedToken.email;
-                const pictureFromToken = decodedToken.picture;
 
                 if (!nameFromToken || !emailFromToken) {
                     return;
                 }
 
-                login(token, nameFromToken, emailFromToken, pictureFromToken);
+                login(token, nameFromToken, emailFromToken, avatarUrlFromLogin);
 
                 try {
                     const verificationRes = await axios.get(

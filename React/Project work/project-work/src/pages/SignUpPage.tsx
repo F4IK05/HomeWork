@@ -109,6 +109,8 @@ const SignUpPage: React.FC = () => {
 
             const avatarUrlFromLogin = loginRes.data.data.avatarUrl;
 
+            console.log("Avatar: ",loginRes.data.data.avatarUrl)
+
             const token = loginRes.data.data.accessToken;
             if (token) {
                 const decodedToken = jwtDecode<Token>(token);

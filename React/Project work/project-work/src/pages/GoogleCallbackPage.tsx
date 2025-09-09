@@ -30,6 +30,7 @@ const GoogleCallbackPage = () => {
                 console.log("Backend response received:");
                 console.log("Status:", response.status);
                 console.log("Response data:", response.data);
+                console.log("PICTURE received from backend:", response.data.data.picture);
 
                 if (response.data?.success) {
                     // Помечаем как обработанное
@@ -49,6 +50,7 @@ const GoogleCallbackPage = () => {
                                 picture: response.data.data.picture || "",
                             }
                         });
+                        
                     } else {
                         console.log("Existing user, processing login");
                         const { accessToken, userName, email, picture } = response.data.data;

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.API.DTOs.GoogleAuthDTOs;
 using UserService.API.DTOs.Requests;
+using UserService.API.DTOs.Response;
 using UserService.API.Services.Interfaces;
 
 namespace UserService.API.Controllers;
@@ -56,6 +57,29 @@ public class AccountController : ControllerBase
         {
             return BadRequest(new { success = false, error = ex.Message });
         }
+    }
+
+    [Authorize]
+    [HttpPost("LinkPassword")]
+    public async Task<IActionResult> LinkPassword([FromBody]LinkPasswordDTO request)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (string.IsNullOrEmpty(userId))
+        {
+            Console.WriteLine("UserId is null or empty");
+            return BadRequest("User not authenticated");
+        }
+        
+        var result = await _accountService.LinkPasswordToAccountAsync(userId, request.Password);
+
+        if (!result.IsSuccess)
+        {
+            return BadRequest(new { success = false, message = result.Message });
+        }
+        
+        return Ok(new { success = true, message = "Password linked successfully" });
+
     }
 
     [Authorize]
@@ -149,6 +173,21 @@ public class AccountController : ControllerBase
             return Ok(false); // Email существует - нельзя использовать
         }
         return Ok(true);
+    }
+
+    [Authorize]
+    [HttpGet("HasPassword")]
+    public async Task<IActionResult> HasPassword()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new { hasPassword = false });
+        }
+        
+        var hasPassword = await _accountService.HasPasswordAsync(userId);
+        return Ok(new { hasPassword });
     }
 
     [Authorize]

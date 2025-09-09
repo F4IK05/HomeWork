@@ -8,10 +8,12 @@ interface AuthContextType {
   userEmail: string | null;
   userPicture: string | null;
   isEmailVerified: boolean;
+  passwordSet: boolean;
   login: (token: string, name: string, email: string, picture?: string) => Promise<void>;
   logout: () => void;
   setEmailVerified: (verified: boolean) => void;
   updateUserPicture: (picture: string) => void;
+  setPasswordSet: (isSet: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,17 +29,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return stored === "true";
   });
 
+  const [passwordSet, setPasswordSet] = useState<boolean>(() => {
+    const stored = localStorage.getItem("passwordSet");
+    return stored === "true";
+  });
+
   const logout = () => {
     setUserName(null);
     setUserEmail(null);
     setUserPicture(null);
     setIsEmailVerified(false);
+    setPasswordSet(false);
     localStorage.removeItem("userName");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userPicture");
     localStorage.removeItem("token");
     localStorage.removeItem("tokenExpiration");
     localStorage.removeItem("isEmailVerified");
+    localStorage.removeItem("passwordSet");
     delete axios.defaults.headers.common["Authorization"];
     window.dispatchEvent(new CustomEvent("userLogout"));
     navigate("/");
@@ -48,6 +57,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("token", token);
       localStorage.setItem("userName", name);
       localStorage.setItem("userEmail", email);
+
+      const passRes = await axios.get("http://localhost:5101/api/Account/HasPassword", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const hasPassword = passRes.data.hasPassword;
+      setPasswordSet(hasPassword);
+      localStorage.setItem("passwordSet", String(hasPassword));
 
       if (picture) {
         localStorage.setItem("userPicture", picture);
@@ -101,6 +118,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     window.dispatchEvent(new CustomEvent("userPictureUpdate", {
       detail: { userPicture: picture }
     }));
+  };
+
+  const updatePasswordSet = (isSet: boolean) => {
+    setPasswordSet(isSet);
+    localStorage.setItem("passwordSet", String(isSet));
   };
 
   useEffect(() => {
@@ -160,7 +182,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ userName, userEmail, userPicture, isEmailVerified, login, logout, setEmailVerified, updateUserPicture }}>
+    <AuthContext.Provider value={{ userName, userEmail, userPicture, isEmailVerified, passwordSet, login, logout, setEmailVerified, updateUserPicture, setPasswordSet: updatePasswordSet }}>
       {children}
     </AuthContext.Provider>
   );

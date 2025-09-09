@@ -1,15 +1,18 @@
 import React from "react";
-import { Camera, Mail, Phone, MapPin, Forward, Shield, ChevronRight, Key } from "lucide-react";
+import { Camera, ChevronRight, Key } from "lucide-react";
 import { useAccount } from "@/hooks/useAccount";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import PasswordChangeModal from "./PasswordChangeModal";
+import LinkPasswordModal from "./LinkPasswordModal";
 
 const MainContent: React.FC = () => {
     const { t } = useTranslation();
 
-    const { activeSection, isPasswordModalOpen, setIsPasswordModalOpen } = useAccount();
-    const { userName, userEmail, userPicture } = useAuth();
+    const { activeSection, isPasswordModalOpen, isLinkModalOpen, setIsPasswordModalOpen, setIsLinkModalOpen } = useAccount();
+    const { userName, userEmail, userPicture, passwordSet } = useAuth();
+
+    console.log("set? ",passwordSet)
 
     const renderContent = () => {
         switch (activeSection) {
@@ -64,22 +67,32 @@ const MainContent: React.FC = () => {
                     <div className="space-y-8">
                         <h2 className="text-2xl font-bold text-white">{t("security")}</h2>
 
-                        <div className="">
-                            <button onClick={() => setIsPasswordModalOpen(true)} className="group w-full bg-[#212124] hover:bg-[#28282c] text-white font-semibold rounded-2xl p-4 transition-all flex items-center justify-between border border-gray-700 ">
-                                <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-orange-500/20 group-hover:bg-orange-500/30 rounded-lg transition-colors">
-                                        <Key className="w-5 h-5 text-orange-400" />
-                                    </div>
-                                    <span>{t("change_password")}</span>
-                                </div>
-                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
-                            </button>
 
-                            {isPasswordModalOpen && (
-                                <PasswordChangeModal />
+                        <div className="space-y-4">
+                            {passwordSet ? (
+                                <button onClick={() => setIsPasswordModalOpen(true)} className="group w-full bg-[#212124] hover:bg-[#28282c] text-white font-semibold rounded-2xl p-4 transition-all flex items-center justify-between border border-gray-700 ">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-orange-500/20 group-hover:bg-orange-500/30 rounded-lg transition-colors">
+                                            <Key className="w-5 h-5 text-orange-400" />
+                                        </div>
+                                        <span>{t("change_password")}</span>
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                                </button>
+                            ) : (
+                                <button onClick={() => setIsLinkModalOpen(true)} className="group w-full bg-[#212124] hover:bg-[#28282c] text-white font-semibold rounded-2xl p-4 transition-all flex items-center justify-between border border-gray-700 ">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-green-500/20 group-hover:bg-green-500/30 rounded-lg transition-colors">
+                                            <Key className="w-5 h-5 text-green-400" />
+                                        </div>
+                                        <span>{t("link_password")}</span>
+                                    </div>
+                                    <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
+                                </button>
                             )}
 
-
+                            {isPasswordModalOpen && <PasswordChangeModal />}
+                            {isLinkModalOpen && <LinkPasswordModal />}
                         </div>
                     </div>
                 );

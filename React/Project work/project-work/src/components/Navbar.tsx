@@ -62,7 +62,7 @@ const NavBar: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  console.log(userPicture);
+  console.log("UserPicture: ",userPicture);
 
   return (
     <>

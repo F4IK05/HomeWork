@@ -148,6 +148,35 @@ public class AccountService : IAccountService
         return Result.Success("Email verified");
     }
 
+    public async Task<Result> LinkPasswordToAccountAsync(string userId, string password)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Result.Error("User does not exist");
+            }
+
+            if (user.Password != null)
+            {
+                return Result.Error("Account already has a linked password");
+            }
+            
+            user.Password = HashPassword(password);
+            
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return Result.Success();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     public async Task<Result> ChangePasswordAsync(string userId, string currentPassword, string newPassword)
     {
         try
@@ -229,6 +258,12 @@ public class AccountService : IAccountService
         {
             return Result.Error("An error occurred while changing password");
         }
+    }
+
+    public async Task<bool> HasPasswordAsync(string userId)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        return user?.Password != null;
     }
 
     public async Task<IActionResult> ChangeEmailAsync(string userId, string newEmail, string token)
