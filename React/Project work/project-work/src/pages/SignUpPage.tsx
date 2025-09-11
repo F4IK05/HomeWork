@@ -48,7 +48,7 @@ const SignUpPage: React.FC = () => {
         try {
             setIsCheckingGoogleAccount(true);
             const res = await axios.get(`http://localhost:5101/api/Account/CheckEmail?email=${email}`);
-            
+
             if (res.data === false) {
                 // Email уже существует
                 setIsUsernameLocked(true);
@@ -109,13 +109,14 @@ const SignUpPage: React.FC = () => {
 
             const avatarUrlFromLogin = loginRes.data.data.avatarUrl;
 
-            console.log("Avatar: ",loginRes.data.data.avatarUrl)
+            console.log("Avatar: ", loginRes.data.data.avatarUrl)
 
             const token = loginRes.data.data.accessToken;
             if (token) {
                 const decodedToken = jwtDecode<Token>(token);
                 const nameFromToken = decodedToken.name;
                 const emailFromToken = decodedToken.email;
+
 
                 if (!nameFromToken || !emailFromToken) {
                     return;
@@ -164,7 +165,7 @@ const SignUpPage: React.FC = () => {
 
     const handleGoogleRegister = async (e: FormEvent) => {
         e.preventDefault();
-        
+
         // Если аккаунт уже заблокирован, не отправляем запрос
         if (isUsernameLocked) {
             return;
@@ -185,10 +186,14 @@ const SignUpPage: React.FC = () => {
             const response = await axios.post("http://localhost:5101/api/Account/google/register", payload, { headers: { "Content-Type": "application/json" } });
 
             if (response.data.success) {
-                const { accessToken, userName, email, picture } = response.data.data;
+                const { accessToken, userName, email, picture, avatarUrl } = response.data.data;
 
+                const finalPicture = picture || avatarUrl || "";
+
+                
                 console.log("ASAS", response.data.data)
-                login(accessToken, userName, email, picture);
+                console.log("Google user picture:", finalPicture);
+                login(accessToken, userName, email, finalPicture);
                 navigate("/");
             }
         } catch (err: any) {
@@ -346,7 +351,7 @@ const SignUpPage: React.FC = () => {
                                     <div className="relative">
                                         <input onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword} type={showConfirmPassword ? "text" : "password"} required placeholder="********" className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white" />
                                         <button type="button" className="absolute right-3 top-1/2 transform -translate-y-1/2" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                                            { showConfirmPassword ? <EyeOff className="text-gray-400" /> : <Eye className="text-gray-400" /> }
+                                            {showConfirmPassword ? <EyeOff className="text-gray-400" /> : <Eye className="text-gray-400" />}
                                         </button>
                                     </div>
                                 </div>
@@ -415,14 +420,14 @@ const SignUpPage: React.FC = () => {
                                     )}
 
                                     <label className="block text-white text-sm font-medium mb-2">{t("username")}</label>
-                                    <input 
-                                        disabled={isUsernameLocked || isCheckingGoogleAccount} 
-                                        onChange={(e) => { setUserName(e.target.value); setUserNameError(""); }} 
-                                        value={userName} 
-                                        type="text" 
-                                        required 
-                                        placeholder={t("enter_username")} 
-                                        className={`w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white ${(isUsernameLocked || isCheckingGoogleAccount) && "bg-[#323235] cursor-not-allowed"}`} 
+                                    <input
+                                        disabled={isUsernameLocked || isCheckingGoogleAccount}
+                                        onChange={(e) => { setUserName(e.target.value); setUserNameError(""); }}
+                                        value={userName}
+                                        type="text"
+                                        required
+                                        placeholder={t("enter_username")}
+                                        className={`w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white ${(isUsernameLocked || isCheckingGoogleAccount) && "bg-[#323235] cursor-not-allowed"}`}
                                     />
                                 </div>
 
@@ -431,9 +436,9 @@ const SignUpPage: React.FC = () => {
                                     <span>{userNameError}</span>
                                 </div>
 
-                                <button 
-                                    type="submit" 
-                                    disabled={!userName.trim() || isUsernameLocked || isCheckingGoogleAccount} 
+                                <button
+                                    type="submit"
+                                    disabled={!userName.trim() || isUsernameLocked || isCheckingGoogleAccount}
                                     className={`w-full px-6 py-3 rounded-lg font-semibold transition-all ${(!userName.trim() || isUsernameLocked || isCheckingGoogleAccount) ? "bg-gray-600 text-gray-400 cursor-not-allowed" : "cursor-pointer bg-white text-black hover:bg-black hover:text-white"}`}
                                 >
                                     {isCheckingGoogleAccount ? t("checking") || "Проверяем..." : t("sign_up")}

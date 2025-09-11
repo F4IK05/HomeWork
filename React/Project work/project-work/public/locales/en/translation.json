@@ -76,5 +76,11 @@
     "current_pass_is_incorrect": "Current password is incorrect",
     "password_changed_successfully": "Password changed successfully",
     "new_pass_cannot_be_same_as_old": "New password cannot be the same as the old password",
-    "account": "Account"
+    "account": "Account",
+    "link_password": "Link password",
+    "set_password": "Set password",
+    "password_linked_successfully": "Password linked successfully",
+    "link_password_start": "You signed in with Google. ",
+    "link_password_middle": "Link a password",
+    "link_password_end": " in security settings to sign in manually."
 }

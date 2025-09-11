@@ -29,7 +29,6 @@ const AccountPage: React.FC = () => {
             color: '#fff',
             padding: '12px 16px',
             borderRadius: '8px',
-            backdropFilter: "blur(6px)"
           }
         }}/>
 

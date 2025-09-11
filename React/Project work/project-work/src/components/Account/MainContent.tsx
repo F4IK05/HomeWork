@@ -1,24 +1,34 @@
-import React from "react";
-import { Camera, ChevronRight, Key } from "lucide-react";
+import React, { use, useEffect } from "react";
+import { Camera, ChevronLeft, ChevronRight, Key, Lock, X } from "lucide-react";
 import { useAccount } from "@/hooks/useAccount";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import PasswordChangeModal from "./PasswordChangeModal";
 import LinkPasswordModal from "./LinkPasswordModal";
+import { useNavigate } from "react-router-dom";
 
 const MainContent: React.FC = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
-    const { activeSection, isPasswordModalOpen, isLinkModalOpen, setIsPasswordModalOpen, setIsLinkModalOpen } = useAccount();
+    const { activeSection, setActiveSection ,isPasswordModalOpen, isLinkModalOpen, setIsPasswordModalOpen, setIsLinkModalOpen } = useAccount();
     const { userName, userEmail, userPicture, passwordSet } = useAuth();
 
-    console.log("set? ",passwordSet)
+    console.log("set? ", passwordSet)
+
+    useEffect(() => {
+        if (location.hash == "#security") {
+            setActiveSection("security");
+        }
+    }, [activeSection, setActiveSection]);
 
     const renderContent = () => {
+
         switch (activeSection) {
             case 'profile':
                 return (
-                    <div className="space-y-8">
+                    <div className="space-y-5">
+
                         {/* Header with Avatar */}
                         <div className="flex flex-col sm:flex-row items-center md:items-start gap-4 sm:gap-6">
                             <div className="w-24 h-24 relative">
@@ -83,7 +93,7 @@ const MainContent: React.FC = () => {
                                 <button onClick={() => setIsLinkModalOpen(true)} className="group w-full bg-[#212124] hover:bg-[#28282c] text-white font-semibold rounded-2xl p-4 transition-all flex items-center justify-between border border-gray-700 ">
                                     <div className="flex items-center gap-3">
                                         <div className="p-2 bg-green-500/20 group-hover:bg-green-500/30 rounded-lg transition-colors">
-                                            <Key className="w-5 h-5 text-green-400" />
+                                            <Lock className="w-5 h-5 text-green-400" />
                                         </div>
                                         <span>{t("link_password")}</span>
                                     </div>
@@ -175,11 +185,43 @@ const MainContent: React.FC = () => {
         }
     };
 
+    const titles: Record<string, string> = {
+        profile: t("profile") || "Моя учётная запись",
+        security: t("security") || "Безопасность",
+        notifications: t("notifications") || "Уведомления",
+        settings: t("settings") || "Настройки",
+    };
+
     return (
-        <div className="p-8 flex-1 h-full overflow-y-auto">
-            {/* Main Content Area */}
-            <div className="bg-[#1e1e22] rounded-lg p-8 w-full max-w-3xl mx-auto">
-                {renderContent()}
+        <div className="flex-1 h-full overflow-y-auto">
+            <div className="bg-[#1e1e22] rounded-lg w-full max-w-3xl mx-auto flex flex-col">
+
+                {/* 🔹 Header как у Discord */}
+                <div className="sm:hidden flex items-center justify-between px-6 py-4 border-b border-gray-700">
+                    <div className="flex items-center gap-2">
+                        {/* Стрелка назад */}
+                        <button
+                            onClick={() => setActiveSection("profile")} // или navigate(-1)
+                            className="p-2 rounded-full hover:bg-[#2a2a2e] transition"
+                        >
+                            <ChevronLeft className="w-5 h-5 text-white" />
+                        </button>
+                        <h2 className="text-lg font-bold text-white">
+                            {t("settings")}
+                        </h2>
+                    </div>
+
+                    {/* Крестик (закрыть) */}
+                    <button
+                        onClick={() => navigate("/")} // или setActiveSection("profile")
+                        className="p-2 rounded-full hover:bg-[#2a2a2e] transition"
+                    >
+                        <X className="w-5 h-5 text-white" />
+                    </button>
+                </div>
+
+                {/* 🔹 Контент */}
+                <div className="p-8">{renderContent()}</div>
             </div>
         </div>
     );

@@ -76,5 +76,11 @@
     "current_pass_is_incorrect": "Текущий пароль неверен",
     "password_changed_successfully": "Пароль успешно изменён",
     "new_pass_cannot_be_same_as_old": "Новый пароль не может быть таким же, как старый",
-    "account": "Аккаунт"
+    "account": "Аккаунт",
+    "link_password": "Привязать пароль",
+    "set_password": "Установить пароль",
+    "password_linked_successfully": "Пароль успешно привязан",
+    "link_password_start": "Вы вошли через Google. ",
+    "link_password_middle": "Привяжите пароль",
+    "link_password_end": " в настройках безопасности, чтобы войти вручную."
 }
