@@ -12,11 +12,11 @@ public class UserService : IUserService
     private readonly UserDbContext _context;
     private readonly IMapper _mapper;
 
-    public UserService(UserDbContext context)
+    public UserService(UserDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
-    
 
     public async Task<bool> CheckIfUserExists(string username)
     {

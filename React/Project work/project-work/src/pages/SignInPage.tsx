@@ -1,7 +1,6 @@
 import type React from "react";
 import { useTranslation } from "react-i18next";
 import { FcGoogle } from "react-icons/fc";
-import { FaApple } from "react-icons/fa";
 import { ChevronLeft, Info } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";

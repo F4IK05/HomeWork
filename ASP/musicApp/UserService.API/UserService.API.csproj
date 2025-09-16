@@ -25,4 +25,8 @@
       <ProjectReference Include="..\UserService.Data\UserService.Data.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
+    </ItemGroup>
+
 </Project>

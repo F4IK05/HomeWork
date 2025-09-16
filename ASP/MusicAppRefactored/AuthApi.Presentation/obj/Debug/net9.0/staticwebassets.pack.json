@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\HomeWork\\ASP\\MusicAppRefactored\\AuthApi.Presentation\\wwwroot\\ConfirmMessage.html",
+      "PackagePath": "staticwebassets\\ConfirmMessage.html"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AuthApi.Presentation.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.AuthApi.Presentation.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.build.AuthApi.Presentation.props",
+      "PackagePath": "build\\AuthApi.Presentation.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildMultiTargeting.AuthApi.Presentation.props",
+      "PackagePath": "buildMultiTargeting\\AuthApi.Presentation.props"
+    },
+    {
+      "Id": "obj\\Debug\\net9.0\\staticwebassets\\msbuild.buildTransitive.AuthApi.Presentation.props",
+      "PackagePath": "buildTransitive\\AuthApi.Presentation.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -173,6 +173,5 @@ C:\HomeWork\ASP\MusicApp\UserService.API\bin\Debug\net9.0\AutoMapper.Extensions.
 C:\HomeWork\ASP\MusicApp\UserService.API\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\HomeWork\ASP\MusicApp\UserService.API\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\HomeWork\ASP\MusicApp\UserService.API\bin\Debug\net9.0\UserService.API.staticwebassets.runtime.json
-C:\HomeWork\ASP\MusicApp\UserService.API\obj\Debug\net9.0\compressed\69kfrcx4ea-nhkidkiu2y.gz
 C:\HomeWork\ASP\MusicApp\UserService.API\bin\Debug\net9.0\DotNetEnv.dll
 C:\HomeWork\ASP\MusicApp\UserService.API\bin\Debug\net9.0\Sprache.dll

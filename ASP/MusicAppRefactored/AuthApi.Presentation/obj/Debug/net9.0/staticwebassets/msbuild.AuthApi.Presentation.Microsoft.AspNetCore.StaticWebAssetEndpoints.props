@@ -1,0 +1,16 @@
+﻿<Project>
+  <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/AuthApi.Presentation/ConfirmMessage.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ConfirmMessage.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-xSpM9wh3fVaGFPg3TafaU7/rKNW0sorLSXbXo7JpH3A="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"3428"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022xSpM9wh3fVaGFPg3TafaU7/rKNW0sorLSXbXo7JpH3A=\u0022"},{"Name":"Last-Modified","Value":"Fri, 12 Sep 2025 18:12:42 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/AuthApi.Presentation/ConfirmMessage.nhkidkiu2y.html">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\ConfirmMessage.html'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"nhkidkiu2y"},{"Name":"integrity","Value":"sha256-xSpM9wh3fVaGFPg3TafaU7/rKNW0sorLSXbXo7JpH3A="},{"Name":"label","Value":"_content/AuthApi.Presentation/ConfirmMessage.html"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"3428"},{"Name":"Content-Type","Value":"text/html"},{"Name":"ETag","Value":"\u0022xSpM9wh3fVaGFPg3TafaU7/rKNW0sorLSXbXo7JpH3A=\u0022"},{"Name":"Last-Modified","Value":"Fri, 12 Sep 2025 18:12:42 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+  </ItemGroup>
+</Project>
