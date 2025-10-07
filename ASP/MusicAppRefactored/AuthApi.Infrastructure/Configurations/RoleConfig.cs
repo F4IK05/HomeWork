@@ -10,5 +10,6 @@ public class RoleConfig : IEntityTypeConfiguration<Role>
     {
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Name).IsRequired();
+        
     }
 }

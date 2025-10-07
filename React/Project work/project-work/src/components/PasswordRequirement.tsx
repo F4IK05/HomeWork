@@ -1,4 +1,3 @@
-// components/PasswordRequirements.jsx
 import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 

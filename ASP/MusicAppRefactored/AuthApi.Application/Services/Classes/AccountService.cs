@@ -57,7 +57,6 @@ public class AccountService : IAccountService
         
         await _context.SaveChangesAsync();
         
-
         return Result.Success();
     }
 

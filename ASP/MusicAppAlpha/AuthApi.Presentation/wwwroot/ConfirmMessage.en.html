@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #171719;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .email-wrapper {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #212124;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #212124;
+            padding: 30px 20px 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .company-name {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 15px 0 5px 0;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            padding: 50px 40px;
+            position: relative;
+        }
+
+        h2 {
+            color: white;
+            margin-bottom: 25px;
+            font-size: 26px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555555;
+            line-height: 1.8;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: black;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .security-info {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .security-info p {
+            color: #856404;
+            font-size: 14px;
+            margin: 5px 0;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+<div class="email-wrapper">
+    <div class="header">
+        <div class="company-name">MusicApp</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Welcome, {User}!</h2>
+
+        <p>To complete your registration and activate all features of your account, please confirm your email address.</p>
+
+        <div class="button-container">
+            <a class="button" href="{ConfirmationLink}">Confirm Email</a>
+        </div>
+
+        <div class="security-info">
+            <p>• If you did not register, simply ignore this email.</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p style="margin-top: 20px; font-size: 12px;">
+            © 2025 MusicApp. All rights reserved.
+        </p>
+    </div>
+</div>
+</body>
+</html>

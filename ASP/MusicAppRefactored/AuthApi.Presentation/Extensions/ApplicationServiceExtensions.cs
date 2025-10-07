@@ -68,6 +68,7 @@ public static class ApplicationServiceExtensions
                 RoleClaimType = "role"
             };
         });
+        
         services.AddAuthorization(ops =>
         {
             ops.AddPolicy("UserPolicy", builder => builder.RequireRole("User", "PremiumUser", "Admin"));
