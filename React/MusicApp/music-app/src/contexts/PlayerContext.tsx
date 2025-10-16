@@ -1,6 +1,13 @@
-import React, { createContext, useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import type { SongData } from "@/assets/data/SongData";
-import songs from "@/assets/data/SongData";
+import React, {
+  createContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
+import type { SongData } from "@/types/SongData";
+import { songApi } from "@/api/songApi";
 
 interface PlayerContextType {
   // Основные состояния
@@ -24,7 +31,6 @@ interface PlayerContextType {
   handlePause: () => void;
   handlePlayPause: () => void;
 
-  // 
   handlePrevSong: () => void;
   handleNextSong: () => void;
   playAlbum: (albumSongs: SongData[], startIndex: number) => void;
@@ -53,113 +59,87 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
 
-  const [playlist, setPlaylist] = useState<SongData[]>(songs);
+  const [playlist, setPlaylist] = useState<SongData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const formatTime = (timeInSeconds: number) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = Math.floor(timeInSeconds % 60);
-    const formattedSeconds = seconds.toString().padStart(2, '0'); // Добавляем ноль к секундам, если нужно
-    return `${minutes}:${formattedSeconds}`;
-  }
 
   const audioRef = useRef<HTMLAudioElement>(new Audio());
 
+  // Формат времени
+  const formatTime = (timeInSeconds: number) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  // 🔹 Установка текущей песни
   const setCurrentSong = (song: SongData) => {
-    if (currentSong && currentSong.id == song.id) {
-      return;
-    }
+    if (currentSong && currentSong.id === song.id) return;
 
-    const songIndex = playlist.findIndex(s => s.id == song.id);
+    const songIndex = playlist.findIndex((s) => s.id === song.id);
+    if (songIndex !== -1) setCurrentIndex(songIndex);
 
-    setCurrentIndex(songIndex);
     setCurrentSongState(song);
 
     if (audioRef.current) {
-      audioRef.current.src = song.audioUrl ?? "";
+      audioRef.current.src = song.url ?? "";
       audioRef.current.load();
     }
   };
 
+  // ▶️ Воспроизведение
   const handlePlay = useCallback(() => {
-    audioRef.current.play();
+    audioRef.current.play().catch(() => {});
     setIsPlaying(true);
   }, []);
 
+  // ⏸ Пауза
   const handlePause = () => {
     audioRef.current.pause();
     setIsPlaying(false);
   };
 
   const handlePlayPause = () => {
-    if (isPlaying) {
-      handlePause();
-    } else {
-      handlePlay();
-    }
+    isPlaying ? handlePause() : handlePlay();
   };
 
+  // Проигрывание альбома
   const playAlbum = (albumSongs: SongData[], startIndex: number) => {
     setPlaylist(albumSongs);
     setCurrentIndex(startIndex);
-
     const song = albumSongs[startIndex];
+    if (song) setCurrentSongState(song);
+  };
 
-    if (song) {
-      setCurrentSongState(song);
-    }
-  }
+  // Следующий трек
+  const getNextIndex = useCallback(
+    (currentIndex: number) => {
+      if (playlist.length === 0) return 0;
 
-  // const handlePrevSong = () => {
-  //       let prevIndex = (currentSong?.id || 0) - 1;
+      let nextIndex = isShuffle
+        ? Math.floor(Math.random() * playlist.length)
+        : currentIndex + 1;
 
-  //       if (prevIndex < 0) {
-  //           prevIndex = songs.length - 1;
-  //       }
+      if (nextIndex >= playlist.length) nextIndex = 0;
+      return nextIndex;
+    },
+    [isShuffle, playlist.length]
+  );
 
-  //       const prevSong = songs.find(song => song.id === prevIndex);
-
-  //       setCurrentSongState(prevSong);
-  //   }
-  
-  const getNextIndex = useCallback((currentIndex: number) => {
-    let nextIndex = currentIndex + 1;
-
-    if (isShuffle) {
-      let randomIndex = Math.floor(Math.random() * playlist.length);
-
-      while (randomIndex == currentIndex) {
-        randomIndex = Math.floor(Math.random() * playlist.length);
-      }
-
-      return randomIndex;
-    }
-
-    if (nextIndex >= playlist.length) {
-      nextIndex = 0;
-    }
-
-    return nextIndex;
-  }, [isShuffle, playlist.length]);
-
+  // ⏮ Предыдущий трек
   const getPrevIndex = (currentIndex: number) => {
-    let prevIndex = currentIndex - 1;
+    if (playlist.length === 0) return 0;
 
-    if (isShuffle) {
-      return getNextIndex(currentIndex); // Такая же логика
-    }
+    let prevIndex = isShuffle
+      ? Math.floor(Math.random() * playlist.length)
+      : currentIndex - 1;
 
-    if (prevIndex < 0) {
-      prevIndex = playlist.length - 1;
-    }
-
+    if (prevIndex < 0) prevIndex = playlist.length - 1;
     return prevIndex;
   };
 
   const handleNextSong = useCallback(() => {
     const nextIndex = getNextIndex(currentIndex);
     const nextSong = playlist[nextIndex];
-
     if (nextSong) {
       setCurrentIndex(nextIndex);
       setCurrentSongState(nextSong);
@@ -171,58 +151,46 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       handleSeek(0);
       return;
     }
-
     const prevIndex = getPrevIndex(currentIndex);
     const prevSong = playlist[prevIndex];
-
     if (prevSong) {
       setCurrentIndex(prevIndex);
       setCurrentSongState(prevSong);
     }
   };
 
+  // ⏩ Перемотка
   const handleSeek = useCallback((time: number) => {
     audioRef.current.currentTime = time;
     setCurrentTime(time);
   }, []);
 
-  // const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //         if (audioRef.current) {
-  //             audioRef.current.volume = Number(e.target.value); // current значение volume-а заменяется на новое
-  //         }
-
-  //         setVolume(Number(e.target.value));
-  //     }
-
+  // 🔊 Громкость
   const setVolume = (newVolume: number) => {
     audioRef.current.volume = newVolume;
     setVolumeState(newVolume);
   };
 
+  // 🔁 Повтор / случайный порядок
   const toggleRepeat = () => {
-    setIsRepeat(!isRepeat);
-    if (isShuffle && !isRepeat) {
-      setIsShuffle(false);
-    }
-    
-  }
-  const toggleShuffle = () => {
-    setIsShuffle(!isShuffle);
-    if (isRepeat && !isShuffle) {
-      setIsRepeat(false);
-    }
-  }
+    setIsRepeat((prev) => !prev);
+    if (isShuffle) setIsShuffle(false);
+  };
 
-  const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
-  }
+  const toggleShuffle = () => {
+    setIsShuffle((prev) => !prev);
+    if (isRepeat) setIsRepeat(false);
+  };
+
+  // Обновления времени
+  const handleTimeUpdate = () => setCurrentTime(audioRef.current.currentTime);
 
   const handleLoadedAudio = useCallback(() => {
-    setDuration(audioRef.current?.duration || 0)
+    setDuration(audioRef.current.duration || 0);
     audioRef.current.volume = volume;
-  }, [volume])
+  }, [volume]);
 
-  const handleEnded = React.useCallback(() => {
+  const handleEnded = useCallback(() => {
     if (isRepeat) {
       handleSeek(0);
       handlePlay();
@@ -231,34 +199,42 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [isRepeat, handleSeek, handlePlay, handleNextSong]);
 
+  // Подписка на события
   useEffect(() => {
     const audio = audioRef.current;
-
-    if (!audio) return;
-
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('loadedmetadata', handleLoadedAudio);
-    audio.addEventListener('ended', handleEnded)
-
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedAudio);
+    audio.addEventListener("ended", handleEnded);
     return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('loadedmetadata', handleLoadedAudio);
-      audio.removeEventListener('ended', handleEnded)
-    }
-  }, [handleEnded, handleLoadedAudio]);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedAudio);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [handleLoadedAudio, handleEnded]);
 
   // Автоматическое воспроизведение при смене трека
   useEffect(() => {
     if (currentSong) {
-      audioRef.current.src = currentSong.audioUrl ?? "";
+      audioRef.current.src = currentSong.url ?? "";
       audioRef.current.load();
-
       setCurrentTime(0);
       setDuration(0);
-
       handlePlay();
     }
   }, [currentSong, handlePlay]);
+
+  // 📡 Загрузка плейлиста при первом рендере
+  useEffect(() => {
+    const loadSongs = async () => {
+      try {
+        const data = await songApi.getAll();
+        setPlaylist(data);
+      } catch (error) {
+        console.error("Ошибка загрузки песен в PlayerContext:", error);
+      }
+    };
+    loadSongs();
+  }, []);
 
   const value: PlayerContextType = {
     isPlaying,
@@ -270,7 +246,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     isShuffle,
     playlist,
     currentIndex,
-    
+
     setCurrentSong,
     handlePlay,
     handlePause,

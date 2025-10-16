@@ -1,8 +1,9 @@
 ﻿using AuthApi.Application.Services.Interfaces;
-using AuthApi.Contracts.DTOs.Requests.Account;
-using AuthApi.Contracts.DTOs.Requests.AccountDTOs;
+using AuthApi.Contracts.DTOs.Requests.Profile;
 using AuthApi.Contracts.DTOs.Response;
+using AuthApi.Data.Models;
 using AuthApi.Infrastructure.Contexts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthApi.Application.Services.Classes;
@@ -15,6 +16,29 @@ public class AccountService : IAccountService
     {
         _context = context;
     }
+    
+    public async Task<User?> GetProfileAsync(string userId)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+    }
+    
+    public async Task<User> UpdateProfileAsync(string userId, UpdateProfileRequestDto request)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null) throw new Exception("User not found");
+
+        if (!string.IsNullOrEmpty(request.UserName))
+            user.UserName = request.UserName;
+        
+
+        await _context.SaveChangesAsync();
+        return user;
+    }
+
+    // public async Task<string> UploadAvatarAsync(string userId, IFormFile avatarFile)
+    // {
+    //     throw new NotImplementedException();
+    // }
 
     public async Task<Result> ChangePasswordAsync(string userId, ChangePasswordRequestDto request)
     {
@@ -50,35 +74,37 @@ public class AccountService : IAccountService
             return Result.Error($"Error updating password: {e.Message}");
         }
     }
-    
+
+    public async Task<Result> ChangeEmailAsync(string userId, ChangeEmailRequestDto request)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null) throw new Exception("User not found");
+
+        if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            throw new Exception("Password incorrect");
+
+        user.Email = request.NewEmail;
+        await _context.SaveChangesAsync();
+        return Result.Success("Email changed successfully");
+    }
+
+    public async Task<Result> DeleteAccountAsync(string userId, string password)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null) throw new Exception("User not found");
+
+        if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            throw new Exception("Incorrect password");
+
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        return Result.Success("User deleted successfully");
+    }
+
     public async Task<bool> HasPasswordAsync(string userId)
     {
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         return user?.PasswordHash != null;
     }
-
-    // public async Task<Result> ChangeEmailAsync(string userId, ChangeEmailRequestDto request)
-    // {
-    //     var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-    //     
-    //     if (user == null) return Result.Error("User not found");
-    //
-    //     if (user.Email == request.NewEmail)
-    //     {
-    //         return Result.Error("New email cannot be the same as the old one");
-    //     }
-    //
-    //     if (await _context.Users.AnyAsync(u => u.Email == request.NewEmail))
-    //     {
-    //         return Result.Error("Email is already taken");
-    //     }
-    //
-    //     if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-    //     {
-    //         return Result.Error("Password is incorrect");
-    //     }
-    //     
-    //     
-    // }
     
 }

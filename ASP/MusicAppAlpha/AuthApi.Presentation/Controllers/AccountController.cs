@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text.RegularExpressions;
 using AuthApi.Application.Services.Interfaces;
-using AuthApi.Contracts.DTOs.Requests.Account;
+using AuthApi.Contracts.DTOs.Requests.Profile;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,9 +21,33 @@ public class AccountController : ControllerBase
         _userService = userService;
         _authService = authService;
     }
+    
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetProfile()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        Console.WriteLine(userId);
+        
+        var user = await _accountService.GetProfileAsync(userId);
+        if (user == null)
+            return NotFound("User not found");
+        
+        return Ok(user);
+    }
+    
+    [Authorize]
+    [HttpPut("update")]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequestDto request)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        var user = await _accountService.UpdateProfileAsync(userId, request);
+        return Ok(user);
+    }
 
     [Authorize]
-    [HttpPost("change-password")]
+    [HttpPost("security/change-password")]
     public async Task<IActionResult> ChangePassword(ChangePasswordRequestDto request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -31,6 +55,26 @@ public class AccountController : ControllerBase
         var res = await _accountService.ChangePasswordAsync(userId, request);
         
         return Ok(res);
+    }
+    
+    [Authorize]
+    [HttpPost("security/change-email")]
+    public async Task<IActionResult> ChangeEmail([FromBody] ChangeEmailRequestDto request)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        await _accountService.ChangeEmailAsync(userId, request);
+        return Ok(new { message = "Email changed successfully" });
+    }
+    
+    [Authorize]
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteAccount([FromBody] DeleteAccountRequestDto request)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        await _accountService.DeleteAccountAsync(userId, request.Password);
+        return Ok(new { message = "Account deleted" });
     }
     
     // Проверка логина
@@ -66,9 +110,7 @@ public class AccountController : ControllerBase
         return Ok(new { isEmailVerified = user.IsConfirmed });
     }
 
-    
-
-    // ✅ Проверка, есть ли у пользователя пароль (для Google-пользователей)
+    // Проверка, есть ли у пользователя пароль (для Google-пользователей)
     [Authorize]
     [HttpGet("HasPassword")]
     public async Task<IActionResult> HasPassword()

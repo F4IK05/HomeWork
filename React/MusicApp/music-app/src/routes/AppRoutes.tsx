@@ -1,6 +1,6 @@
-import React from "react";
+import React, { type JSX } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { MainLayout } from "@/components/layout/MainLayout";
+import { MainLayout } from "@/components/layout/global/MainLayout";
 // import HomePage from "@/pages/HomePage";
 // import SignInPage from "@/pages/SignInPage";
 // import SignUpPage from "@/pages/SignUpPage";
@@ -11,12 +11,15 @@ import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
 import VerifyEmailPage from "@/pages/VerifyEmailPage";
 import GoogleAuthCallback from "@/pages/auth/GoogleAuthCallback";
+import ProfilePage from "@/pages/profile/ProfilePage";
+import SettingsLayout from "@/components/layout/profile/SettingsLayout";
+import SecurityPage from "@/pages/profile/SecurityPage";
 
-// 🔒 Защищённый маршрут
-// const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-//   const { userName } = useAuth();
-//   return userName ? <>{children}</> : <Navigate to="/sign_in" replace />;
-// };
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" replace />;
+  return children;
+}
 
 // Основной роутинг
 const AppRoutes: React.FC = () => {
@@ -49,9 +52,25 @@ const AppRoutes: React.FC = () => {
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="/verify-email" element={<VerifyEmailPage />} />
 
+      <Route path="/auth/google" element={<GoogleAuthCallback />} />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <SettingsLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<ProfilePage />} />
+        <Route path="security" element={<SecurityPage />} />
+        {/* позже: <Route path="account" element={<AccountPage />} /> */}
+      </Route>
+
+
       {/* Неизвестный маршрут → на главную */}
       <Route path="*" element={<Navigate to="/" replace />} />
-      <Route path="/auth/google" element={<GoogleAuthCallback />} />
+      
     </Routes>
   );
 };

@@ -1,0 +1,13 @@
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\bin\Debug\net9.0\MusicApi.Contracts.deps.json
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\bin\Debug\net9.0\MusicApi.Contracts.dll
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\bin\Debug\net9.0\MusicApi.Contracts.pdb
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.csproj.AssemblyReference.cache
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.AssemblyInfoInputs.cache
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.AssemblyInfo.cs
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.csproj.CoreCompileInputs.cache
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.sourcelink.json
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.dll
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\refint\MusicApi.Contracts.dll
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\MusicApi.Contracts.pdb
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Contracts\obj\Debug\net9.0\ref\MusicApi.Contracts.dll

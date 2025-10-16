@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "Q6TRBaSlPrVulhOaz0B60yCYDTdkOXHzwFtMVK4Xwxg=",
+  "Source": "MusicApi.Presentation",
+  "BasePath": "_content/MusicApi.Presentation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
