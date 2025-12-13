@@ -53,7 +53,7 @@ public class S3Service
             if (key.StartsWith("/"))
                 key = key[1..];
 
-            Console.WriteLine($"🗑️ Deleting S3 object: {key}");
+            Console.WriteLine($"Deleting S3 object: {key}");
 
             var deleteRequest = new DeleteObjectRequest
             {

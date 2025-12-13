@@ -26,8 +26,9 @@ public class AuthService : IAuthService
     private readonly TokenManager _tokenManager;
     private readonly IWebHostEnvironment _env;
     private readonly EmailSender _emailSender;
+    private readonly IHttpContextAccessor _http;
 
-    public AuthService(IMapper mapper, UserDbContext context, IUserRoleService userRoleService, TokenManager tokenManager, IConfiguration configuration, IWebHostEnvironment env, EmailSender emailSender)
+    public AuthService(IMapper mapper, UserDbContext context, IUserRoleService userRoleService, TokenManager tokenManager, IConfiguration configuration, IWebHostEnvironment env, EmailSender emailSender, IHttpContextAccessor http)
     {
         _mapper = mapper;
         _context = context;
@@ -36,7 +37,16 @@ public class AuthService : IAuthService
         _configuration = configuration;
         _env = env;
         _emailSender = emailSender;
+        _http = http;
     }
+    
+    private CookieOptions BuildRefreshCookieOptions(DateTime expiresUtc) => new CookieOptions
+    {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Strict,
+        Expires = expiresUtc
+    };
 
     private static string GenerateAvatarUrl(string seed)
     {
@@ -45,6 +55,47 @@ public class AuthService : IAuthService
         return $"https://api.dicebear.com/9.x/initials/svg?seed={encoded}";
     }
     
+    private async Task<AuthResponse> TokenHelperForUserAsync(User user)
+    {
+        // Все роли связанные с этим пользвателем
+        var userRoles = await _context.UserRoles
+            .Where(ur => ur.UserId == user.Id)
+            .Include(ur => ur.Role)
+            .Select(ur => ur.Role.Name).ToListAsync();
+        
+        var accessToken = await _tokenManager.CreateAccessTokenAsync(user, userRoles);
+        
+        // refresh: генерируем сырой токен, в БД кладём хэш
+        var rawRefresh = await _tokenManager.GenerateRefreshToken();
+        var refreshHash = _tokenManager.HashRefreshToken(rawRefresh);
+        var refreshDays = int.Parse(_configuration["JWT:RefreshTokenExpiresInDays"]);
+        var refreshExp = DateTime.UtcNow.AddDays(refreshDays);
+        
+        user.RefreshToken = refreshHash;
+        user.RefreshTokenExpiry = refreshExp;
+        
+        await _context.SaveChangesAsync();
+        
+        // устанавливаем HttpOnly cookie
+        _http.HttpContext!.Response.Cookies.Append(
+            "refreshToken", rawRefresh, BuildRefreshCookieOptions(refreshExp));
+
+        return new AuthResponse
+        {
+            UserName = user.UserName,
+            Email = user.Email,
+            AvatarUrl = user.AvatarUrl,
+            Token = accessToken,
+        };
+    }
+
+    public async Task<TypedResult<AuthResponse>> ExternalTokenHelperAsync(User user)
+    {
+        var response = await TokenHelperForUserAsync(user);
+        
+        return TypedResult<AuthResponse>.Success(response, "Login successful");
+    }
+
     public async Task<Result> RegisterAsync(RegisterRequestDto request)
     {
         if (await _context.Users.AnyAsync(u => u.Email == request.Email))
@@ -80,38 +131,26 @@ public class AuthService : IAuthService
         {
             throw new InvalidCredentialException("Invalid Credentials");
         }
-        
-        // Все роли связанные с этим пользвателем
-        var userRoles = await _context.UserRoles
-            .Where(ur => ur.UserId == user.Id)
-            .Include(ur => ur.Role)
-            .Select(ur => ur.Role.Name).ToListAsync();
-        
-        var accessToken = await _tokenManager.CreateAccessTokenAsync(user, userRoles);
-        var refreshToken = await _tokenManager.GenerateRefreshToken();
 
-        user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(int.Parse(_configuration.GetSection("JWT:RefreshTokenExpiresInDays").Value));
-        
-        await _context.SaveChangesAsync();
-
-        var response = new AuthResponse
-        {
-            UserName = user.UserName,
-            Email = user.Email,
-            AvatarUrl = user.AvatarUrl,
-            Token = accessToken,
-            RefreshToken = refreshToken
-        };
+        var response = await TokenHelperForUserAsync(user);
         
         return TypedResult<AuthResponse>.Success(response, "Login successful");
     }
 
-    public async Task<TypedResult<RefreshTokenResponse>> RefreshTokenAsync(RefreshRequestDto request)
+    public async Task<TypedResult<RefreshTokenResponse>> RefreshTokenAsync()
     {
-        var user = _context.Users.FirstOrDefault(u => u.RefreshToken == request.RefreshToken);
+        var context = _http.HttpContext!;
+        var rawRefresh = context.Request.Cookies["refreshToken"];
+        if (rawRefresh == null)
+        {
+            return TypedResult<RefreshTokenResponse>.Error("No refresh token", 401);
+        }
+        
+        var refreshHash = _tokenManager.HashRefreshToken(rawRefresh);
 
-        if (user == null || user.RefreshTokenExpiry <= DateTime.UtcNow)
+        var user = _context.Users.FirstOrDefault(u => u.RefreshToken == refreshHash);
+
+        if (user == null || user.RefreshTokenExpiry == null || user.RefreshTokenExpiry <= DateTime.UtcNow)
         {
             return TypedResult<RefreshTokenResponse>.Error("Invalid or expired refresh token", 401);
         }
@@ -120,36 +159,46 @@ public class AuthService : IAuthService
             .Where(ur => ur.UserId == user.Id)
             .Include(ur => ur.Role)
             .Select(ur => ur.Role.Name).ToListAsync();
-        
+
         var newAccessToken = await _tokenManager.CreateAccessTokenAsync(user, userRoles);
-        var newRefreshToken = await _tokenManager.GenerateRefreshToken();
         
-        user.RefreshToken = newRefreshToken;
-        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(int.Parse(_configuration.GetSection("JWT:RefreshTokenExpiresInDays").Value));
+        var newRawRefresh = await _tokenManager.GenerateRefreshToken();
+        var newHash = _tokenManager.HashRefreshToken(newRawRefresh);
+        var refreshDays = int.Parse(_configuration["JWT:RefreshTokenExpiresInDays"]);
+        var newExp = DateTime.UtcNow.AddDays(refreshDays);
+        
+        user.RefreshToken = newHash;
+        user.RefreshTokenExpiry = newExp;
         
         await _context.SaveChangesAsync();
+
+        context.Response.Cookies.Append("refreshToken", newRawRefresh, BuildRefreshCookieOptions(newExp));
         
         var response = new RefreshTokenResponse
         {
             Token = newAccessToken,
-            RefreshToken = newRefreshToken,
         };
 
         return TypedResult<RefreshTokenResponse>.Success(response, "Token refreshed");
     }
 
-    public async Task<TypedResult<string>> LogoutAsync(LogoutRequestDto request)
+    public async Task<TypedResult<string>> LogoutAsync()
     {
-        var user = _context.Users.FirstOrDefault(u => u.Id == request.UserId);
-        if (user == null)
+        var context = _http.HttpContext!;
+        var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (!string.IsNullOrEmpty(userId))
         {
-            return TypedResult<string>.Error("User not found", 404);
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.RefreshToken = null;
+                user.RefreshTokenExpiry = null;
+                await _context.SaveChangesAsync();
+            }
         }
         
-        user.RefreshToken = null;
-        user.RefreshTokenExpiry = null;
-        
-        await _context.SaveChangesAsync();
+        context.Response.Cookies.Delete("refreshToken");
         
         return TypedResult<string>.Success(null ,"User logged out");
     }

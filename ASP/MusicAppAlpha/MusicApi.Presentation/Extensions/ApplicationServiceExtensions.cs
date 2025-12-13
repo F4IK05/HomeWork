@@ -20,13 +20,18 @@ public static class ApplicationServiceExtensions
 
         // DbContext
         services.AddDbContext<MusicDbContext>(options =>
-            options.UseSqlServer(config.GetConnectionString("Default")));
+            options.UseNpgsql(config.GetConnectionString("Default")));
 
         // Репозитории
         services.AddScoped<ISongRepository, SongRepository>();
-
+        services.AddScoped<IAlbumRepository, AlbumRepository>();
+        services.AddScoped<IArtistRepository, ArtistRepository>();
+        
         // Основные сервисы
         services.AddScoped<MusicService>();
+        services.AddScoped<AlbumService>();
+        services.AddScoped<ArtistService>();
+        services.AddScoped<SearchService>();
         services.AddScoped<S3Service>();
 
         // AWS
@@ -37,44 +42,16 @@ public static class ApplicationServiceExtensions
         var s3Client = new AmazonS3Client(accessKey, secretKey, RegionEndpoint.GetBySystemName(region));
         services.AddSingleton<IAmazonS3>(s3Client);
 
-
-        // Глобальное исключение (если будет аналогичный middleware)
-        // services.AddSingleton<GlobalExceptionMiddleware>();
-
         // CORS
         services.AddCors(opt =>
         {
             opt.AddPolicy("AllowFront", policy =>
             {
-                policy.WithOrigins("http://localhost:5173") // твой React проект
+                policy.WithOrigins("http://localhost:5173") // React проект
                       .AllowAnyHeader()
                       .AllowAnyMethod();
             });
         });
-
-        // JWT (если планируется авторизация через AuthApi)
-        // services.AddAuthentication(options =>
-        // {
-        //     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        //     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        // })
-        // .AddJwtBearer(options =>
-        // {
-        //     options.TokenValidationParameters = new TokenValidationParameters
-        //     {
-        //         ValidateIssuer = true,
-        //         ValidateAudience = true,
-        //         ValidateLifetime = true,
-        //         ValidateIssuerSigningKey = true,
-        //
-        //         ValidIssuer = config["JWT:Issuer"],
-        //         ValidAudience = config["JWT:Audience"],
-        //         IssuerSigningKey = new SymmetricSecurityKey(
-        //             Encoding.UTF8.GetBytes(config["JWT:SecretKey"])),
-        //
-        //         ClockSkew = TimeSpan.Zero
-        //     };
-        // });
 
         return services;
     }

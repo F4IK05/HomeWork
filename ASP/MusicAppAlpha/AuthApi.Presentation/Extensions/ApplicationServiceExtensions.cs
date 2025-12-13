@@ -30,6 +30,8 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<TokenManager>();
         services.AddScoped<EmailSender>();
+
+        services.AddHttpContextAccessor();
         
         services.AddHttpClient<IGoogleAuthService, GoogleAuthService>();
         
@@ -44,7 +46,8 @@ public static class ApplicationServiceExtensions
             {
                 policy.WithOrigins("http://localhost:5173") // мой React проект
                     .AllowAnyHeader() // 
-                    .AllowAnyMethod();
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
         });
 

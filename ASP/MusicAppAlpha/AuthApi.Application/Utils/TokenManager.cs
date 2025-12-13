@@ -115,4 +115,24 @@ public class TokenManager
         
         return email.Value;
     }
+    
+    public string HashRefreshToken(string refreshToken)
+    {
+        // хранить в БД только хэш (как пароли)
+        using var sha256 = SHA256.Create();
+        var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(refreshToken));
+        return Convert.ToBase64String(bytes);
+    }
+    
+    public IEnumerable<Claim> BuildUserClaims(User user, IEnumerable<string> roles)
+    {
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Email, user.Email)
+        };
+        foreach (var r in roles) claims.Add(new Claim(ClaimTypes.Role, r));
+        return claims;
+    }
 }

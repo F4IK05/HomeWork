@@ -10,3 +10,6 @@ C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\obj\Debug\net9.0\MusicApi.Data.dll
 C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\obj\Debug\net9.0\refint\MusicApi.Data.dll
 C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\obj\Debug\net9.0\MusicApi.Data.pdb
 C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\obj\Debug\net9.0\ref\MusicApi.Data.dll
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\bin\Debug\net9.0\MusicApi.Data.runtimeconfig.json
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\obj\Debug\net9.0\MusicApi.Data.csproj.AssemblyReference.cache
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Data\obj\Debug\net9.0\MusicApi.Data.genruntimeconfig.cache

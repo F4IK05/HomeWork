@@ -179,3 +179,5 @@ C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Presentation\obj\Debug\net9.0\refint\Musi
 C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Presentation\obj\Debug\net9.0\MusicApi.Presentation.pdb
 C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Presentation\obj\Debug\net9.0\MusicApi.Presentation.genruntimeconfig.cache
 C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Presentation\obj\Debug\net9.0\ref\MusicApi.Presentation.dll
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Presentation\bin\Debug\net9.0\Npgsql.dll
+C:\HomeWork\ASP\MusicAppAlpha\MusicApi.Presentation\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

@@ -14,19 +14,32 @@ public class SongRepository : ISongRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Song>> GetAllAsync()
+    public async Task<List<Song>> GetAllAsync()
     {
-        return await _context.Songs.ToListAsync();
+        return await _context.Songs
+            .AsNoTracking()
+            .Include(s => s.Artist)
+            .Include(s => s.Album)
+            .ToListAsync();
     }
 
     public async Task<Song?> GetByIdAsync(Guid id)
     {
-        return await _context.Songs.FindAsync(id);
+        return await _context.Songs
+            .Include(s => s.Artist)
+            .Include(s => s.Album)
+            .FirstOrDefaultAsync(s => s.Id == id);
     }
 
     public async Task AddAsync(Song song)
     {
         await _context.Songs.AddAsync(song);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Song song)
+    {
+        _context.Songs.Update(song);
         await _context.SaveChangesAsync();
     }
 

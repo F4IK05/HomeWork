@@ -59,7 +59,7 @@ public class AuthController : ControllerBase
     [HttpPost("google/callback")]
     public async Task<IActionResult> GoogleCallback([FromQuery] string code)
     {
-        Console.WriteLine($"Code received: {code}");
+        Console.WriteLine(code);
         
         try
         {
@@ -74,23 +74,19 @@ public class AuthController : ControllerBase
             if (oauth != null)
             {
                 var user = oauth.User;
-                var userRoles = await _context.UserRoles
-                    .Where(ur => ur.UserId == user.Id)
-                    .Include(ur => ur.Role)
-                    .Select(ur => ur.Role.Name)
-                    .ToListAsync();
-    
-                var accessToken = await _tokenManager.CreateAccessTokenAsync(user, userRoles);
+
+                var authResult = await _authService.ExternalTokenHelperAsync(user);
+                
                 return Ok(new
                 {
                     success = true,
                     isNewUser = false,
                     data = new
                     {
-                        accessToken,
-                        email = user.Email,
-                        userName = user.UserName,
-                        picture = user.AvatarUrl
+                        accessToken = authResult.Data?.Token,
+                        email = authResult.Data?.Email,
+                        userName = authResult.Data?.UserName,
+                        picture = authResult.Data?.AvatarUrl
                     }
                 });
             }
@@ -111,23 +107,18 @@ public class AuthController : ControllerBase
                 _context.UserOAuths.Add(newOAuth);
                 await _context.SaveChangesAsync();
     
-                var userRoles = await _context.UserRoles
-                    .Where(ur => ur.UserId == existingUser.Id)
-                    .Include(ur => ur.Role)
-                    .Select(ur => ur.Role.Name)
-                    .ToListAsync();
-    
-                var accessToken = await _tokenManager.CreateAccessTokenAsync(existingUser, userRoles);
+                var authResult = await _authService.ExternalTokenHelperAsync(existingUser);
+                
                 return Ok(new
                 {
                     success = true,
                     isNewUser = false,
                     data = new
                     {
-                        accessToken,
-                        email = existingUser.Email,
-                        userName = existingUser.UserName,
-                        picture = existingUser.AvatarUrl
+                        accessToken = authResult.Data?.Token,
+                        email = authResult.Data?.Email,
+                        userName = authResult.Data?.UserName,
+                        picture = authResult.Data?.AvatarUrl
                     }
                 });
             }
@@ -222,18 +213,18 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh([FromBody] RefreshRequestDto request)
+    public async Task<IActionResult> Refresh()
     {
-        var res = await _authService.RefreshTokenAsync(request);
+        var res = await _authService.RefreshTokenAsync();
         
         return Ok(res);
     }
 
     [Authorize]
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] LogoutRequestDto request)
+    public async Task<IActionResult> Logout()
     {
-        var res = await _authService.LogoutAsync(request);
+        var res = await _authService.LogoutAsync();
         
         return Ok(res);
     }
