@@ -15,6 +15,7 @@ type MeDto = {
 const MENU = [
   { key: "address", title: "Address", icon: "location-outline", route: "/profile/address-info/page" },
   { key: "payment", title: "Payment Method", icon: "card-outline", route: "/profile/payment-method/page" },
+  { key: "card", title: "Card Information", icon: "card-outline", route: "/profile/card-info/page" },
 ];
 
 export default function ProfilePage() {
