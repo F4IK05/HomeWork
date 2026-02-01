@@ -37,7 +37,6 @@ const EmailStep: React.FC<Props> = ({ email, setEmail, onNext }) => {
 
   return (
     <div className="w-full flex flex-col items-center select-none">
-      {/* 🔙 Back button */}
       <button
         onClick={() => history.back()}
         className="cursor-pointer absolute top-5 left-5 text-white bg-[#222224] rounded-full p-3 transition-all hover:scale-[1.1]"
@@ -45,10 +44,8 @@ const EmailStep: React.FC<Props> = ({ email, setEmail, onNext }) => {
         <ChevronLeft />
       </button>
 
-      {/* 🧾 Title */}
       <h1 className="text-3xl font-bold mb-8 text-white">{t("sign_up")}</h1>
 
-      {/* 📧 Email form */}
       <form onSubmit={handleSubmit} className="w-full mb-6">
         <div className="mb-4">
           <label className="block text-white text-sm font-medium mb-2">
@@ -67,7 +64,6 @@ const EmailStep: React.FC<Props> = ({ email, setEmail, onNext }) => {
           />
         </div>
 
-        {/* ⚠️ Error */}
         <div
           className={`transition-all mb-4 text-red-400 text-sm flex items-center gap-2 ${
             error ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
@@ -77,7 +73,6 @@ const EmailStep: React.FC<Props> = ({ email, setEmail, onNext }) => {
           <span>{error}</span>
         </div>
 
-        {/* ✅ Continue button */}
         <button
           disabled={!email.trim() || loading}
           type="submit"
@@ -91,7 +86,6 @@ const EmailStep: React.FC<Props> = ({ email, setEmail, onNext }) => {
         </button>
       </form>
 
-      {/* ⚫ Divider */}
       <div className="relative flex items-center w-full my-6">
         <div className="flex-1 border-t border-gray-400"></div>
         <span className="px-4 text-sm text-gray-400 select-none">
@@ -105,7 +99,6 @@ const EmailStep: React.FC<Props> = ({ email, setEmail, onNext }) => {
         <GoogleButton />
       </div>
 
-      {/* 🔗 Footer link */}
       <div className="text-gray-400 text-sm">
         {t("already_have_an_account")}?
         <Link className="ml-1 text-blue-400 underline" to="/sign-in" replace>

@@ -1,0 +1,42 @@
+export const data = [
+  {
+    id: '1',
+    title: 'Farm Fresh Whole Milk',
+    description: 'Pasteurized & Homogenized',
+    price: '$2.50',
+    volume: '1L',
+    image: require('@/assets/images/milk/milk-bottle.png'),
+  },
+  {
+    id: '2',
+    title: 'Oat Milk Barista',
+    description: 'Rich & Creamy',
+    price: '$3.80',
+    volume: '1L',
+    image: require('@/assets/images/milk/oat-milk.png'),
+  },
+  {
+    id: '3',
+    title: 'Greek Style Yogurt',
+    description: 'Pure & Natural',
+    price: '$4.20',
+    volume: '500g',
+    image: require('@/assets/images/milk/yogurt.png'),
+  },
+  {
+    id: '4',
+    title: 'Organic Almond Milk',
+    description: 'Unsweetened & Healthy',
+    price: '$3.50',
+    volume: '1L',
+    image: require('@/assets/images/milk/almond-milk.png'),
+  },
+  {
+    id: '5',
+    title: 'Cottage Cheese',
+    description: 'Fresh & High Protein',
+    price: '$5.00',
+    volume: '250g',
+    image: require('@/assets/images/milk/cheese.jpg'),
+  },
+];

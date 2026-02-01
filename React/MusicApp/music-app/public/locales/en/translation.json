@@ -82,5 +82,7 @@
     "password_linked_successfully": "Password linked successfully",
     "link_password_start": "You signed in with Google. ",
     "link_password_middle": "Link a password",
-    "link_password_end": " in security settings to sign in manually."
+    "link_password_end": " in security settings to sign in manually.",
+    "you_sure_logout": "Are you sure you want to log out? You will need to log in again to access your profile.",
+    "cancel": "Cancel"
 }

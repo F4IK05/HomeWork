@@ -62,10 +62,11 @@ const MusicCard: React.FC<{ song: SongData }> = ({ song }) => {
       {/* Название и артист */}
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#000000b5] via-[#00000066] to-transparent p-3">
         <h3 className="text-sm font-semibold text-white truncate">{song.title}</h3>
-        <p className="text-xs text-gray-300 truncate">{song.artist}</p>
+        <p className="text-xs text-gray-300 truncate">{song.artistName}</p>
       </div>
     </div>
   );
 };
+
 
 export default MusicCard;

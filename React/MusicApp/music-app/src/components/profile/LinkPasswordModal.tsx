@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Info, X } from "lucide-react";
-import axios from "axios";
+import { api } from "@/api/axios";
 // import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
@@ -49,7 +49,7 @@ const LinkPasswordModal: React.FC<LinkPasswordModalProps> = ({
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post(
+      const res = await api.post(
         "http://localhost:5017/api/Account/LinkPassword",
         { password },
         {

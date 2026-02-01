@@ -54,7 +54,7 @@ const MusicListItem: React.FC<MusicListItemProps> = ({ song }) => {
         >
           {song.title}
         </h3>
-        <p className="text-gray-400 text-xs truncate">{song.artist}</p>
+        <p className="text-gray-400 text-xs truncate">{song.artistName}</p>
       </div>
 
       {/* Кнопка Play/Pause */}

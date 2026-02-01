@@ -69,7 +69,6 @@ const GoogleCallbackPage = () => {
                         }
                     }
                 } else {
-                    console.error("Backend returned success: false");
                     throw new Error("Google authentication failed");
                 }
             } catch (err) {

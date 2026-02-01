@@ -124,7 +124,6 @@ const NavBar: React.FC = () => {
           <button onClick={() => setIsModalOpen(true)} className="flex justify-center items-center cursor-pointer w-10 h-10 rounded-full overflow-hidden">
             {userName ? (
               <img src={userPicture} alt={userName} className="w-full h-full object-cover" />
-
             ) : (
               <User />
             )}

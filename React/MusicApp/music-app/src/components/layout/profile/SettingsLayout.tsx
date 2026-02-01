@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, User, ShieldCheck, LogOut, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 const GLASS = "bg-[#2a2a2e]/60 backdrop-blur-sm border border-white/10";
 const ACTIVE_GLOW =
@@ -17,6 +18,8 @@ const SettingsLayout: React.FC = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false);
     const { logout } = useAuth();
+
+    const { t } = useTranslation();
     // #endregion
 
     // #region Вспомогательные функции
@@ -49,7 +52,7 @@ const SettingsLayout: React.FC = () => {
 
     // #region Рендер
     return (
-        <div className="w-full bg-[#1b1b1f] text-white">
+        <div className="w-full min-h-[100dvh] bg-[#1b1b1f] text-white">
             {/* ─────────────────────────────────────────────────────────
           Мобильный верхний бар: Back в хедере + бургер
          ───────────────────────────────────────────────────────── */}
@@ -86,7 +89,7 @@ const SettingsLayout: React.FC = () => {
                     {/* ─────────────────────────────────────────────────────
               Sidebar (Desktop) — fixed/sticky стиль на всю высоту
              ───────────────────────────────────────────────────── */}
-                    <aside className="hidden sm:block sm:col-span-3 lg:col-span-3">
+                    <aside className="hidden  sm:block sm:col-span-3 lg:col-span-3 min-w-[250px]">
                         {/* sticky обеспечивает фиксированность в рамках вьюпорта, без поломки контейнера */}
                         <div className={`sticky top-6 h-[calc(100vh-3rem)] rounded-2xl p-4 ${GLASS} overflow-hidden`}>
                             {/* Заголовок */}
@@ -259,7 +262,7 @@ const SettingsLayout: React.FC = () => {
                     <div className={`relative w-full max-w-md mx-4 rounded-2xl ${GLASS} p-6`}>
                         <h3 className="text-lg font-semibold mb-2">Log out</h3>
                         <p className="text-sm text-white/70">
-                            Вы уверены, что хотите выйти? Для доступа к профилю потребуется повторный вход.
+                            {t("you_sure_logout")}
                         </p>
 
                         <div className="mt-5 flex justify-end gap-3">
@@ -267,13 +270,13 @@ const SettingsLayout: React.FC = () => {
                                 className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition"
                                 onClick={() => setConfirmLogoutOpen(false)}
                             >
-                                Отмена
+                                {t("cancel")}
                             </button>
                             <button
                                 className="px-4 py-2 rounded-xl bg-red-500/90 hover:bg-red-500 transition"
                                 onClick={doLogout}
                             >
-                                Выйти
+                                {t("logout")}
                             </button>
                         </div>
                     </div>

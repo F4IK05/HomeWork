@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Info } from "lucide-react";
+import { Info, ArrowLeft } from "lucide-react"; // Заменили ChevronLeft на ArrowLeft
 import { useTranslation } from "react-i18next";
 import { AuthService } from "@/services/AuthService";
 import { useNavigate, type Location } from "react-router-dom";
@@ -35,7 +35,6 @@ const UsernameStep: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
   const [error, setError] = useState("");
@@ -70,22 +69,19 @@ const UsernameStep: React.FC<Props> = ({
         };
 
         const res = await AuthService.googleRegister(payload);
-        if (res.data.success) {
+        // Предполагается, что в случае успеха googleRegister также выполняет вход
+        if (res.data.success) { 
           navigate("/");
         }
       } else {
         // Обычная регистрация
         const userExists = await AuthService.checkUsername(username);
 
-        console.log("User exists:", userExists);
-
         if (!userExists) {
           await AuthService.register(email, username, password, confirmPassword);
 
           const res = await AuthService.loginAfterRegister(username, password);
-
-          console.log("Login after register response:", res);
-
+          
           await login(res.token, res.name, res.email, res.avatar);
 
           await AuthService.sendVerificationEmail(res.token);
@@ -102,53 +98,68 @@ const UsernameStep: React.FC<Props> = ({
       setIsLoading(false);
     }
   };
+  
+  const isButtonDisabled = !username.trim() || isLoading;
 
   return (
-    <form onSubmit={handleSubmit} className="w-full">
-      {/* Назад */}
-      <button
-        type="button"
-        onClick={onBack}
-        className="text-gray-400 hover:text-white mb-4"
-        disabled={fromGoogle} // нельзя назад, если Google
-      >
-        ← {t("back")}
-      </button>
-
-      {/* Поле ввода */}
-      <label className="text-sm text-white">{t("username")}</label>
-      <input
-        value={username}
-        onChange={(e) => {
-          setUsername(e.target.value);
-          setError("");
-        }}
-        disabled={isLoading}
-        className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 text-white"
-        placeholder={t("enter_username")}
-      />
-
-      {/* Ошибки */}
-      {error && (
-        <div className="flex items-center text-red-400 text-sm mt-2 gap-1">
-          <Info className="w-4 h-4" />
-          {error}
-        </div>
+    <div className="w-full flex flex-col items-center select-none relative">
+      
+      {!fromGoogle && (
+        <button
+          type="button"
+          onClick={onBack}
+          disabled={fromGoogle}
+          className="cursor-pointer absolute top-0 left-0 w-10 h-10 flex items-center justify-center
+                     rounded-full bg-white/5 border border-white/10
+                     hover:bg-white/10 hover:border-white/20
+                     text-gray-300 hover:text-white
+                     transition shadow-lg backdrop-blur-sm"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
       )}
 
-      {/* Кнопка */}
-      <button
-        type="submit"
-        disabled={!username.trim() || isLoading}
-        className={`mt-4 w-full px-6 py-3 rounded-lg font-semibold transition-all ${
-          username.trim() && !isLoading
-            ? "bg-white text-black hover:bg-black hover:text-white cursor-pointer"
-            : "bg-gray-600 text-gray-400 cursor-not-allowed"
-        }`}
-      >
-        {isLoading ? t("loading") : t("sign_up")}
-      </button>
-    </form>
+      <h1 className="text-3xl font-bold mb-8 text-white mt-10">
+        {t("choose_username") || "Choose Username"}
+      </h1>
+
+      <form onSubmit={handleSubmit} className="w-full">
+        <div className="mb-4">
+          <label className="block text-white text-sm font-medium mb-2">
+            {t("username")}
+          </label>
+          <input
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setError("");
+            }}
+            disabled={isLoading}
+            className="w-full px-4 py-3 rounded-lg bg-[#171719] border border-gray-700 placeholder:text-gray-700 text-white truncate"
+            placeholder={t("enter_username") || "Enter your desired username"}
+          />
+        </div>
+
+        {error && (
+          <div className="flex items-center justify-center text-red-400 text-sm mb-4 gap-2">
+            <Info className="w-4 h-4 flex-shrink-0" />
+            <span className="text-center">{error}</span>
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={isButtonDisabled}
+          className={`mt-4 w-full px-6 py-3 rounded-full font-semibold transition-all ${
+            !isButtonDisabled
+              ? "bg-green-500 text-black" // Активный стиль из SignUp
+              : "bg-[#171719] text-gray-400 cursor-not-allowed" // Неактивный стиль из SignUp
+          }`}
+        >
+          {isLoading ? t("loading") : t("sign_up")}
+        </button>
+      </form>
+    </div>
   );
 };
 

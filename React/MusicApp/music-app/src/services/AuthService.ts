@@ -1,5 +1,5 @@
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { api } from "@/api/axios";
 import i18n from "i18next";
 
 interface DecodedToken {
@@ -14,10 +14,12 @@ interface LoginResponse {
 
 const API_URL = "http://localhost:5017/api";
 
+
 export const AuthService = {
+
   // 1. Авторизация
   async login(identifier: string, password: string) {
-    const res = await axios.post(`${API_URL}/Auth/login`, {
+    const res = await api.post(`/Auth/login`, {
       Identifier: identifier,
       Password: password,
     });
@@ -49,7 +51,7 @@ export const AuthService = {
 
   // 2. Проверка верификации
   async checkVerification(token: string) {
-    const res = await axios.get(`${API_URL}/Account/VerificationStatus`, {
+    const res = await api.get(`/Account/VerificationStatus`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return res.data.isEmailVerified;
@@ -62,7 +64,7 @@ export const AuthService = {
       const lang = i18n.language || "en";
       console.log("Detected language:", lang);
 
-      const res = await axios.post(`${API_URL}/Auth/confirm`, {}, {
+      const res = await api.post(`/Auth/confirm`, {}, {
         headers: { Authorization: `Bearer ${token}`, "Accept-Language": lang },
       });
       console.log("Email sent successfully:", res.data);
@@ -75,19 +77,19 @@ export const AuthService = {
 
   // 4. Проверка, доступен ли email
   async checkEmail(email: string): Promise<boolean> {
-    const res = await axios.get(`${API_URL}/Account/CheckEmail?email=${email}`);
+    const res = await api.get(`/Account/CheckEmail?email=${email}`);
     return res.data;
   },
 
   // 5. Проверка, доступен ли username
   async checkUsername(username: string): Promise<boolean> {
-    const res = await axios.get(`${API_URL}/Account/CheckUser?username=${username}`);
+    const res = await api.get(`/Account/CheckUser?username=${username}`);
     return res.data;
   },
 
   // 6. Регистрация нового пользователя
   async register(email: string, username: string, password: string, confirmPassword: string) {
-    return axios.post(`${API_URL}/Auth/register`, {
+    return api.post(`/Auth/register`, {
       Email: email,
       UserName: username,
       Password: password,
@@ -97,7 +99,7 @@ export const AuthService = {
 
   // 7. Логин после регистрации
   async loginAfterRegister(username: string, password: string) {
-    const res = await axios.post(`${API_URL}/Auth/login`, {
+    const res = await api.post(`/Auth/login`, {
       Identifier: username,
       Password: password,
     });
@@ -123,13 +125,13 @@ export const AuthService = {
 
   // 9. Регистрация через Google
   async googleRegister(payload: any) {
-    return axios.post(`${API_URL}/Auth/google/register`, payload, {
+    return api.post(`/Auth/google/register`, payload, {
       headers: { "Content-Type": "application/json" },
     });
   },
 
   // 10. Редирект на Google OAuth
   redirectToGoogle() {
-    window.location.href = `${API_URL}/Auth/google/login`;
+    window.location.replace(`${API_URL}/Auth/google/login`);
   },
 };
