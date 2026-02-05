@@ -1,16 +1,26 @@
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
+import { View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { router } from "expo-router";
+import { useCart } from "@/context/CartContext";
 
-export const CartHeader = () => {
+export const CartHeader = ({ isEmpty }: {isEmpty: boolean}) => {
+    const { clearCart } = useCart();
+
+    const handleClear = () => {
+        Alert.alert("Clear Basket", "Remove all items?", [
+            { text: "Cancel" },
+            { text: "Clear", style: 'destructive', onPress: clearCart }
+        ]);
+    };
+
     return (
         <View style={styles.header}>
             <TouchableOpacity onPress={() => router.back()} style={styles.roundButton}>
                 <Ionicons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.text}>Your Milk Basket</Text>
-            <TouchableOpacity>
-                <Text style={styles.clearText}>Clear</Text>
+            <TouchableOpacity onPress={handleClear} disabled={isEmpty}>
+                <Text style={[styles.clearText, isEmpty && { color: '#CBD5E1' }]}>Clear</Text>
             </TouchableOpacity>
         </View>
     )
@@ -21,6 +31,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        paddingTop: 30,
+        paddingHorizontal: 20,
     },
     text: {
         fontSize: 18,

@@ -11,6 +11,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
         <PackageReference Include="Scalar.AspNetCore" Version="2.12.24" />
+        <PackageReference Include="Stripe.net" Version="50.3.0" />
     </ItemGroup>
 
     <ItemGroup>

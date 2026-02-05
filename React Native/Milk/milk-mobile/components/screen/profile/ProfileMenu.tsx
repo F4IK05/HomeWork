@@ -49,7 +49,7 @@ export const ProfileMenu = () => {
       <MenuItem
         icon="card-outline"
         title="Payment Methods"
-        onPress={() => console.log('Payments')}
+        onPress={() => router.push('/payments/page')}
       />
 
       <TouchableOpacity style={styles.logoutButton} onPress={hanfleLogout}>

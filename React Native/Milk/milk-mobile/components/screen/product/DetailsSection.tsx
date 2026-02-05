@@ -1,13 +1,33 @@
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native"
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Dimensions, Alert } from "react-native"
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons"
 import { useState } from "react";
 import { Product } from "@/types/product";
+import { useCart } from "@/context/CartContext";
 
 const { width } = Dimensions.get('window');
 
 export const DetailsSection = ({product}: {product: Product}) => {
     const [quantity, setQuantity] = useState(1);
+    const [isAdding, setIsAdding] = useState(false);
+    const { addToCart } = useCart();
 
+    const handleAddToCart = async () => {
+        try {
+            setIsAdding(true);
+            await addToCart(product.id, quantity);
+            
+            Alert.alert(
+                "Success", 
+                `${product.title} (${quantity} units) added to your basket!`
+            );
+        } catch (error: any) {
+            const message = error.response?.data?.message || "Failed to add item to cart";
+            Alert.alert("Error", message);
+        } finally {
+            setIsAdding(false);
+        }
+    };
+    
     return (
         <View style={styles.detailsSection}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -54,7 +74,7 @@ export const DetailsSection = ({product}: {product: Product}) => {
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.addToCartBtn}>
+                <TouchableOpacity style={styles.addToCartBtn} onPress={handleAddToCart}>
                     <Text style={styles.addToCartText}>Add to Cart</Text>
                 </TouchableOpacity>
             </View>

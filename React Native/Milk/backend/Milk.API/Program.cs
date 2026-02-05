@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Milk.API.Services.Classes.Auth;
+using Milk.API.Services.Classes.Cart;
 using Milk.API.Services.Classes.Categories;
 using Milk.API.Services.Classes.Products;
 using Milk.API.Services.Classes.Profile;
 using Milk.API.Services.Interfaces.Auth;
+using Milk.API.Services.Interfaces.Cart;
 using Milk.API.Services.Interfaces.Categories;
 using Milk.API.Services.Interfaces.Products;
 using Milk.API.Services.Interfaces.Profile;
@@ -34,6 +36,7 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 var jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
 

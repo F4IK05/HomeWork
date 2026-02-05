@@ -16,7 +16,7 @@ export const ImageSection = ({product}: { product: Product }) => {
                 <TouchableOpacity onPress={() => router.back()} style={styles.roundButton}>
                     <Ionicons name="arrow-back" size={24} color="#1A1A1A" />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.roundButton}>
+                <TouchableOpacity onPress={() => router.push('/(tabs)/cart')} style={styles.roundButton}>
                     <Feather name="shopping-cart" size={22} color="#1A1A1A" />
                 </TouchableOpacity>
             </SafeAreaView>
