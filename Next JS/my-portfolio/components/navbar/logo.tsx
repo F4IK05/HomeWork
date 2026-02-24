@@ -15,6 +15,7 @@ export function Logo({ isMobile = false }: { isMobile?: boolean }) {
                     animated={true}
                     animationSpeed={0.02}
                     brightness={1}
+                    pixelRatio={0.1}
                 />
             </div>
 

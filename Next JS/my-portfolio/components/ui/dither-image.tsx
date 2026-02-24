@@ -39,7 +39,7 @@ export function DitherImage({
   pixelRatio = 1,
 }: DitherImageProps) {
   return (
-    <div className={cn("relative w-full h-full overflow-hidden bg-black", className)}>
+    <div className={cn("relative w-full h-full overflow-hidden", className)}>
       
       <div 
         className="absolute inset-0 z-10 opacity-20 pointer-events-none mix-blend-overlay"

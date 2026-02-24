@@ -11,7 +11,7 @@ export function HeroVoltage() {
       <div className="container mx-auto px-4 md:px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div className="space-y-8">
           <div className="relative">
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br via-yellow-200  leading-[0.9]">
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-br via-yellow-200  leading-[0.9]">
               RAW<br />
               POWER<br />
               <span className="text-white outline-text">UNLEASHED</span>
